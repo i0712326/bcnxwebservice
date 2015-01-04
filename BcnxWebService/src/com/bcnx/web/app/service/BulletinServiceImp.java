@@ -1,6 +1,7 @@
 package com.bcnx.web.app.service;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -33,5 +34,15 @@ public class BulletinServiceImp implements BulletinService {
 			return null;
 		}
 	}
-
+	@Override
+	public List<Bulletin> getBulletin(Timestamp start, Timestamp end,
+			int first, int max) {
+		try {
+			return bulletinDao.getBulletins(start, end, first, max);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get bulletin by date",e);
+			return null;
+		}
+	}
+	
 }
