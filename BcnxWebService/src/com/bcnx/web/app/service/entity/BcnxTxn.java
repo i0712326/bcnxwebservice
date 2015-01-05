@@ -22,6 +22,10 @@ public class BcnxTxn implements Serializable {
 	@GeneratedValue
 	@Column(name="ID")
 	private int id;
+	@Column(name="SLOT", nullable=false, length=3)
+	private String slot;
+	@Column(name="MTI", nullable=false, length=4)
+	private String mti;
 	@Column(name="DATE",nullable=false)
 	private Date date;
 	@Column(name="TIME",nullable=false, length=8)
@@ -56,6 +60,10 @@ public class BcnxTxn implements Serializable {
 	private String pos="021";
 	@Column(name="CONDCODE", nullable=false,length=2)
 	private String condCode="01";
+	@Column(name="ISS", nullable=false, length=6)
+	private String iss;
+	@Column(name="ACQ", nullable=false, length=6)
+	private String acq;
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="USRDATA_USRID")
 	private User user;
@@ -167,5 +175,22 @@ public class BcnxTxn implements Serializable {
 	public void setCondCode(String condCode) {
 		this.condCode = condCode;
 	}
-	
+	public String getIss() {
+		return iss;
+	}
+	public void setIss(String iss) {
+		this.iss = iss;
+	}
+	public String getAcq() {
+		return acq;
+	}
+	public void setAcq(String acq) {
+		this.acq = acq;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 }

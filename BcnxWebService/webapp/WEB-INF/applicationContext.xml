@@ -14,4 +14,6 @@
 	<import resource="role_context.xml"/>
 	<import resource="user_context.xml"/>
 	<import resource="bulletin_context.xml"/>
+	<import resource="bcnx_context.xml"/>
+	<import resource="mail_context.xml"/>
 </beans>

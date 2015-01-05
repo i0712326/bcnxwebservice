@@ -13,6 +13,8 @@
 		<config>webapp/WEB-INF/user_context.xml</config>
 		<config>webapp/WEB-INF/applicationContext.xml</config>
 		<config>webapp/WEB-INF/bulletin_context.xml</config>
+		<config>webapp/WEB-INF/bcnx_context.xml</config>
+		<config>webapp/WEB-INF/mail_context.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

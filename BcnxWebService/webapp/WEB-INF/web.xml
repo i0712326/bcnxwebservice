@@ -6,7 +6,8 @@
 		<param-value>
 			com.bcnx.web.app.controller.member.MemberController,
 			com.bcnx.web.app.controller.role.RoleController,
-			com.bcnx.web.app.controller.user.UserController
+			com.bcnx.web.app.controller.user.UserController,
+			com.bcnx.web.app.controller.bulletin.BulletinController
 		</param-value>
 	</context-param>
   	<listener>

@@ -11,6 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.ws.rs.FormParam;
+
+import org.jboss.resteasy.annotations.providers.multipart.PartType;
 @Entity
 @Table(name="BULLETIN")
 public class Bulletin implements Serializable {
@@ -26,6 +30,10 @@ public class Bulletin implements Serializable {
 	private Timestamp date;
 	@Column(name="FILE")
 	private String file;
+	@Transient
+	private byte[] bytes;
+	@Transient
+	private String type;
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="USRDATA_USRID")
 	private User user;
@@ -38,6 +46,7 @@ public class Bulletin implements Serializable {
 	public String getTitle() {
 		return title;
 	}
+	@FormParam("title")
 	public void setTitle(String title) {
 		this.title = title;
 	}
@@ -58,6 +67,21 @@ public class Bulletin implements Serializable {
 	}
 	public void setFile(String file) {
 		this.file = file;
+	}
+	public byte[] getBytes() {
+		return bytes;
+	}
+	@FormParam("file")
+	@PartType("application/octet-stream")
+	public void setBytes(byte[] bytes) {
+		this.bytes = bytes;
+	}
+	public String getType(){
+		return type;
+	}
+	@FormParam("type")
+	public void setType(String type){
+		this.type = type;
 	}
 	public User getUser() {
 		return user;

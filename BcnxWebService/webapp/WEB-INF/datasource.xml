@@ -18,6 +18,8 @@
 				<value>com.bcnx.web.app.service.entity.Member</value>
 				<value>com.bcnx.web.app.service.entity.Role</value>
 				<value>com.bcnx.web.app.service.entity.User</value>
+				<value>com.bcnx.web.app.service.entity.Bulletin</value>
+				<value>com.bcnx.web.app.service.entity.BcnxTxn</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
