@@ -17,6 +17,14 @@ public class BcnxTxnServiceImp implements BcnxTxnService {
 		this.bcnxTxnDao = bcnxTxnDao;
 	}
 	@Override
+	public void save(BcnxTxn bcnxTxn){
+		try {
+			bcnxTxnDao.save(bcnxTxn);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to save transaction", e);
+		}
+	}
+	@Override
 	public List<BcnxTxn> getBcnxTxns(BcnxTxn bcnxTxn, int first, int max, User user) {
 		try {
 			return bcnxTxnDao.getBcnxTxns(bcnxTxn, first, max, user);
