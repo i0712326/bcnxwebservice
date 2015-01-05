@@ -1,0 +1,38 @@
+package com.bcnx.web.app.service.admin;
+
+import java.util.List;
+
+import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.Response;
+
+import com.bcnx.web.app.context.BcnxApplicationContext;
+import com.bcnx.web.app.service.MemberService;
+import com.bcnx.web.app.service.entity.Member;
+
+@Path("/member")
+public class MemberController {
+	@RolesAllowed("ADM")
+	@POST
+	@Path("/save")
+	@Produces("application/json")
+	@Consumes("application/json")
+	public Response save(Member member){
+		MemberService service = (MemberService) BcnxApplicationContext.getBean("memberService");
+		service.save(member);
+		return Response.status(200).entity(member).build();
+	}
+	@RolesAllowed("ADM")
+	@GET
+	@Path("/get/{first}/{max}")
+	public Response getMembes(@PathParam("first") String first, @PathParam("max") String max){
+		MemberService service = (MemberService) BcnxApplicationContext.getBean("memberService");
+		List<Member> members = service.getMembers(Integer.parseInt(first), Integer.parseInt(max));
+		return Response.status(200).entity(members).build();
+	}
+}
