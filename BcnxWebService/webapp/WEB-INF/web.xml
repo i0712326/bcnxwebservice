@@ -4,10 +4,11 @@
  	<context-param>
 		<param-name>resteasy.resources</param-name>
 		<param-value>
-			com.bcnx.web.app.controller.member.MemberController,
-			com.bcnx.web.app.controller.role.RoleController,
-			com.bcnx.web.app.controller.user.UserController,
-			com.bcnx.web.app.controller.bulletin.BulletinController
+			com.bcnx.web.app.service.admin.MemberController,
+			com.bcnx.web.app.service.admin.RoleController,
+			com.bcnx.web.app.service.admin.UserController,
+			com.bcnx.web.app.service.user.BulletinController,
+			com.bcnx.web.app.service.user.BcnxTxnController
 		</param-value>
 	</context-param>
   	<listener>

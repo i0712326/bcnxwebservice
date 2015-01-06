@@ -25,6 +25,7 @@ public class RoleDaoImp implements RoleDao {
 	public void save(Role role) throws SQLException {
 		hibernateTemplate.save(role);
 	}
+	@Transactional
 	@Override
 	public Role getRole(final Role role) throws SQLException {
 		return hibernateTemplate.execute(new HibernateCallback<Role>(){
@@ -38,12 +39,12 @@ public class RoleDaoImp implements RoleDao {
 			
 		});
 	}
+	@Transactional
 	@Override
 	public List<Role> getRoles(int first, int max) throws SQLException {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Role.class);
 		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
 	}
-	
 	private List<Role> toList(final List<?> beans){
 		if(beans==null) return null;
 		if(beans.isEmpty()) return null;

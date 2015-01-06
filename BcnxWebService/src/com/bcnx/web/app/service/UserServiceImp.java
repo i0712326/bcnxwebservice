@@ -23,6 +23,14 @@ public class UserServiceImp implements UserService {
 		}
 	}
 	@Override
+	public void update(User user){
+		try {
+			userDao.update(user);
+		} catch (SQLException e) {
+			logger.debug("Exception occured while try to update user data",e);
+		}
+	}
+	@Override
 	public void updatePasswd(User user) {
 		try {
 			userDao.updatePasswd(user);

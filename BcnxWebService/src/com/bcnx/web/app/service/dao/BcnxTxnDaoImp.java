@@ -48,7 +48,7 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 		@Override
 		public List<BcnxTxn> doInHibernate(Session session) throws HibernateException {
 			String hql = "from BcnxTxn bx where bx.date= :date and ( bx.card like :card or bx.rrn like :rrn ) "
-					+ "and (bx.iss = :iss or bx.acq = :acq order by bx.id desc)";
+					+ "and ( bx.iss = :iss or bx.acq = :acq ) order by bx.id desc";
 			Query query = session.createQuery(hql);
 			query.setDate("date", bcnxTxn.getDate());
 			query.setString("card", bcnxTxn.getCard());

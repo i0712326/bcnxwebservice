@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.1.xsd">
 	<bean id="sendMailService" class="com.bcnx.web.app.service.SendMailServiceImp">
 		<property name="sender" value="bconnex_support@bcel.com.la" />
-		<property name="passwd" value="123456"/>
+		<property name="passwd" value="bconnex@bcel123"/>
 		<property name="host" value="10.15.14.9"/>
 		<property name="port" value="25"/>
 		<property name="title" value="sign up notification"/>

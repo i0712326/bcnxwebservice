@@ -54,7 +54,7 @@ public class SendMailServiceImp implements SendMailService {
 			Multipart multipart = new MimeMultipart();
 			// creates message part
 			MimeBodyPart messageBodyPart = new MimeBodyPart();
-			messageBodyPart.setContent(content, "text/plain");
+			messageBodyPart.setContent("Password is "+content, "text/plain");
 			multipart.addBodyPart(messageBodyPart);
 			// sets the multi-part as e-mail's content
 			message.setContent(multipart);

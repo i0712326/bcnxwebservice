@@ -28,9 +28,15 @@ public class UserDaoImp implements UserDao {
 	}
 	@Transactional
 	@Override
+	public void update(User user) throws SQLException{
+		hibernateTemplate.update(user);
+	}
+	@Transactional
+	@Override
 	public void updatePasswd(User user) throws SQLException {
 		hibernateTemplate.update(user);
 	}
+	@Transactional
 	@Override
 	public User getUser(final User user) throws SQLException {
 		return hibernateTemplate.execute(new HibernateCallback<User>(){
@@ -44,11 +50,13 @@ public class UserDaoImp implements UserDao {
 			}
 		});
 	}
+	@Transactional
 	@Override
 	public List<User> getUsers(int first, int max) throws SQLException {
 		DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
 		return toList(hibernateTemplate.findByCriteria(criteria,first,max));
 	}
+	@Transactional
 	@Override
 	public List<User> getUsers(User user, int first, int max)
 			throws SQLException {
@@ -64,4 +72,5 @@ public class UserDaoImp implements UserDao {
 		list = beans.toArray(list);
 		return Arrays.asList(list);
 	}
+	
 }

@@ -26,6 +26,7 @@ public class MemberDaoImp implements MemberDao {
 	public void save(Member member) throws SQLException {
 		hibernateTemplate.save(member);
 	}
+	@Transactional
 	@Override
 	public Member getMember(final Member member) throws SQLException {
 		return hibernateTemplate.execute(new HibernateCallback<Member>(){
@@ -39,11 +40,13 @@ public class MemberDaoImp implements MemberDao {
 			
 		});
 	}
+	@Transactional
 	@Override
 	public List<Member> getMembers(int first, int max) throws SQLException {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Member.class);
 		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
 	}
+	@Transactional
 	@Override
 	public List<Member> getMembers(Member member, int first, int max)
 			throws SQLException {

@@ -2,7 +2,7 @@ package com.bcnx.web.app.service.admin;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -19,52 +19,41 @@ import com.bcnx.web.app.service.PasswdGenerator;
 import com.bcnx.web.app.service.RoleService;
 import com.bcnx.web.app.service.SendMailService;
 import com.bcnx.web.app.service.UserService;
-import com.bcnx.web.app.service.entity.Error;
+import com.bcnx.web.app.service.entity.ErrorMessage;
 import com.bcnx.web.app.service.entity.Member;
 import com.bcnx.web.app.service.entity.Role;
 import com.bcnx.web.app.service.entity.User;
 @Path("/user")
 public class UserController {
-	@RolesAllowed("ADM")
 	@POST
 	@Path("/save")
 	@Produces("application/json")
-	public Response save(@FormParam("userId") String userId,
-			@FormParam("name") String name, @FormParam("email") String email,
-			@FormParam("memId") String memId, @FormParam("roleId") String roleId) {
+	@Consumes("application/json")
+	public Response save(User user) {
 		UserService userService = (UserService) BcnxApplicationContext
 				.getBean("userService");
 		MemberService memberService = (MemberService) BcnxApplicationContext
 				.getBean("memberService");
 		RoleService roleService = (RoleService) BcnxApplicationContext
 				.getBean("roleService");
-		PasswdGenerator generator = (PasswdGenerator) BcnxApplicationContext
-				.getBean("passwdGenerator");
-		Encryptography encryptography = (Encryptography) BcnxApplicationContext
-				.getBean("tripleDES");
+
 		SendMailService sendMailService = (SendMailService) BcnxApplicationContext
 				.getBean("sendMailService");
 		Member member = new Member();
-		member.setMemId(memId);
+		member.setMemId(user.getMember().getMemId());
 		member = memberService.getMember(member);
 		Role role = new Role();
-		role.setRoleId(roleId);
+		role.setRoleId(user.getRole().getRoleId());
 		role = roleService.getRole(role);
-		User user = new User();
-		user.setUserId(userId);
-		String passwd = generator.generate();
-		sendMailService.sendMail(email,passwd);
-		// send email for the password notification
-		user.setPasswd(encryptography.encrypt(passwd));
-		user.setName(name);
-		user.setEmail(email);
+		String passwd = PasswdGenerator.generate();
+		sendMailService.sendMail(user.getEmail(),passwd);
+		user.setPasswd(Encryptography.encrypt(passwd));
 		user.setMember(member);
 		user.setRole(role);
 		userService.save(user);
-		String result = user.toString();
-		return Response.status(200).entity(result).build();
+		user.setPasswd("");
+		return Response.status(200).entity(user).build();
 	}
-	@RolesAllowed("ADM")
 	@GET
 	@Path("/get/{userId}")
 	@Produces("application/json")
@@ -75,7 +64,6 @@ public class UserController {
 		user = service.getUser(user);
 		return Response.status(200).entity(user).build();
 	}
-	@RolesAllowed("ADM")
 	@GET
 	@Path("/get/{first}/{max}")
 	@Produces("application/json")
@@ -87,7 +75,6 @@ public class UserController {
 				Integer.parseInt(max));
 		return Response.status(200).entity(users).build();
 	}
-	@RolesAllowed("ADM")
 	@GET
 	@Path("/get/{userId}/{first}/{max}")
 	@Produces("application/json")
@@ -100,7 +87,6 @@ public class UserController {
 		List<User> users = service.getUsers(user, Integer.parseInt(first), Integer.parseInt(max));
 		return Response.status(200).entity(users).build();
 	}
-	@RolesAllowed("ADM")
 	@PUT
 	@Path("/update")
 	@Produces("application/json")
@@ -108,22 +94,50 @@ public class UserController {
 			@FormParam("passwd") String passwd,
 			@FormParam("nPasswd") String nPasswd,
 			@FormParam("cPasswd") String cPasswd) {
-		UserService userService = (UserService) BcnxApplicationContext
-				.getBean("userService");
-		Encryptography encryptography = (Encryptography) BcnxApplicationContext
-				.getBean("tripleDES");
+		UserService userService = (UserService) BcnxApplicationContext.getBean("userService");
 		User user = new User();
 		user.setUserId(userId);
 		user = userService.getUser(user);
-		String psswd = encryptography.encrypt(passwd);
-		user.setPasswd(psswd);
-		
-		Error error = new Error();
-		error.setCode("1001");
-		error.setMessage("Can not process data");
+		boolean check = Encryptography.checkPasswd(passwd, user.getPasswd());
+		if(!check){
+			return Response.status(401).entity(new ErrorMessage("407","invalid current password")).build();
+		}
 		if (!nPasswd.equals(cPasswd))
-			return Response.status(500).entity(error).build();
+			return Response.status(401).entity(new ErrorMessage("406","new password and confirm password is no match")).build();
 		userService.updatePasswd(user);
-		return Response.status(200).entity(user).build();
+		return Response.status(200).entity(new ErrorMessage("200","password change successful")).build();
+	}
+	// log on service
+	@PUT
+	@Path("/login")
+	@Consumes("application/json")
+	@Produces("application/json")
+	public Response logon(User user){
+		UserService service =  (UserService) BcnxApplicationContext.getBean("userService"); 
+		String passwd = user.getPasswd();
+		user = service.getUser(user);
+		boolean check = Encryptography.checkPasswd(passwd, user.getPasswd());
+		String status = user.getStatus();
+		int state = user.getState();
+		int count = user.getCount();
+		
+		if(!check){
+			return Response.status(401).entity(new ErrorMessage("400","invalid userId/password")).build();
+		}
+		if(!status.equals("A"))
+		{
+			return Response.status(401).entity(new ErrorMessage("401","inactive user")).build();
+		}
+		if(state!=0){
+			return Response.status(401).entity(new ErrorMessage("402","current user is loggin in")).build();
+		}
+		if(count ==0 ||(count%31 == 0)){
+			return Response.status(401).entity(new ErrorMessage("403","required user change password")).build();
+		}
+		count = count+1;
+		user.setCount(count);
+		service.update(user);
+		user.setPasswd("");
+		return Response.status(200).entity(new ErrorMessage("200","logging in successful")).build();
 	}
 }
