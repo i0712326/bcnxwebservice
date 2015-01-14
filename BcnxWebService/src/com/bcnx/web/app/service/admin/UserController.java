@@ -19,7 +19,7 @@ import com.bcnx.web.app.service.PasswdGenerator;
 import com.bcnx.web.app.service.RoleService;
 import com.bcnx.web.app.service.SendMailService;
 import com.bcnx.web.app.service.UserService;
-import com.bcnx.web.app.service.entity.ErrorMessage;
+import com.bcnx.web.app.service.entity.ErrMsg;
 import com.bcnx.web.app.service.entity.Member;
 import com.bcnx.web.app.service.entity.Role;
 import com.bcnx.web.app.service.entity.User;
@@ -100,12 +100,12 @@ public class UserController {
 		user = userService.getUser(user);
 		boolean check = Encryptography.checkPasswd(passwd, user.getPasswd());
 		if(!check){
-			return Response.status(401).entity(new ErrorMessage("407","invalid current password")).build();
+			return Response.status(401).entity(new ErrMsg("407","invalid current password")).build();
 		}
 		if (!nPasswd.equals(cPasswd))
-			return Response.status(401).entity(new ErrorMessage("406","new password and confirm password is no match")).build();
+			return Response.status(401).entity(new ErrMsg("406","new password and confirm password is no match")).build();
 		userService.updatePasswd(user);
-		return Response.status(200).entity(new ErrorMessage("200","password change successful")).build();
+		return Response.status(200).entity(new ErrMsg("200","password change successful")).build();
 	}
 	// log on service
 	@PUT
@@ -122,22 +122,22 @@ public class UserController {
 		int count = user.getCount();
 		
 		if(!check){
-			return Response.status(401).entity(new ErrorMessage("400","invalid userId/password")).build();
+			return Response.status(401).entity(new ErrMsg("400","invalid userId/password")).build();
 		}
 		if(!status.equals("A"))
 		{
-			return Response.status(401).entity(new ErrorMessage("401","inactive user")).build();
+			return Response.status(401).entity(new ErrMsg("401","inactive user")).build();
 		}
 		if(state!=0){
-			return Response.status(401).entity(new ErrorMessage("402","current user is loggin in")).build();
+			return Response.status(401).entity(new ErrMsg("402","current user is loggin in")).build();
 		}
 		if(count ==0 ||(count%31 == 0)){
-			return Response.status(401).entity(new ErrorMessage("403","required user change password")).build();
+			return Response.status(401).entity(new ErrMsg("403","required user change password")).build();
 		}
 		count = count+1;
 		user.setCount(count);
 		service.update(user);
 		user.setPasswd("");
-		return Response.status(200).entity(new ErrorMessage("200","logging in successful")).build();
+		return Response.status(200).entity(new ErrMsg("200","logging in successful")).build();
 	}
 }

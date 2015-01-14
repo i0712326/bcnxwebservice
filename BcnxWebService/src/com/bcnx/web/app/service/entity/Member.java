@@ -1,25 +1,18 @@
 package com.bcnx.web.app.service.entity;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
 @Entity
 @Table(name="MEMDATA")
 public class Member implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Column(name="ID")
-	@GeneratedValue
-	private int id;
 	@Id
 	@Column(name="IIN", nullable=true, unique=true, length=6)
 	private String iin;
@@ -33,12 +26,8 @@ public class Member implements Serializable {
 	private String fax;
 	@Column(name="ADDRESS", nullable=true, length=128)
 	private String address;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="member")
+	private List<Bin> bins;
 	public String getIin() {
 		return iin;
 	}
@@ -75,21 +64,10 @@ public class Member implements Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	@Override
-	public String toString() {
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		try {
-			String json = ow.writeValueAsString(this);
-			return json;
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-			return null;
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public List<Bin> getBins() {
+		return bins;
+	}
+	public void setBins(List<Bin> bins) {
+		this.bins = bins;
 	}
 }

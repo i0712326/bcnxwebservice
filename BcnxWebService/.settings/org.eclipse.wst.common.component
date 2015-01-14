@@ -5,6 +5,7 @@
         <wb-resource deploy-path="/" source-path="/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/configure"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/sample"/>
         <property name="context-root" value="BcnxWebService"/>
         <property name="java-output-path" value="/BcnxWebService/build/classes"/>
     </wb-module>

@@ -4,7 +4,6 @@
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
-	
 	<bean class="com.bcnx.web.app.context.BcnxApplicationContext"/>
 	<import resource="member_context.xml"/>
 	<import resource="role_context.xml"/>
@@ -12,4 +11,5 @@
 	<import resource="bulletin_context.xml"/>
 	<import resource="bcnx_context.xml"/>
 	<import resource="mail_context.xml"/>
+	<import resource="auditor_context.xml"/>
 </beans>

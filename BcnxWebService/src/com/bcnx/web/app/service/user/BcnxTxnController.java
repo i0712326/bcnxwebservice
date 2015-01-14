@@ -7,6 +7,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
@@ -28,13 +29,14 @@ public class BcnxTxnController {
 		return Response.status(200).entity(list).build();
 	}
 	@POST
-	@Path("/save/chargeback")
+	@Path("/save/dispute")
 	@Consumes("application/json")
-	public Response saveCopyRequest(DisputeTxn disputeTxn){
+	@Produces("application/json")
+	public Response saveDisputet(DisputeTxn disputeTxn){
 		BcnxTxnService service = (BcnxTxnService) BcnxApplicationContext
 				.getBean("bcnxTxnService");
-		BcnxTxn bcnxTxn = disputeTxn;
-		service.save(bcnxTxn);
+		//BcnxTxn bcnxTxn = disputeTxn;
+		//service.save(bcnxTxn);
 		return Response.status(200).entity(disputeTxn).build();
 	}
 }

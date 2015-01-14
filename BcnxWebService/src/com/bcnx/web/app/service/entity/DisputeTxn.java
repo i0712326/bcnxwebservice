@@ -1,17 +1,26 @@
 package com.bcnx.web.app.service.entity;
 
+import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 @Entity
-@PrimaryKeyJoinColumn(name="id")
-public class DisputeTxn extends BcnxTxn {
+@Table(name="DISPUTETXN")
+public class DisputeTxn implements Serializable{
 	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue
+	@Column(name="ID")
+	private int id;
+	@Column(name="PROCC")
+	private String procc;
 	@Column(name="RC")
 	private String rc;
 	@Column(name="REMARK")
@@ -31,6 +40,18 @@ public class DisputeTxn extends BcnxTxn {
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="URSDATA_USRID")
 	private User user;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getProcc() {
+		return procc;
+	}
+	public void setProcc(String procc) {
+		this.procc = procc;
+	}
 	public String getRc() {
 		return rc;
 	}

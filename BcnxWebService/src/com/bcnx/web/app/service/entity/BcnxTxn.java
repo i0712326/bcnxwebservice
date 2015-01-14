@@ -7,59 +7,58 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 @Entity
 @Table(name="BCNXTXN")
-@Inheritance(strategy=InheritanceType.JOINED)
 public class BcnxTxn implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue
 	@Column(name="ID")
 	private int id;
-	@Column(name="SLOT", nullable=false, length=3)
+	@Column(name="SLOT")
 	private String slot;
 	@Column(name="MTI", nullable=false, length=4)
 	private String mti;
-	@Column(name="DATE",nullable=false)
+	@Column(name="DATE")
 	private Date date;
-	@Column(name="TIME",nullable=false, length=8)
+	@Column(name="TIME")
 	private String time;
 	@Column(name="CARD", nullable=false,length=19)
 	private String card;
-	@Column(name="PROCC",nullable=false, length=6)
+	@Column(name="EXP")
+	private String exp;
+	@Column(name="PROCC")
 	private String proc;
 	@Column(name="AMOUNT")
 	private double amount = 0;
 	@Column(name="FEE")
 	private double fee = 0;
-	@Column(name="TRACE", nullable=false, length=6)
+	@Column(name="TRACE")
 	private String trace;
-	@Column(name="RRNO", nullable=false, length=12)
+	@Column(name="RRN", nullable=false, length=12)
 	private String rrn;
-	@Column(name="APPR", nullable=true, length=6)
+	@Column(name="APPR")
 	private String appr;
-	@Column(name="RES", nullable=false, length=2)
+	@Column(name="RES", length=2)
 	private String res;
-	@Column(name="TERMID", nullable=false, length=8)
+	@Column(name="TERMID", length=8)
 	private String termId;
-	@Column(name="LOCATION", nullable=false, length=42)
+	@Column(name="LOCATION", length=42)
 	private String location;
-	@Column(name="CURR", nullable=false, length=3)
+	@Column(name="CURR", length=3)
 	private String curr="418";
-	@Column(name="MCC", nullable=false, length=4)
+	@Column(name="MCC", length=4)
 	private String mcc="6011";
-	@Column(name="COUNTRY", nullable=false, length=3)
+	@Column(name="COUNTRY", length=3)
 	private String country="418";
-	@Column(name="POS", nullable=false, length=3)
+	@Column(name="POS", length=3)
 	private String pos="021";
-	@Column(name="CONDCODE", nullable=false,length=2)
+	@Column(name="CONCODE", length=2)
 	private String condCode="01";
-	@Column(name="ISS", nullable=false, length=6)
+	@Column(name="ISS",length=6)
 	private String iss;
-	@Column(name="ACQ", nullable=false, length=6)
+	@Column(name="ACQ", length=6)
 	private String acq;
 	public int getId() {
 		return id;
@@ -180,5 +179,34 @@ public class BcnxTxn implements Serializable {
 	}
 	public void setAcq(String acq) {
 		this.acq = acq;
+	}
+	public String getSlot() {
+		return slot;
+	}
+	public void setSlot(String slot) {
+		this.slot = slot;
+	}
+	public String getMti() {
+		return mti;
+	}
+	public void setMti(String mti) {
+		this.mti = mti;
+	}
+	public String getExp() {
+		return exp;
+	}
+	public void setExp(String exp) {
+		this.exp = exp;
+	}
+	@Override
+	public String toString() {
+		return "BcnxTxn [slot=" + slot + ", mti=" + mti + ", date=" + date
+				+ ", time=" + time + ", card=" + card + ", exp=" + exp
+				+ ", proc=" + proc + ", amount=" + amount + ", fee=" + fee
+				+ ", trace=" + trace + ", rrn=" + rrn + ", appr=" + appr
+				+ ", res=" + res + ", termId=" + termId + ", location="
+				+ location + ", curr=" + curr + ", mcc=" + mcc + ", country="
+				+ country + ", pos=" + pos + ", condCode=" + condCode
+				+ ", iss=" + iss + ", acq=" + acq + "]";
 	}
 }

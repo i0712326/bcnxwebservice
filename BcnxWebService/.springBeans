@@ -15,6 +15,7 @@
 		<config>webapp/WEB-INF/bulletin_context.xml</config>
 		<config>webapp/WEB-INF/bcnx_context.xml</config>
 		<config>webapp/WEB-INF/mail_context.xml</config>
+		<config>webapp/WEB-INF/auditor_context.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

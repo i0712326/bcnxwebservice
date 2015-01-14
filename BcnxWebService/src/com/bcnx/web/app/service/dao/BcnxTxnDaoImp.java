@@ -14,6 +14,7 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bcnx.web.app.service.entity.BcnxTxn;
 import com.bcnx.web.app.service.entity.DisputeTxn;
@@ -24,11 +25,47 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 	public void setSessionFactory(SessionFactory sessionFactory){
 		hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
+	@Transactional
 	@Override
 	public void save(BcnxTxn bcnxTxn) throws SQLException, HibernateException {
 		hibernateTemplate.save(bcnxTxn);
 	}
+	@Transactional
+	@Override
+	public void update(final BcnxTxn bcnxTxn) throws SQLException, HibernateException{
+		hibernateTemplate.execute(new HibernateCallback<Void>(){
+			@Override
+			public Void doInHibernate(Session session)
+					throws HibernateException {
+				String hql = "update BcnxTxn b set b.res = :res, b.appr = :appr where b.rrn = :rrn";
+				Query query = session.createQuery(hql);
+				query.setString("res", bcnxTxn.getRes());
+				query.setString("appr", bcnxTxn.getAppr());
+				query.setString("rrn", bcnxTxn.getRrn());
+				query.executeUpdate();
+				return null;
+			}
+			
+		});
+	}
+	@Transactional
+	@Override
+	public BcnxTxn getBcnxTxn(final BcnxTxn bcnxTxn) throws SQLException,
+			HibernateException {
+		return hibernateTemplate.execute(new HibernateCallback<BcnxTxn>(){
 
+			@Override
+			public BcnxTxn doInHibernate(Session session)
+					throws HibernateException {
+				String hql = "from BcnxTxn b where b.rrn = :rrn and b.mti = :mti";
+				Query query = session.createQuery(hql);
+				query.setString("rrn", bcnxTxn.getRrn());
+				query.setString("mti", bcnxTxn.getMti());
+				return (BcnxTxn) query.uniqueResult();
+			}
+		});
+	}
+	@Transactional
 	@Override
 	public List<BcnxTxn> getBcnxTxns(BcnxTxn bcnxTxn, int first, int max, User user) throws SQLException, HibernateException {
 		return toList(hibernateTemplate.execute(new GetBcnxTxns(bcnxTxn,first,max, user)));
@@ -59,8 +96,8 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 			query.setMaxResults(max);
 			return query.list();
 		}
-		
 	}
+	@Transactional
 	@Override
 	public List<BcnxTxn> getBcnxTxns(Date start, Date end, int first, int max, User user)
 			throws SQLException, HibernateException {
@@ -95,6 +132,7 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 			return query.list();
 		}
 	}
+	@Transactional
 	@Override
 	public List<BcnxTxn> getCopyRequest(int first, int max, User user)
 			throws SQLException, HibernateException {

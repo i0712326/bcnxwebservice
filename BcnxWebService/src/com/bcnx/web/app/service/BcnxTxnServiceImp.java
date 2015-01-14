@@ -25,6 +25,23 @@ public class BcnxTxnServiceImp implements BcnxTxnService {
 		}
 	}
 	@Override
+	public void update(BcnxTxn bcnxTxn){
+		try {
+			bcnxTxnDao.update(bcnxTxn);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to update transaction", e);
+		}
+	}
+	@Override
+	public BcnxTxn getBcnxTxn(BcnxTxn bcnxTxn) {
+		try {
+			return bcnxTxnDao.getBcnxTxn(bcnxTxn);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get transaction", e);
+			return null;
+		}
+	}
+	@Override
 	public List<BcnxTxn> getBcnxTxns(BcnxTxn bcnxTxn, int first, int max, User user) {
 		try {
 			return bcnxTxnDao.getBcnxTxns(bcnxTxn, first, max, user);
