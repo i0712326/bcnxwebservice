@@ -1,7 +1,6 @@
 package com.bcnx.web.app.service.entity;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +20,7 @@ public class BcnxTxn implements Serializable {
 	@Column(name="MTI", nullable=false, length=4)
 	private String mti;
 	@Column(name="DATE")
-	private Date date;
+	private String date;
 	@Column(name="TIME")
 	private String time;
 	@Column(name="CARD", nullable=false,length=19)
@@ -66,10 +65,10 @@ public class BcnxTxn implements Serializable {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public Date getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 	public String getTime() {

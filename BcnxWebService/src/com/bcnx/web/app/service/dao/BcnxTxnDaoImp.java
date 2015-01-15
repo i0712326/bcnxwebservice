@@ -32,6 +32,12 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 	}
 	@Transactional
 	@Override
+	public void saveAll(List<BcnxTxn> bcnxTxns) throws SQLException,
+			HibernateException {
+		hibernateTemplate.save(bcnxTxns);
+	}
+	@Transactional
+	@Override
 	public void update(final BcnxTxn bcnxTxn) throws SQLException, HibernateException{
 		hibernateTemplate.execute(new HibernateCallback<Void>(){
 			@Override
@@ -87,7 +93,7 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 			String hql = "from BcnxTxn bx where bx.date= :date and ( bx.card like :card or bx.rrn like :rrn ) "
 					+ "and ( bx.iss = :iss or bx.acq = :acq ) order by bx.id desc";
 			Query query = session.createQuery(hql);
-			query.setDate("date", bcnxTxn.getDate());
+			query.setString("date", bcnxTxn.getDate());
 			query.setString("card", bcnxTxn.getCard());
 			query.setString("rrn", bcnxTxn.getRrn());
 			query.setString("iss", user.getMember().getIin());

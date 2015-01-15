@@ -35,8 +35,14 @@ public class DisputeTxn implements Serializable{
 	private double fee;
 	@Column(name="FLAG")
 	private String flag;
+	@Column(name="RRN")
+	private String rrn;
 	@Column(name="COUNT")
 	private int count;
+	@Column(name="ISSID")
+	private String issId;
+	@Column(name="ACQID")
+	private String acqId;
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="URSDATA_USRID")
 	private User user;
@@ -99,6 +105,24 @@ public class DisputeTxn implements Serializable{
 	}
 	public void setCount(int count) {
 		this.count = count;
+	}
+	public String getRrn() {
+		return rrn;
+	}
+	public void setRrn(String rrn) {
+		this.rrn = rrn;
+	}
+	public String getIssId() {
+		return issId;
+	}
+	public void setIssId(String issId) {
+		this.issId = issId;
+	}
+	public String getAcqId() {
+		return acqId;
+	}
+	public void setAcqId(String acqId) {
+		this.acqId = acqId;
 	}
 	public User getUser() {
 		return user;

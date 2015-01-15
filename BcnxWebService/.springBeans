@@ -16,6 +16,10 @@
 		<config>webapp/WEB-INF/bcnx_context.xml</config>
 		<config>webapp/WEB-INF/mail_context.xml</config>
 		<config>webapp/WEB-INF/auditor_context.xml</config>
+		<config>configure/bin_context.xml</config>
+		<config>configure/fee_context.xml</config>
+		<config>configure/bcnxSettle_context.xml</config>
+		<config>configure/dispute_context.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

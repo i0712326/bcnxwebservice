@@ -12,4 +12,8 @@
 	<import resource="bcnx_context.xml"/>
 	<import resource="mail_context.xml"/>
 	<import resource="auditor_context.xml"/>
+	<import resource="bin_context.xml"/>
+	<import resource="fee_context.xml"/>
+	<import resource="bcnxSettle_context.xml"/>
+	<import resource="dispute_context.xml"/>
 </beans>

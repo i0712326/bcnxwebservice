@@ -11,6 +11,8 @@ import com.bcnx.web.app.service.entity.User;
 
 public interface BcnxTxnDao {
 	public void save(BcnxTxn bcnxTxn) throws SQLException, HibernateException;
+	public void saveAll(List<BcnxTxn> bcnxTxns) throws SQLException, HibernateException;
+	
 	public void update(BcnxTxn bcnxTxn) throws SQLException, HibernateException;
 	public BcnxTxn getBcnxTxn(BcnxTxn bcnxTxn) throws SQLException, HibernateException;
 	
