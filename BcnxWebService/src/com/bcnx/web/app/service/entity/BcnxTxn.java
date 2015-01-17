@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 @Entity
 @Table(name="BCNXTXN")
 public class BcnxTxn implements Serializable {
@@ -59,6 +60,10 @@ public class BcnxTxn implements Serializable {
 	private String iss;
 	@Column(name="ACQ", length=6)
 	private String acq;
+	@Transient
+	private int first;
+	@Transient
+	private int max;
 	public int getId() {
 		return id;
 	}
@@ -197,15 +202,16 @@ public class BcnxTxn implements Serializable {
 	public void setExp(String exp) {
 		this.exp = exp;
 	}
-	@Override
-	public String toString() {
-		return "BcnxTxn [slot=" + slot + ", mti=" + mti + ", date=" + date
-				+ ", time=" + time + ", card=" + card + ", exp=" + exp
-				+ ", proc=" + proc + ", amount=" + amount + ", fee=" + fee
-				+ ", trace=" + trace + ", rrn=" + rrn + ", appr=" + appr
-				+ ", res=" + res + ", termId=" + termId + ", location="
-				+ location + ", curr=" + curr + ", mcc=" + mcc + ", country="
-				+ country + ", pos=" + pos + ", condCode=" + condCode
-				+ ", iss=" + iss + ", acq=" + acq + "]";
+	public int getFirst() {
+		return first;
+	}
+	public void setFirst(int first) {
+		this.first = first;
+	}
+	public int getMax() {
+		return max;
+	}
+	public void setMax(int max) {
+		this.max = max;
 	}
 }

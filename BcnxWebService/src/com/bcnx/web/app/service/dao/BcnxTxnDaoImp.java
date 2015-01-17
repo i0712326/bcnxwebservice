@@ -73,19 +73,17 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 	}
 	@Transactional
 	@Override
-	public List<BcnxTxn> getBcnxTxns(BcnxTxn bcnxTxn, int first, int max, User user) throws SQLException, HibernateException {
-		return toList(hibernateTemplate.execute(new GetBcnxTxns(bcnxTxn,first,max, user)));
+	public List<BcnxTxn> getBcnxTxns(BcnxTxn bcnxTxn, int first, int max) throws SQLException, HibernateException {
+		return toList(hibernateTemplate.execute(new GetBcnxTxns(bcnxTxn,first,max)));
 	}
 	private class GetBcnxTxns implements HibernateCallback<List<BcnxTxn>>{
 		private BcnxTxn bcnxTxn;
 		private int first;
 		private int max;
-		private User user;
-		public GetBcnxTxns(BcnxTxn bcnxTxn, int first, int max, User user){
+		public GetBcnxTxns(BcnxTxn bcnxTxn, int first, int max){
 			this.bcnxTxn = bcnxTxn;
 			this.first = first;
 			this.max = max;
-			this.user = user;
 		}
 		@SuppressWarnings("unchecked")
 		@Override
@@ -96,8 +94,8 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 			query.setString("date", bcnxTxn.getDate());
 			query.setString("card", bcnxTxn.getCard());
 			query.setString("rrn", bcnxTxn.getRrn());
-			query.setString("iss", user.getMember().getIin());
-			query.setString("acq", user.getMember().getIin());
+			query.setString("iss", bcnxTxn.getIss());
+			query.setString("acq", bcnxTxn.getAcq());
 			query.setFirstResult(first);
 			query.setMaxResults(max);
 			return query.list();

@@ -16,7 +16,7 @@ public interface BcnxTxnDao {
 	public void update(BcnxTxn bcnxTxn) throws SQLException, HibernateException;
 	public BcnxTxn getBcnxTxn(BcnxTxn bcnxTxn) throws SQLException, HibernateException;
 	
-	public List<BcnxTxn> getBcnxTxns(BcnxTxn bcnxTxn, int first, int max, User user) throws SQLException, HibernateException;
+	public List<BcnxTxn> getBcnxTxns(BcnxTxn bcnxTxn, int first, int max) throws SQLException, HibernateException;
 	public List<BcnxTxn> getBcnxTxns(Date start, Date end, int first, int max, User user) throws SQLException, HibernateException;
 	
 	// view copy request, charge back, adjustment, represent

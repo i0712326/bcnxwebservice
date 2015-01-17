@@ -8,7 +8,6 @@ import org.hibernate.HibernateException;
 
 import com.bcnx.web.app.service.dao.BcnxTxnDao;
 import com.bcnx.web.app.service.entity.BcnxTxn;
-import com.bcnx.web.app.service.entity.User;
 
 public class BcnxTxnServiceImp implements BcnxTxnService {
 	private static final Logger logger = Logger.getLogger(BcnxTxnServiceImp.class);
@@ -42,9 +41,9 @@ public class BcnxTxnServiceImp implements BcnxTxnService {
 		}
 	}
 	@Override
-	public List<BcnxTxn> getBcnxTxns(BcnxTxn bcnxTxn, int first, int max, User user) {
+	public List<BcnxTxn> getBcnxTxns(BcnxTxn bcnxTxn, int first, int max) {
 		try {
-			return bcnxTxnDao.getBcnxTxns(bcnxTxn, first, max, user);
+			return bcnxTxnDao.getBcnxTxns(bcnxTxn, first, max);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try to get transaction data", e);
 			return null;
