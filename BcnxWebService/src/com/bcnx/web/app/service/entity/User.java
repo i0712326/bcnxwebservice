@@ -1,19 +1,25 @@
 package com.bcnx.web.app.service.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 @Entity
 @Table(name="USRDATA")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="USRID")
 	private String userId;
 	@Column(name="PASSWD",unique=true,nullable=false,length=512)
@@ -28,12 +34,16 @@ public class User implements Serializable {
 	private String status = "U";
 	@Column(name="STATE",nullable=false)
 	private int state = 0;
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="MEMDATA_IIN")
 	private Member member;
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name="ROLEDATA_ROLEID")
 	private Role role;
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="user", cascade=CascadeType.ALL)
+	private List<Bulletin> bulletins;
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="user", cascade=CascadeType.ALL)
+	private List<DisputeTxn> disputeTxns;
 	public String getUserId() {
 		return userId;
 	}

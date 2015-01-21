@@ -4,27 +4,29 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 @Entity
 @Table(name="BCNXTXN")
 public class BcnxTxn implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue
-	@Column(name="ID")
-	private int id;
 	@Column(name="SLOT")
 	private String slot;
-	@Column(name="MTI", nullable=false, length=4)
+	@Id
+	@Column(name="MTI")
 	private String mti;
+	@Id
+	@Column(name="STAN")
+	private String stan;
+	@Id
+	@Column(name="RRN")
+	private String rrn;
 	@Column(name="DATE")
 	private String date;
 	@Column(name="TIME")
 	private String time;
-	@Column(name="CARD", nullable=false,length=19)
+	@Column(name="CARD")
 	private String card;
 	@Column(name="EXP")
 	private String exp;
@@ -34,10 +36,6 @@ public class BcnxTxn implements Serializable {
 	private double amount = 0;
 	@Column(name="FEE")
 	private double fee = 0;
-	@Column(name="TRACE")
-	private String trace;
-	@Column(name="RRN", nullable=false, length=12)
-	private String rrn;
 	@Column(name="APPR")
 	private String appr;
 	@Column(name="RES", length=2)
@@ -60,16 +58,6 @@ public class BcnxTxn implements Serializable {
 	private String iss;
 	@Column(name="ACQ", length=6)
 	private String acq;
-	@Transient
-	private int first;
-	@Transient
-	private int max;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getDate() {
 		return date;
 	}
@@ -105,12 +93,6 @@ public class BcnxTxn implements Serializable {
 	}
 	public void setFee(double fee) {
 		this.fee = fee;
-	}
-	public String getTrace() {
-		return trace;
-	}
-	public void setTrace(String trace) {
-		this.trace = trace;
 	}
 	public String getRrn() {
 		return rrn;
@@ -202,16 +184,10 @@ public class BcnxTxn implements Serializable {
 	public void setExp(String exp) {
 		this.exp = exp;
 	}
-	public int getFirst() {
-		return first;
+	public String getStan() {
+		return stan;
 	}
-	public void setFirst(int first) {
-		this.first = first;
-	}
-	public int getMax() {
-		return max;
-	}
-	public void setMax(int max) {
-		this.max = max;
+	public void setStan(String stan) {
+		this.stan = stan;
 	}
 }

@@ -8,7 +8,8 @@
 			com.bcnx.web.app.service.admin.RoleController,
 			com.bcnx.web.app.service.admin.UserController,
 			com.bcnx.web.app.service.user.BulletinController,
-			com.bcnx.web.app.service.user.BcnxTxnController
+			com.bcnx.web.app.service.user.BcnxTxnController,
+			com.bcnx.web.app.service.user.BcnxSettleController
 		</param-value>
 	</context-param>
   	<listener>

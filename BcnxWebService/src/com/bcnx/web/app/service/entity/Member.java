@@ -3,6 +3,7 @@ package com.bcnx.web.app.service.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,8 +27,12 @@ public class Member implements Serializable {
 	private String fax;
 	@Column(name="ADDRESS", nullable=true, length=128)
 	private String address;
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="member")
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="member",cascade=CascadeType.ALL)
 	private List<Bin> bins;
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="member",cascade=CascadeType.ALL)
+	private List<User> user;
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="member",cascade=CascadeType.ALL)
+	private List<Report> report;
 	public String getIin() {
 		return iin;
 	}
@@ -69,5 +74,17 @@ public class Member implements Serializable {
 	}
 	public void setBins(List<Bin> bins) {
 		this.bins = bins;
+	}
+	public List<User> getUser() {
+		return user;
+	}
+	public void setUser(List<User> user) {
+		this.user = user;
+	}
+	public List<Report> getReport() {
+		return report;
+	}
+	public void setReport(List<Report> report) {
+		this.report = report;
 	}
 }

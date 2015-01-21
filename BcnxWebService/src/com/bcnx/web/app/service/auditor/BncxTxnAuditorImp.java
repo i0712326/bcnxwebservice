@@ -96,7 +96,7 @@ public class BncxTxnAuditorImp implements BcnxTxnAuditor {
 				if(de.equals(AMT))
 					bcnxTxn.setAmount(Double.parseDouble(data)/100);
 				if(de.equals(TRAC))
-					bcnxTxn.setTrace(data);
+					bcnxTxn.setStan(data);
 				if(de.equals(TIME))
 					bcnxTxn.setTime(data);
 				if(de.equals(DATE))

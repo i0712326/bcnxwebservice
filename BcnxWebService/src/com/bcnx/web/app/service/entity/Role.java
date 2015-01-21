@@ -6,6 +6,7 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -17,20 +18,12 @@ import org.codehaus.jackson.map.ObjectWriter;
 @Table(name="ROLEDATA")
 public class Role implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@Column(name="ID")
-	@GeneratedValue
-	private int id;
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ROLEID", nullable=false, unique=true, length=6)
 	private String roleId;
 	@Column(name="NAME", nullable=false, unique=true, length=45)
 	private String roleName;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getRoleId() {
 		return roleId;
 	}

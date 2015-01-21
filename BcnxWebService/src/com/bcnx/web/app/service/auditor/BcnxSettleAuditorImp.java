@@ -16,6 +16,7 @@ import com.bcnx.web.app.service.BcnxSettleService;
 import com.bcnx.web.app.service.BinService;
 import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.Bin;
+import com.bcnx.web.app.service.entity.CardType;
 @Service("fileReaderService")
 public class BcnxSettleAuditorImp implements BcnxSettleAuditor {
 	private static final String IGNOR	= "(NOT FINANCIAL TRANSACTION)";
@@ -80,7 +81,10 @@ public class BcnxSettleAuditorImp implements BcnxSettleAuditor {
 				bb.setBin(bin);
 				bb = binService.getBin(bb);
 				String issId = "621354";
-				String cardType = "CUPX";
+				String ct = "CUPX";
+				CardType cardType = new CardType();
+				cardType.setType(ct);
+				cardType.setRemark("OFF US CUP CARD");
 				if(bb!=null){
 					issId=bb.getMember().getIin();
 					cardType = bb.getType();
@@ -98,9 +102,9 @@ public class BcnxSettleAuditorImp implements BcnxSettleAuditor {
 				bcnxSettle.setTermId(atmId);
 				bcnxSettle.setRrn(refer);
 				bcnxSettle.setStan(stan);
-				bcnxSettle.setAcqId(acqId);
-				bcnxSettle.setIssId(issId);
-				bcnxSettle.setType(cardType);
+				bcnxSettle.setAcq(acqId);
+				bcnxSettle.setIss(issId);
+				bcnxSettle.setCardType(cardType);
 				
 				if(checkData(bcnxSettle))
 					bcnxSettles.add(bcnxSettle);

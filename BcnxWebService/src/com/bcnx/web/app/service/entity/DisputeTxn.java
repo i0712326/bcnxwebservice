@@ -5,10 +5,11 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 @Entity
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 public class DisputeTxn implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ID")
 	private int id;
 	@Column(name="PROCC")
@@ -35,17 +36,21 @@ public class DisputeTxn implements Serializable{
 	private double fee;
 	@Column(name="FLAG")
 	private String flag;
-	@Column(name="RRN")
-	private String rrn;
 	@Column(name="COUNT")
 	private int count;
 	@Column(name="ISSID")
-	private String issId;
+	private String iss;
 	@Column(name="ACQID")
-	private String acqId;
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="URSDATA_USRID")
+	private String acq;
+	@ManyToOne
+	@JoinColumn(name="USRDATA_USRID")
 	private User user;
+	@ManyToOne
+	@JoinColumns({ @JoinColumn(name = "BCNXSETL_MTI"),
+			@JoinColumn(name = "BCNXSETL_RRN"),
+			@JoinColumn(name = "BCNXSETL_SLOT"),
+			@JoinColumn(name = "BCNXSETL_STAN") })
+	private BcnxSettle bcnxSettle;
 	public int getId() {
 		return id;
 	}
@@ -106,28 +111,28 @@ public class DisputeTxn implements Serializable{
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public String getRrn() {
-		return rrn;
+	public String getIss() {
+		return iss;
 	}
-	public void setRrn(String rrn) {
-		this.rrn = rrn;
+	public void setIss(String iss) {
+		this.iss = iss;
 	}
-	public String getIssId() {
-		return issId;
+	public String getAcq() {
+		return acq;
 	}
-	public void setIssId(String issId) {
-		this.issId = issId;
-	}
-	public String getAcqId() {
-		return acqId;
-	}
-	public void setAcqId(String acqId) {
-		this.acqId = acqId;
+	public void setAcq(String acq) {
+		this.acq = acq;
 	}
 	public User getUser() {
 		return user;
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public BcnxSettle getBcnxSettle() {
+		return bcnxSettle;
+	}
+	public void setBcnxSettle(BcnxSettle bcnxSettle) {
+		this.bcnxSettle = bcnxSettle;
 	}
 }

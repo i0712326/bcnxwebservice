@@ -51,7 +51,7 @@ public class MemberDaoImp implements MemberDao {
 	public List<Member> getMembers(Member member, int first, int max)
 			throws SQLException {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Member.class);
-		criteria.add(Restrictions.like("memId", member.getMemId()+"%"));
+		criteria.add(Restrictions.like("memId", member.getMemId()));
 		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
 	}
 	private List<Member> toList(final List<?> beans){

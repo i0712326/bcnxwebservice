@@ -1,15 +1,14 @@
 package com.bcnx.web.app.service.dao;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +30,8 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 	@Override
 	public void saveAll(List<BcnxSettle> bcnxSettles) throws SQLException,
 			HibernateException {
-		hibernateTemplate.save(bcnxSettles);
+		for(BcnxSettle bcnx : bcnxSettles)
+			hibernateTemplate.save(bcnx);
 	}
 	@Transactional
 	@Override
@@ -41,28 +41,49 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 			@Override
 			public BcnxSettle doInHibernate(Session session)
 					throws HibernateException {
-				Criteria criteria = session.createCriteria(BcnxSettle.class);
-				criteria.add(Restrictions.and(
-						Restrictions.eq("rrn", bcnxSettle.getRrn()),
-						Restrictions.ne("mti", bcnxSettle.getMti())));
-				return (BcnxSettle) criteria.uniqueResult();
+				String hql = "from BcnxSettle b where b.rrn = :rrn and b.mti = :mti and b.proc = :proc and b.card = :card";
+				Query query = session.createQuery(hql);
+				query.setString("rrn", bcnxSettle.getRrn());
+				query.setString("mti", bcnxSettle.getMti());
+				query.setString("proc", bcnxSettle.getProc());
+				query.setString("card", bcnxSettle.getCard());
+				return (BcnxSettle) query.uniqueResult();
 			}
 		});
 	}
 	@Transactional
 	@Override
-	public List<BcnxSettle> getBcnxSettles(BcnxSettle bcnxSettle, int first, int max)
+	public List<BcnxSettle> getBcnxSettles(BcnxSettle bcnxSettle, Date start, Date end, int first, int max)
 			throws SQLException, HibernateException {
-		DetachedCriteria criteria = DetachedCriteria.forClass(BcnxSettle.class);
-		criteria.add(Restrictions.or(Restrictions.like("card", bcnxSettle.getCard()), 
-				Restrictions.or(Restrictions.like("rrn",
-				bcnxSettle.getRrn()), Restrictions.or(
-				Restrictions.like("stan", bcnxSettle.getStan()),
-				Restrictions.eq("date", bcnxSettle.getDate())))));
-		criteria.add(Restrictions.or(
-				Restrictions.eq("issId", bcnxSettle.getIssId()),
-				Restrictions.eq("acqId", bcnxSettle.getAcqId())));
-		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
+		return toList(hibernateTemplate.execute(new GetBcnxSettles(bcnxSettle,start,end,first,max)));
+	}
+	private class GetBcnxSettles implements HibernateCallback<List<BcnxSettle>>{
+		private BcnxSettle bcnxSettle;
+		private Date start;
+		private Date end;
+		private int first;
+		private int max;
+		public GetBcnxSettles(BcnxSettle bcnxSettle, Date start, Date end, int first, int max){
+			this.bcnxSettle = bcnxSettle;
+			this.start = start;
+			this.end = end;
+			this.first = first;
+			this.max = max;
+		}
+		@Override
+		public List<BcnxSettle> doInHibernate(Session session)
+				throws HibernateException {
+			String hql = "from BcnxSettle bs where bs.card like :card or bs.rrn like :rrn or bs.stan like :stan or bs.date between :start and :end";
+			Query query = session.createQuery(hql);
+			query.setString("card", bcnxSettle.getCard());
+			query.setString("rrn", bcnxSettle.getRrn());
+			query.setString("stan", bcnxSettle.getStan());
+			query.setDate("start", start);
+			query.setDate("end", end);
+			query.setFirstResult(first);
+			query.setMaxResults(max);
+			return toList(query.list());
+		}
 	}
 	private List<BcnxSettle> toList(final List<?> beans){
 		if(beans == null ) return null;

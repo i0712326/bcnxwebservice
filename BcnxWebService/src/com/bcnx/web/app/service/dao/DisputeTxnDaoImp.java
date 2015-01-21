@@ -37,9 +37,9 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 					throws HibernateException {
 				Criteria criteria = session.createCriteria(DisputeTxn.class);
 				criteria.add(Restrictions.and(
-						Restrictions.eq("rrn", disputeTxn.getRrn()),
+						Restrictions.eq("rrn", disputeTxn.getBcnxSettle().getRrn()),
 						Restrictions.eq("procc", disputeTxn.getProcc())));
-				criteria.add(Restrictions.or(Restrictions.eq("issId", disputeTxn.getIssId()), Restrictions.eq("acqId", disputeTxn.getAcqId())));
+				criteria.add(Restrictions.or(Restrictions.eq("iss", disputeTxn.getIss()), Restrictions.eq("acq", disputeTxn.getAcq())));
 				return (DisputeTxn) criteria.uniqueResult();
 			}
 			
@@ -51,7 +51,7 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			throws SQLException, HibernateException {
 		DetachedCriteria criteria = DetachedCriteria.forClass(DisputeTxn.class);
 		criteria.add(Restrictions.eq("procc", disputeTxn.getProcc()));
-		criteria.add(Restrictions.or(Restrictions.eq("issId", disputeTxn.getIssId()), Restrictions.eq("acqId", disputeTxn.getAcqId())));
+		criteria.add(Restrictions.or(Restrictions.eq("iss", disputeTxn.getIss()), Restrictions.eq("acq", disputeTxn.getAcq())));
 		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
 	}
 	private List<DisputeTxn> toList(final List<?> beans){

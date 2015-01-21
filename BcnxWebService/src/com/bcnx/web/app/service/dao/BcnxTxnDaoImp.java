@@ -9,16 +9,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.bcnx.web.app.service.entity.BcnxTxn;
-import com.bcnx.web.app.service.entity.DisputeTxn;
-import com.bcnx.web.app.service.entity.User;
 
 public class BcnxTxnDaoImp implements BcnxTxnDao {
 	private HibernateTemplate hibernateTemplate;
@@ -88,12 +83,13 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 		@SuppressWarnings("unchecked")
 		@Override
 		public List<BcnxTxn> doInHibernate(Session session) throws HibernateException {
-			String hql = "from BcnxTxn bx where bx.date= :date and ( bx.card like :card or bx.rrn like :rrn ) "
-					+ "and ( bx.iss = :iss or bx.acq = :acq ) order by bx.id desc";
+			String hql = "from BcnxTxn bx where bx.date= :date and ( bx.card like :card or bx.rrn like :rrn or stan like :stan ) "
+					+ "and bx.iss = :iss and bx.acq = :acq order by bx.id desc";
 			Query query = session.createQuery(hql);
 			query.setString("date", bcnxTxn.getDate());
 			query.setString("card", bcnxTxn.getCard());
 			query.setString("rrn", bcnxTxn.getRrn());
+			query.setString("stan", bcnxTxn.getStan());
 			query.setString("iss", bcnxTxn.getIss());
 			query.setString("acq", bcnxTxn.getAcq());
 			query.setFirstResult(first);
@@ -103,22 +99,22 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 	}
 	@Transactional
 	@Override
-	public List<BcnxTxn> getBcnxTxns(Date start, Date end, int first, int max, User user)
+	public List<BcnxTxn> getBcnxTxns(String id,Date start, Date end, int first, int max)
 			throws SQLException, HibernateException {
-		return toList(hibernateTemplate.execute(new GetBcnxTxnsByDate(start, end, first, max,user)));
+		return toList(hibernateTemplate.execute(new GetBcnxTxnsByDate(id, start, end, first, max)));
 	}
 	private class GetBcnxTxnsByDate implements HibernateCallback<List<BcnxTxn>>{
+		private String id;
 		private Date start;
 		private Date end;
 		private int first;
 		private int max;
-		private User user;
-		public GetBcnxTxnsByDate(Date start, Date end, int first, int max, User user){
+		public GetBcnxTxnsByDate(String id, Date start, Date end, int first, int max){
+			this.id = id;
 			this.start = start;
 			this.end = end;
 			this.first = first;
 			this.max = max;
-			this.user = user;
 		}
 		@SuppressWarnings("unchecked")
 		@Override
@@ -129,45 +125,12 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 			Query query = session.createQuery(hql);
 			query.setDate("start", start);
 			query.setDate("end", end);
-			query.setString("iss", user.getMember().getIin());
-			query.setString("acq", user.getMember().getIin());
+			query.setString("iss",id);
+			query.setString("acq", id);
 			query.setFirstResult(first);
 			query.setMaxResults(max);
 			return query.list();
 		}
-	}
-	@Transactional
-	@Override
-	public List<BcnxTxn> getCopyRequest(int first, int max, User user)
-			throws SQLException, HibernateException {
-		DetachedCriteria criteria = DetachedCriteria.forClass(DisputeTxn.class);
-		criteria.add(Restrictions.and(Restrictions.eq("flag", "C"),Restrictions.eq("iss", user.getMember().getIin())));
-		criteria.addOrder(Property.forName("id").desc());
-		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
-	}
-	@Override
-	public List<BcnxTxn> getChargeBack(int first, int max, User user)
-			throws SQLException, HibernateException {
-		DetachedCriteria criteria = DetachedCriteria.forClass(DisputeTxn.class);
-		criteria.add(Restrictions.and(Restrictions.eq("flag", "B"), Restrictions.eq("iss",user.getMember().getIin())));
-		criteria.addOrder(Property.forName("id").desc());
-		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
-	}
-	@Override
-	public List<BcnxTxn> getAdjustment(int first, int max, User user)
-			throws SQLException, HibernateException {
-		DetachedCriteria criteria = DetachedCriteria.forClass(DisputeTxn.class);
-		criteria.add(Restrictions.and(Restrictions.eq("flag", "A"),Restrictions.eq("acq", user.getMember().getIin())));
-		criteria.addOrder(Property.forName("id").desc());
-		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
-	}
-	@Override
-	public List<BcnxTxn> getRepresent(int first, int max, User user)
-			throws SQLException, HibernateException {
-		DetachedCriteria criteria = DetachedCriteria.forClass(DisputeTxn.class);
-		criteria.add(Restrictions.and(Restrictions.eq("flag", "R"),Restrictions.eq("acq", user.getMember().getIin())));
-		criteria.addOrder(Property.forName("id").desc());
-		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
 	}
 	private List<BcnxTxn> toList(final List<?> beans){
 		if(beans==null) return null;

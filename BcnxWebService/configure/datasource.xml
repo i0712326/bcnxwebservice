@@ -28,7 +28,10 @@
 				<value>com.bcnx.web.app.service.entity.BcnxTxn</value>
 				<value>com.bcnx.web.app.service.entity.DisputeTxn</value>
 				<value>com.bcnx.web.app.service.entity.BcnxSettle</value>
-				<value>com.bcnx.web.app.service.entity.Fee</value>
+				<value>com.bcnx.web.app.service.entity.CardType</value>
+				<value>com.bcnx.web.app.service.entity.CardProc</value>
+				<value>com.bcnx.web.app.service.entity.Report</value>
+				<value>com.bcnx.web.app.service.entity.ProcCode</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

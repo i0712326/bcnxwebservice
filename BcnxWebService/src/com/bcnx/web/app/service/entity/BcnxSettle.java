@@ -2,27 +2,37 @@ package com.bcnx.web.app.service.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 @Entity
 @Table(name="BCNXSETL")
 public class BcnxSettle implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue
-	@Column(name="ID")
-	private int id;
+	@Column(name="MTI")
+	private String mti;
+	@Id
+	@Column(name="RRN")
+	private String rrn;
+	@Id
+	@Column(name="STAN")
+	private String stan;
+	@Id
+	@Column(name="SLOT", nullable=false, length=3)
+	private String slot;
 	@Column(name="DATE",nullable=false)
 	private Date date;
 	@Column(name="TIME",nullable=false,length=8)
 	private String time;
-	@Column(name="MTI", nullable=false,length=4)
-	private String mti;
 	@Column(name="CARD", nullable=false, length=19)
 	private String card;
 	@Column(name="PROCC", nullable=false, length=6)
@@ -31,26 +41,17 @@ public class BcnxSettle implements Serializable{
 	private String res;
 	@Column(name="AMOUNT")
 	private double amount = 0;
-	@Column(name="FEE")
-	private double fee = 0;
-	@Column(name="STAN", nullable=false, length=6)
-	private String stan;
-	@Column(name="RRN", nullable=false, length=12)
-	private String rrn;
 	@Column(name="TERMID", nullable=false, length=8)
 	private String termId;
 	@Column(name="ACQID", nullable=false, length=6)
-	private String acqId;
+	private String acq;
 	@Column(name="ISSID", nullable=false, length=6)
-	private String issId;
-	@Column(name="SLOT", nullable=false, length=3)
-	private String slot;
-	@Column(name="TYPE", nullable=false, length=4)
-	private String type;
-	@Transient
-	private int first;
-	@Transient
-	private int max;
+	private String iss;
+	@ManyToOne
+	@JoinColumn(name="CARDTYPE_TYPE")
+	private CardType cardType;
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="bcnxSettle",cascade=CascadeType.ALL)
+	private List<DisputeTxn> disputeTxns;
 	public Date getDate() {
 		return date;
 	}
@@ -93,12 +94,6 @@ public class BcnxSettle implements Serializable{
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	public double getFee() {
-		return fee;
-	}
-	public void setFee(double fee) {
-		this.fee = fee;
-	}
 	public String getStan() {
 		return stan;
 	}
@@ -117,17 +112,17 @@ public class BcnxSettle implements Serializable{
 	public void setTermId(String termId) {
 		this.termId = termId;
 	}
-	public String getAcqId() {
-		return acqId;
+	public String getAcq() {
+		return acq;
 	}
-	public void setAcqId(String acqId) {
-		this.acqId = acqId;
+	public void setAcq(String acq) {
+		this.acq = acq;
 	}
-	public String getIssId() {
-		return issId;
+	public String getIss() {
+		return iss;
 	}
-	public void setIssId(String issId) {
-		this.issId = issId;
+	public void setIss(String iss) {
+		this.iss = iss;
 	}
 	public String getSlot() {
 		return slot;
@@ -135,22 +130,16 @@ public class BcnxSettle implements Serializable{
 	public void setSlot(String slot) {
 		this.slot = slot;
 	}
-	public String getType() {
-		return type;
+	public CardType getCardType() {
+		return cardType;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setCardType(CardType cardType) {
+		this.cardType = cardType;
 	}
-	public int getFirst() {
-		return first;
+	public List<DisputeTxn> getDisputeTxns() {
+		return disputeTxns;
 	}
-	public void setFirst(int first) {
-		this.first = first;
-	}
-	public int getMax() {
-		return max;
-	}
-	public void setMax(int max) {
-		this.max = max;
+	public void setDisputeTxns(List<DisputeTxn> disputeTxns) {
+		this.disputeTxns = disputeTxns;
 	}
 }

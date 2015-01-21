@@ -61,7 +61,7 @@ public class UserDaoImp implements UserDao {
 	public List<User> getUsers(User user, int first, int max)
 			throws SQLException {
 		DetachedCriteria criteria = DetachedCriteria.forClass(User.class);
-		criteria.add(Restrictions.like("userId", user.getUserId()+"%"));
+		criteria.add(Restrictions.like("userId", user.getUserId()));
 		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
 	}
 	private List<User> toList(final List<?> beans){

@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -16,9 +15,10 @@ public class Bin implements Serializable{
 	@Id
 	@Column(name="BIN")
 	private String bin;
-	@Column(name="TYPE")
-	private String type;
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne
+	@JoinColumn(name="CARDTYPE_TYPE")
+	private CardType type;
+	@ManyToOne
 	@JoinColumn(name="MEMDATA_IIN")
 	private Member member;
 	public String getBin() {
@@ -27,10 +27,10 @@ public class Bin implements Serializable{
 	public void setBin(String bin) {
 		this.bin = bin;
 	}
-	public String getType() {
+	public CardType getType() {
 		return type;
 	}
-	public void setType(String type) {
+	public void setType(CardType type) {
 		this.type = type;
 	}
 	public Member getMember() {

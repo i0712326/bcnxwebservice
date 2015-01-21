@@ -1,5 +1,6 @@
 package com.bcnx.web.app.service;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -43,10 +44,10 @@ public class BcnxSettleServiceImp implements BcnxSettleService {
 	}
 
 	@Override
-	public List<BcnxSettle> getBcnxSettles(BcnxSettle bcnxSettle, int first,
+	public List<BcnxSettle> getBcnxSettles(BcnxSettle bcnxSettle, Date start, Date end, int first,
 			int max) {
 		try {
-			return bcnxSettleDao.getBcnxSettles(bcnxSettle, first, max);
+			return bcnxSettleDao.getBcnxSettles(bcnxSettle, start, end,first, max);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try to get bcnx settles", e);
 			return null;
