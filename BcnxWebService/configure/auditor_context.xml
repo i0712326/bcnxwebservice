@@ -15,5 +15,6 @@
 	<bean id="bcnxSettleAuditor" class="com.bcnx.web.app.service.auditor.BcnxSettleAuditorImp">
 		<property name="bcnxSettleService" ref="bcnxSettleService"/>
 		<property name="binService" ref="binService"/>
+		<property name="bcnxTxnService" ref="bcnxTxnService"/>
 	</bean>
 </beans>

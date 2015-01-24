@@ -1,19 +1,17 @@
 package com.bcnx.web.app.service.entity;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
 @Entity
 @Table(name="ROLEDATA")
 public class Role implements Serializable {
@@ -24,6 +22,8 @@ public class Role implements Serializable {
 	private String roleId;
 	@Column(name="NAME", nullable=false, unique=true, length=45)
 	private String roleName;
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="role",cascade=CascadeType.ALL)
+	private List<User> users;
 	public String getRoleId() {
 		return roleId;
 	}
@@ -36,22 +36,10 @@ public class Role implements Serializable {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
-	@Override
-	public String toString() {
-		ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-		try {
-			String json = ow.writeValueAsString(this);
-			return json;
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-			return null;
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public List<User> getUsers() {
+		return users;
 	}
-	
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 }

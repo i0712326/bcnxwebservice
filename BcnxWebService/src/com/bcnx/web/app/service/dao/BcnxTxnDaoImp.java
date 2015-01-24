@@ -58,10 +58,12 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 			@Override
 			public BcnxTxn doInHibernate(Session session)
 					throws HibernateException {
-				String hql = "from BcnxTxn b where b.rrn = :rrn and b.mti = :mti";
+				String hql = "from BcnxTxn b where b.rrn = :rrn and b.mti = :mti and b.stan = :stan and b.slot = :slot";
 				Query query = session.createQuery(hql);
 				query.setString("rrn", bcnxTxn.getRrn());
 				query.setString("mti", bcnxTxn.getMti());
+				query.setString("stan", bcnxTxn.getStan());
+				query.setString("slot", bcnxTxn.getSlot());
 				return (BcnxTxn) query.uniqueResult();
 			}
 		});

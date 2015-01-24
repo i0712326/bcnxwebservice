@@ -13,7 +13,6 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.bcnx.web.app.service.BcnxSettleService;
 import com.bcnx.web.app.service.entity.BcnxSettle;
 
 public class BcnxSettleAuditorImpTest {
@@ -25,12 +24,10 @@ public class BcnxSettleAuditorImpTest {
 		File file = new File("sample/verify.log.150113");
 		java.sql.Date date = str2Date("150113");
 		BcnxSettleAuditor bean = (BcnxSettleAuditor) context.getBean("bcnxSettleAuditor");
-		BcnxSettleService bean1 = (BcnxSettleService) context.getBean("bcnxSettleService");
+		//BcnxSettleService bean1 = (BcnxSettleService) context.getBean("bcnxSettleService");
 		try {
 			List<BcnxSettle> list = bean.doWork(file, date);
 			System.out.println(list.size());
-			for(BcnxSettle bcnx : list)
-				bean1.save(bcnx);
 			assertNotNull(list);
 		} catch (IOException e) {
 			fail("Exxception occured");

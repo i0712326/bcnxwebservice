@@ -24,7 +24,7 @@ public class Bulletin implements Serializable {
 	private int id;
 	@Column(name="TITLE")
 	private String title;
-	@Column(name="DESC")
+	@Column(name="DES")
 	private String desc;
 	@Column(name="DATE")
 	private Timestamp date;

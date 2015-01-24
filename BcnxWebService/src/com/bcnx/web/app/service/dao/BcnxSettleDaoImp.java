@@ -76,8 +76,6 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 			String hql = "from BcnxSettle bs where bs.card like :card or bs.rrn like :rrn or bs.stan like :stan or bs.date between :start and :end";
 			Query query = session.createQuery(hql);
 			query.setString("card", bcnxSettle.getCard());
-			query.setString("rrn", bcnxSettle.getRrn());
-			query.setString("stan", bcnxSettle.getStan());
 			query.setDate("start", start);
 			query.setDate("end", end);
 			query.setFirstResult(first);

@@ -11,6 +11,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.bcnx.web.app.service.entity.Bulletin;
 
@@ -19,11 +20,12 @@ public class BulletinDaoImp implements BulletinDao {
 	public void setSessionFactory(SessionFactory sessionFactory){
 		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
+	@Transactional
 	@Override
 	public void save(Bulletin bulletin) throws SQLException, HibernateException {
 		hibernateTemplate.save(bulletin);
 	}
-
+	@Transactional
 	@Override
 	public List<Bulletin> getBulletins(int first, int max) throws SQLException,
 			HibernateException {
@@ -31,6 +33,7 @@ public class BulletinDaoImp implements BulletinDao {
 		criteria.addOrder(Property.forName("id").desc());
 		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
 	}
+	@Transactional
 	@Override
 	public List<Bulletin> getBulletins(Timestamp start,Timestamp end, int first, int max)
 			throws SQLException, HibernateException {

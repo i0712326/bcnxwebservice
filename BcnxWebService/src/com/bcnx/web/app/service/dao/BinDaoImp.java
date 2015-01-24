@@ -4,11 +4,10 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +30,10 @@ public class BinDaoImp implements BinDao {
 		return hibernateTemplate.execute(new HibernateCallback<Bin>(){
 			@Override
 			public Bin doInHibernate(Session session) throws HibernateException {
-				Criteria criteria = session.createCriteria(Bin.class);
-				criteria.add(Restrictions.eq("bin", bin.getBin()));
-				return (Bin) criteria.uniqueResult();
+				String hql = "from Bin b where b.bin = :bin";
+				Query query = session.createQuery(hql);
+				query.setString("bin", bin.getBin());
+				return (Bin) query.uniqueResult();
 			}
 		});
 	}

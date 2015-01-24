@@ -46,10 +46,10 @@ public class DisputeTxn implements Serializable{
 	@JoinColumn(name="USRDATA_USRID")
 	private User user;
 	@ManyToOne
-	@JoinColumns({ @JoinColumn(name = "BCNXSETL_MTI"),
-			@JoinColumn(name = "BCNXSETL_RRN"),
-			@JoinColumn(name = "BCNXSETL_SLOT"),
-			@JoinColumn(name = "BCNXSETL_STAN") })
+	@JoinColumns({ @JoinColumn(name = "BCNXSETL_MTI", referencedColumnName="MTI"),
+			@JoinColumn(name = "BCNXSETL_RRN", referencedColumnName="RRN"),
+			@JoinColumn(name = "BCNXSETL_SLOT",  referencedColumnName="SLOT"),
+			@JoinColumn(name = "BCNXSETL_STAN",  referencedColumnName="STAN") })
 	private BcnxSettle bcnxSettle;
 	public int getId() {
 		return id;

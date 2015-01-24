@@ -19,6 +19,7 @@
 		<config>configure/bin_context.xml</config>
 		<config>configure/bcnxSettle_context.xml</config>
 		<config>configure/dispute_context.xml</config>
+		<config>webapp/WEB-INF/report_context.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

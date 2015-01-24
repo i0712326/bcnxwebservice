@@ -10,8 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 @Entity
 @Table(name="BCNXSETL")
@@ -24,11 +26,11 @@ public class BcnxSettle implements Serializable{
 	@Column(name="RRN")
 	private String rrn;
 	@Id
+	@Column(name="SLOT")
+	private String slot;
+	@Id
 	@Column(name="STAN")
 	private String stan;
-	@Id
-	@Column(name="SLOT", nullable=false, length=3)
-	private String slot;
 	@Column(name="DATE",nullable=false)
 	private Date date;
 	@Column(name="TIME",nullable=false,length=8)
@@ -50,8 +52,40 @@ public class BcnxSettle implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="CARDTYPE_TYPE")
 	private CardType cardType;
-	@OneToMany(fetch=FetchType.EAGER,mappedBy="bcnxSettle",cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,mappedBy="bcnxSettle",cascade=CascadeType.ALL)
 	private List<DisputeTxn> disputeTxns;
+	@OneToOne
+	@JoinColumns({
+		@JoinColumn(name="BCNXTXN_SLOT", referencedColumnName="SLOT"),
+		@JoinColumn(name="BCNXTXN_MTI", referencedColumnName="MTI"),
+		@JoinColumn(name="BCNXTXN_STAN", referencedColumnName="STAN"),
+		@JoinColumn(name="BCNXTXN_RRN", referencedColumnName="RRN")
+	})
+	private BcnxTxn bcnxTxn;
+	public String getMti() {
+		return mti;
+	}
+	public void setMti(String mti) {
+		this.mti = mti;
+	}
+	public String getRrn() {
+		return rrn;
+	}
+	public void setRrn(String rrn) {
+		this.rrn = rrn;
+	}
+	public String getSlot() {
+		return slot;
+	}
+	public void setSlot(String slot) {
+		this.slot = slot;
+	}
+	public String getStan() {
+		return stan;
+	}
+	public void setStan(String stan) {
+		this.stan = stan;
+	}
 	public Date getDate() {
 		return date;
 	}
@@ -63,12 +97,6 @@ public class BcnxSettle implements Serializable{
 	}
 	public void setTime(String time) {
 		this.time = time;
-	}
-	public String getMti() {
-		return mti;
-	}
-	public void setMti(String mti) {
-		this.mti = mti;
 	}
 	public String getCard() {
 		return card;
@@ -94,18 +122,6 @@ public class BcnxSettle implements Serializable{
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	public String getStan() {
-		return stan;
-	}
-	public void setStan(String stan) {
-		this.stan = stan;
-	}
-	public String getRrn() {
-		return rrn;
-	}
-	public void setRrn(String rrn) {
-		this.rrn = rrn;
-	}
 	public String getTermId() {
 		return termId;
 	}
@@ -124,12 +140,6 @@ public class BcnxSettle implements Serializable{
 	public void setIss(String iss) {
 		this.iss = iss;
 	}
-	public String getSlot() {
-		return slot;
-	}
-	public void setSlot(String slot) {
-		this.slot = slot;
-	}
 	public CardType getCardType() {
 		return cardType;
 	}
@@ -142,4 +152,20 @@ public class BcnxSettle implements Serializable{
 	public void setDisputeTxns(List<DisputeTxn> disputeTxns) {
 		this.disputeTxns = disputeTxns;
 	}
+	public BcnxTxn getBcnxTxn() {
+		return bcnxTxn;
+	}
+	public void setBcnxTxn(BcnxTxn bcnxTxn) {
+		this.bcnxTxn = bcnxTxn;
+	}
+	@Override
+	public String toString() {
+		return "BcnxSettle [mti=" + mti + ", rrn=" + rrn + ", slot=" + slot
+				+ ", stan=" + stan + ", date=" + date + ", time=" + time
+				+ ", card=" + card + ", proc=" + proc + ", res=" + res
+				+ ", amount=" + amount + ", termId=" + termId + ", acq=" + acq
+				+ ", iss=" + iss + ", cardType=" + cardType + ", disputeTxns="
+				+ disputeTxns + ", bcnxTxn=" + bcnxTxn + "]";
+	}
+	
 }

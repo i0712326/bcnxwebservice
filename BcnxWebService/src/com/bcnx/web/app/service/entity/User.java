@@ -40,7 +40,7 @@ public class User implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="ROLEDATA_ROLEID")
 	private Role role;
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="user", cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="user", cascade=CascadeType.ALL)
 	private List<Bulletin> bulletins;
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="user", cascade=CascadeType.ALL)
 	private List<DisputeTxn> disputeTxns;

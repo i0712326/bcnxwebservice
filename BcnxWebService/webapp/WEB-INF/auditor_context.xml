@@ -6,10 +6,15 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.1.xsd">
 	<import resource="bcnx_context.xml"/>
+	<import resource="bcnxSettle_context.xml"/>
 	<import resource="bin_context.xml"/>
 	<bean id="bcnxTxnAuditor" class="com.bcnx.web.app.service.auditor.BncxTxnAuditorImp">
 		<property name="bcnxTxnService" ref="bcnxTxnService"/>
 		<property name="binService" ref="binService"/>
 	</bean>
-
+	<bean id="bcnxSettleAuditor" class="com.bcnx.web.app.service.auditor.BcnxSettleAuditorImp">
+		<property name="bcnxSettleService" ref="bcnxSettleService"/>
+		<property name="binService" ref="binService"/>
+		<property name="bcnxTxnService" ref="bcnxTxnService"/>
+	</bean>
 </beans>

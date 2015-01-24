@@ -15,4 +15,5 @@
 	<import resource="bin_context.xml"/>
 	<import resource="bcnxSettle_context.xml"/>
 	<import resource="dispute_context.xml"/>
+	<import resource="datasource.xml"/>
 </beans>

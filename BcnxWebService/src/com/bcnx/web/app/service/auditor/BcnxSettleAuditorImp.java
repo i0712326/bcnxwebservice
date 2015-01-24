@@ -10,15 +10,18 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.stereotype.Service;
+import org.apache.log4j.Logger;
 
 import com.bcnx.web.app.service.BcnxSettleService;
+import com.bcnx.web.app.service.BcnxTxnService;
 import com.bcnx.web.app.service.BinService;
 import com.bcnx.web.app.service.entity.BcnxSettle;
+import com.bcnx.web.app.service.entity.BcnxTxn;
 import com.bcnx.web.app.service.entity.Bin;
 import com.bcnx.web.app.service.entity.CardType;
-@Service("fileReaderService")
+
 public class BcnxSettleAuditorImp implements BcnxSettleAuditor {
+	private static final Logger logger = Logger.getLogger(BcnxSettleAuditorImp.class);
 	private static final String IGNOR	= "(NOT FINANCIAL TRANSACTION)";
 	private static final String SLOT 	= "([0-9]{1,3})";
 	private static final String NUM	 	= "^[0-9]{1,}$";
@@ -33,11 +36,15 @@ public class BcnxSettleAuditorImp implements BcnxSettleAuditor {
 	private static List<BcnxSettle> bcnxSettles = new ArrayList<BcnxSettle>();
 	private BinService binService;
 	private BcnxSettleService bcnxSettleService;
+	private BcnxTxnService bcnxTxnService;
 	public void setBinService(BinService binService){
 		this.binService = binService;
 	}
 	public void setBcnxSettleService(BcnxSettleService bcnxSettleService){
 		this.bcnxSettleService = bcnxSettleService;
+	}
+	public void setBcnxTxnService(BcnxTxnService bcnxTxnService){
+		this.bcnxTxnService = bcnxTxnService;
 	}
 	@SuppressWarnings("resource")
 	@Override
@@ -89,25 +96,35 @@ public class BcnxSettleAuditorImp implements BcnxSettleAuditor {
 					issId=bb.getMember().getIin();
 					cardType = bb.getType();
 				}
-				
 				BcnxSettle bcnxSettle = new BcnxSettle();
 				bcnxSettle.setSlot(slot);
-				bcnxSettle.setDate(date);
 				bcnxSettle.setMti(type);
+				bcnxSettle.setRrn(refer);
+				bcnxSettle.setStan(stan);
+				bcnxSettle.setDate(date);
 				bcnxSettle.setProc(proc);
 				bcnxSettle.setCard(card);
 				bcnxSettle.setRes(res);
 				bcnxSettle.setTime(time);
 				bcnxSettle.setAmount(Double.parseDouble(amt)/100);
 				bcnxSettle.setTermId(atmId);
-				bcnxSettle.setRrn(refer);
-				bcnxSettle.setStan(stan);
 				bcnxSettle.setAcq(acqId);
 				bcnxSettle.setIss(issId);
 				bcnxSettle.setCardType(cardType);
 				
-				if(checkData(bcnxSettle))
+				BcnxTxn bcnxTxn = new BcnxTxn();
+				bcnxTxn.setSlot(slot);
+				bcnxTxn.setMti(type);
+				bcnxTxn.setRrn(refer);
+				bcnxTxn.setStan(stan);
+				bcnxTxn = bcnxTxnService.getBcnxTxn(bcnxTxn);
+				bcnxSettle.setBcnxTxn(bcnxTxn);
+				
+				if(checkData(bcnxSettle)){
+					logger.debug(bcnxSettle.toString());
+					bcnxSettleService.save(bcnxSettle);
 					bcnxSettles.add(bcnxSettle);
+				}
 			}
 			else{
 				matcher = timePattern.matcher(line.trim());

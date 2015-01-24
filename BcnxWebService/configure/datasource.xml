@@ -32,6 +32,7 @@
 				<value>com.bcnx.web.app.service.entity.CardProc</value>
 				<value>com.bcnx.web.app.service.entity.Report</value>
 				<value>com.bcnx.web.app.service.entity.ProcCode</value>
+				<value>com.bcnx.web.app.service.entity.Bin</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
