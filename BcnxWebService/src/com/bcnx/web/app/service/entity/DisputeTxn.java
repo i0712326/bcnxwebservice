@@ -5,8 +5,6 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
@@ -17,13 +15,11 @@ import javax.persistence.Table;
 public class DisputeTxn implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="ID")
 	private int id;
+	@Id
 	@Column(name="PROCC")
 	private String procc;
-	@Column(name="RC")
-	private String rc;
 	@Column(name="REMARK")
 	private String remark;
 	@Column(name="DATE")
@@ -42,6 +38,13 @@ public class DisputeTxn implements Serializable{
 	private String iss;
 	@Column(name="ACQID")
 	private String acq;
+	@Column(name="PRB")
+	private String status="N";
+	@Column(name="FILE")
+	private String fileName;
+	@ManyToOne
+	@JoinColumn(name="REASONCODE_CODE")
+	private ReasonCode rc;
 	@ManyToOne
 	@JoinColumn(name="USRDATA_USRID")
 	private User user;
@@ -62,12 +65,6 @@ public class DisputeTxn implements Serializable{
 	}
 	public void setProcc(String procc) {
 		this.procc = procc;
-	}
-	public String getRc() {
-		return rc;
-	}
-	public void setRc(String rc) {
-		this.rc = rc;
 	}
 	public String getRemark() {
 		return remark;
@@ -122,6 +119,24 @@ public class DisputeTxn implements Serializable{
 	}
 	public void setAcq(String acq) {
 		this.acq = acq;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public ReasonCode getRc() {
+		return rc;
+	}
+	public void setRc(ReasonCode rc) {
+		this.rc = rc;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	public User getUser() {
 		return user;

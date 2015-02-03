@@ -9,4 +9,7 @@
 	<bean id="reportDao" class="com.bcnx.web.app.service.dao.ReportDaoImp">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+	<bean id="reportService" class="com.bcnx.web.app.service.ReportServiceImp">
+		<property name="reportDao" ref="reportDao"/>
+	</bean>
 </beans>

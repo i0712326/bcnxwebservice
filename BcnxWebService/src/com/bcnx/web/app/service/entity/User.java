@@ -6,20 +6,18 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity
 @Table(name="USRDATA")
 public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="USRID")
 	private String userId;
 	@Column(name="PASSWD",unique=true,nullable=false,length=512)
@@ -40,9 +38,9 @@ public class User implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="ROLEDATA_ROLEID")
 	private Role role;
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="user", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
 	private List<Bulletin> bulletins;
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="user", cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="user", cascade=CascadeType.ALL)
 	private List<DisputeTxn> disputeTxns;
 	public String getUserId() {
 		return userId;
@@ -50,6 +48,7 @@ public class User implements Serializable {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	@JsonIgnore
 	public String getPasswd() {
 		return passwd;
 	}
@@ -97,5 +96,19 @@ public class User implements Serializable {
 	}
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	@JsonIgnore
+	public List<Bulletin> getBulletins() {
+		return bulletins;
+	}
+	public void setBulletins(List<Bulletin> bulletins) {
+		this.bulletins = bulletins;
+	}
+	@JsonIgnore
+	public List<DisputeTxn> getDisputeTxns() {
+		return disputeTxns;
+	}
+	public void setDisputeTxns(List<DisputeTxn> disputeTxns) {
+		this.disputeTxns = disputeTxns;
 	}
 }

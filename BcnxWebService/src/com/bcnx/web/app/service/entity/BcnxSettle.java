@@ -2,6 +2,7 @@ package com.bcnx.web.app.service.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 @Entity
 @Table(name="BCNXSETL")
 public class BcnxSettle implements Serializable{
@@ -52,8 +56,6 @@ public class BcnxSettle implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="CARDTYPE_TYPE")
 	private CardType cardType;
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="bcnxSettle",cascade=CascadeType.ALL)
-	private List<DisputeTxn> disputeTxns;
 	@OneToOne
 	@JoinColumns({
 		@JoinColumn(name="BCNXTXN_SLOT", referencedColumnName="SLOT"),
@@ -62,6 +64,8 @@ public class BcnxSettle implements Serializable{
 		@JoinColumn(name="BCNXTXN_RRN", referencedColumnName="RRN")
 	})
 	private BcnxTxn bcnxTxn;
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="bcnxSettle",cascade=CascadeType.ALL)
+	private List<DisputeTxn> disputeTxns = new ArrayList<DisputeTxn>();
 	public String getMti() {
 		return mti;
 	}
@@ -146,6 +150,7 @@ public class BcnxSettle implements Serializable{
 	public void setCardType(CardType cardType) {
 		this.cardType = cardType;
 	}
+	@JsonBackReference
 	public List<DisputeTxn> getDisputeTxns() {
 		return disputeTxns;
 	}
@@ -158,14 +163,4 @@ public class BcnxSettle implements Serializable{
 	public void setBcnxTxn(BcnxTxn bcnxTxn) {
 		this.bcnxTxn = bcnxTxn;
 	}
-	@Override
-	public String toString() {
-		return "BcnxSettle [mti=" + mti + ", rrn=" + rrn + ", slot=" + slot
-				+ ", stan=" + stan + ", date=" + date + ", time=" + time
-				+ ", card=" + card + ", proc=" + proc + ", res=" + res
-				+ ", amount=" + amount + ", termId=" + termId + ", acq=" + acq
-				+ ", iss=" + iss + ", cardType=" + cardType + ", disputeTxns="
-				+ disputeTxns + ", bcnxTxn=" + bcnxTxn + "]";
-	}
-	
 }

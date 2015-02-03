@@ -6,10 +6,11 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity
 @Table(name="MEMDATA")
 public class Member implements Serializable {
@@ -27,11 +28,11 @@ public class Member implements Serializable {
 	private String fax;
 	@Column(name="ADDRESS", nullable=true, length=128)
 	private String address;
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="member",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="member",cascade=CascadeType.ALL)
 	private List<Bin> bins;
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="member",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="member",cascade=CascadeType.ALL)
 	private List<User> user;
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="member",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="member",cascade=CascadeType.ALL)
 	private List<Report> report;
 	public String getIin() {
 		return iin;
@@ -69,18 +70,21 @@ public class Member implements Serializable {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+	@JsonIgnore
 	public List<Bin> getBins() {
 		return bins;
 	}
 	public void setBins(List<Bin> bins) {
 		this.bins = bins;
 	}
+	@JsonIgnore
 	public List<User> getUser() {
 		return user;
 	}
 	public void setUser(List<User> user) {
 		this.user = user;
 	}
+	@JsonIgnore
 	public List<Report> getReport() {
 		return report;
 	}

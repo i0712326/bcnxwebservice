@@ -42,16 +42,18 @@ public class ReportDaoImp implements ReportDao {
 	}
 	@Transactional
 	@Override
-	public List<Report> getReports(Date start, Date end, int first, int max)
+	public List<Report> getReports(Member member,Date start, Date end, int first, int max)
 			throws SQLException, HibernateException {
-		return hibernateTemplate.execute(new GetReportByDates(start,end,first,max));
+		return hibernateTemplate.execute(new GetReportByDates(member,start,end,first,max));
 	}
 	private class GetReportByDates implements HibernateCallback<List<Report>>{
+		private Member member;
 		private Date start;
 		private Date end;
 		private int first;
 		private int max;
-		public GetReportByDates(Date start, Date end,int first, int max){
+		public GetReportByDates(Member member,Date start, Date end,int first, int max){
+			this.member = member;
 			this.start = start;
 			this.end = end;
 			this.first = first;
@@ -60,10 +62,11 @@ public class ReportDaoImp implements ReportDao {
 		@Override
 		public List<Report> doInHibernate(Session session)
 				throws HibernateException {
-			String hql = "from Report r where r.date between :start and :end";
+			String hql = "from Report r left join r.member m where r.date between :start and :end and m.iin = :inn";
 			Query query = session.createQuery(hql);
 			query.setDate("start", start);
 			query.setDate("end", end);
+			query.setString("iin", member.getIin());
 			query.setFirstResult(first);
 			query.setMaxResults(max);
 			return toList(query.list());
@@ -72,15 +75,17 @@ public class ReportDaoImp implements ReportDao {
 	}
 	@Transactional
 	@Override
-	public List<Report> getReports(Date date,int first, int max) throws SQLException,
+	public List<Report> getReports(Member member,Date date,int first, int max) throws SQLException,
 			HibernateException {
-		return hibernateTemplate.execute(new GetReportByDate(date,first,max));
+		return hibernateTemplate.execute(new GetReportByDate(member,date,first,max));
 	}
 	private class GetReportByDate implements HibernateCallback<List<Report>>{
+		private Member member;
 		private Date date;
 		private int first;
 		private int max;
-		public GetReportByDate(Date date, int first, int max){
+		public GetReportByDate(Member member, Date date, int first, int max){
+			this.member = member;
 			this.date = date;
 			this.first = first;
 			this.max = max;
@@ -88,9 +93,10 @@ public class ReportDaoImp implements ReportDao {
 		@Override
 		public List<Report> doInHibernate(Session session)
 				throws HibernateException {
-			String hql = "from Report r where r.date = :date";
+			String hql = "from Report r left join r.member m where r.date = :date and m.iin = :iin";
 			Query query = session.createQuery(hql);
 			query.setDate("date", date);
+			query.setString("iin", member.getIin());
 			query.setFirstResult(first);
 			query.setMaxResults(max);
 			return toList(query.list());
@@ -115,7 +121,7 @@ public class ReportDaoImp implements ReportDao {
 		@Override
 		public List<Report> doInHibernate(Session session)
 				throws HibernateException {
-			String hql = "from Report r join r.member m where m.iin = :iin";
+			String hql = "from Report r left join r.member m where m.iin = :iin";
 			Query query = session.createQuery(hql);
 			query.setString("iin", member.getIin());
 			query.setFirstResult(first);

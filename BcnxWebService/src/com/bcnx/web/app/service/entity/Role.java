@@ -6,12 +6,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity
 @Table(name="ROLEDATA")
 public class Role implements Serializable {
@@ -22,7 +23,7 @@ public class Role implements Serializable {
 	private String roleId;
 	@Column(name="NAME", nullable=false, unique=true, length=45)
 	private String roleName;
-	@OneToMany(fetch=FetchType.LAZY,mappedBy="role",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="role",cascade=CascadeType.ALL)
 	private List<User> users;
 	public String getRoleId() {
 		return roleId;
@@ -36,6 +37,7 @@ public class Role implements Serializable {
 	public void setRoleName(String roleName) {
 		this.roleName = roleName;
 	}
+	@JsonIgnore
 	public List<User> getUsers() {
 		return users;
 	}

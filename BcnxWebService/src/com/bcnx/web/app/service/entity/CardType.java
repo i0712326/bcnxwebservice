@@ -7,12 +7,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity
 @Table(name="CARDTYPE")
 public class CardType implements Serializable {
@@ -23,7 +24,7 @@ public class CardType implements Serializable {
 	private String type;
 	@Column(name="REMARK")
 	private String remark;
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="cardProcId.cardType",cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="cardProcId.cardType",cascade=CascadeType.ALL)
 	private List<CardProc> cardProcs = new ArrayList<CardProc>();
 	public String getType() {
 		return type;
@@ -37,6 +38,7 @@ public class CardType implements Serializable {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+	@JsonIgnore
 	public List<CardProc> getCardProcs() {
 		return cardProcs;
 	}

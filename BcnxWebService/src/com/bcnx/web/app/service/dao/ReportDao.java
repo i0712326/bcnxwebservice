@@ -12,7 +12,7 @@ import com.bcnx.web.app.service.entity.Report;
 public interface ReportDao {
 	public void save(Report report) throws SQLException, HibernateException;
 	public Report getReport(int id) throws SQLException, HibernateException;
-	public List<Report> getReports(Date date, int first, int max) throws SQLException, HibernateException;
-	public List<Report> getReports(Date start, Date end, int first, int max) throws SQLException, HibernateException;
+	public List<Report> getReports(Member member, Date date, int first, int max) throws SQLException, HibernateException;
+	public List<Report> getReports(Member member, Date start, Date end, int first, int max) throws SQLException, HibernateException;
 	public List<Report> getReports(Member member, int first, int max) throws SQLException, HibernateException;
 }

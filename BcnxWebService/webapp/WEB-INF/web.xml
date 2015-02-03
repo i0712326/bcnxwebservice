@@ -8,8 +8,13 @@
 			com.bcnx.web.app.service.admin.RoleController,
 			com.bcnx.web.app.service.admin.UserController,
 			com.bcnx.web.app.service.user.BulletinController,
-			com.bcnx.web.app.service.user.BcnxTxnController,
-			com.bcnx.web.app.service.user.BcnxSettleController
+			com.bcnx.web.app.service.user.BcnxSettleController,
+			com.bcnx.web.app.service.user.ReportController,
+			com.bcnx.web.app.service.user.ReasonCodeController,
+			com.bcnx.web.app.service.user.CopyRequestController,
+			com.bcnx.web.app.service.user.ChargebackController,
+			com.bcnx.web.app.service.user.AdjustmentController,
+			com.bcnx.web.app.service.user.RepresentController
 		</param-value>
 	</context-param>
   	<listener>

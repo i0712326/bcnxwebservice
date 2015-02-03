@@ -41,12 +41,12 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 			@Override
 			public BcnxSettle doInHibernate(Session session)
 					throws HibernateException {
-				String hql = "from BcnxSettle b where b.rrn = :rrn and b.mti = :mti and b.proc = :proc and b.card = :card";
+				String hql = "from BcnxSettle b where b.rrn = :rrn and b.mti = :mti and b.stan = :stan and b.slot = :slot";
 				Query query = session.createQuery(hql);
 				query.setString("rrn", bcnxSettle.getRrn());
 				query.setString("mti", bcnxSettle.getMti());
-				query.setString("proc", bcnxSettle.getProc());
-				query.setString("card", bcnxSettle.getCard());
+				query.setString("stan", bcnxSettle.getStan());
+				query.setString("slot", bcnxSettle.getSlot());
 				return (BcnxSettle) query.uniqueResult();
 			}
 		});
@@ -76,6 +76,8 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 			String hql = "from BcnxSettle bs where bs.card like :card or bs.rrn like :rrn or bs.stan like :stan or bs.date between :start and :end";
 			Query query = session.createQuery(hql);
 			query.setString("card", bcnxSettle.getCard());
+			query.setString("rrn", bcnxSettle.getRrn());
+			query.setString("stan", bcnxSettle.getStan());
 			query.setDate("start", start);
 			query.setDate("end", end);
 			query.setFirstResult(first);
