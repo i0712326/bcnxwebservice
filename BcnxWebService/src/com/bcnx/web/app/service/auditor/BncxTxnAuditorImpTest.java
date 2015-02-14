@@ -16,7 +16,7 @@ public class BncxTxnAuditorImpTest {
 		@SuppressWarnings("resource")
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		BcnxTxnAuditor bean = (BcnxTxnAuditor) context.getBean("bcnxTxnAuditor");
-		File file = new File("sample/router.audit.150113");
+		File file = new File("sample/router.audit.150210");
 		try {
 			bean.toBcnxTxn(file);
 			assertTrue(true);

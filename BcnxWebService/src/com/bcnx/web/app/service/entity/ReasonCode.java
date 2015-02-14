@@ -8,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity
 @Table(name="REASONCODE")
 public class ReasonCode implements Serializable {

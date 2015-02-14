@@ -44,7 +44,6 @@ public class BncxTxnAuditorImp implements BcnxTxnAuditor {
 			else
 				slot.add(line);
 		}
-		refine();
 	}
 	private static String MTI  = "1";
 	private static String CARD = "2";
@@ -147,17 +146,22 @@ public class BncxTxnAuditorImp implements BcnxTxnAuditor {
 			list.add(bcnxTxn);
 		}
 	}
-	private void refine(){
+	@Override
+	public void refine(){
 		for(BcnxTxn item : list){
 			String mti = item.getMti();
 			boolean check = mti.equals("0200")||mti.equals("0420");
 			if(check){
 				BcnxTxn chk = bcnxTxnService.getBcnxTxn(item);
-				if(chk==null)
+				if(chk==null){
+					logger.debug(item.toString());
 					bcnxTxnService.save(item);
+				}
 			}
-			else
+			else{
+				logger.debug(item.toString());
 				bcnxTxnService.update(item);
+			}
 		}
 	}
 }

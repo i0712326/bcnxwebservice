@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
-import javax.persistence.JoinColumn;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 @Entity
 @Table(name="CARDTYPE_has_PROCC")

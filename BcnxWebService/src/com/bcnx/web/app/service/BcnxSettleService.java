@@ -10,4 +10,10 @@ public interface BcnxSettleService {
 	public void saveAll(List<BcnxSettle> bcnxSettles);
 	public BcnxSettle getBcnxSettle(BcnxSettle bcnxSettle);
 	public List<BcnxSettle> getBcnxSettles(BcnxSettle bcnxSettle, Date start, Date end, int first, int max);
+	public List<Date> getSettleDates();
+	public Date getMaxDate();
+	public List<BcnxSettle> getBcnxFinIss(Date date, String id);
+	public List<BcnxSettle> getBcnxFinAcq(Date date, String id);
+	public List<BcnxSettle> getBcnxRev(Date date, String id);
+	public List<BcnxSettle> getBcnxErr(Date date, String id);
 }

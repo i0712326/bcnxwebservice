@@ -54,6 +54,12 @@ public class MemberDaoImp implements MemberDao {
 		criteria.add(Restrictions.like("memId", member.getMemId()));
 		return toList(hibernateTemplate.findByCriteria(criteria, first, max));
 	}
+	@Transactional
+	@Override
+	public List<Member> getMembers() throws SQLException {
+		String hql = "from Member m order by m.iin";
+		return toList(hibernateTemplate.find(hql));
+	}
 	private List<Member> toList(final List<?> beans){
 		if(beans == null ) return null;
 		if(beans.isEmpty()) return null;

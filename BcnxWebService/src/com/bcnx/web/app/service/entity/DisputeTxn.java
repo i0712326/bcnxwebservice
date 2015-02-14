@@ -11,8 +11,8 @@ import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 @Entity
-@Table(name="DISPUTETXN")
-public class DisputeTxn implements Serializable{
+@Table(name="DISPUTETXN") 
+public class DisputeTxn implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name="ID")

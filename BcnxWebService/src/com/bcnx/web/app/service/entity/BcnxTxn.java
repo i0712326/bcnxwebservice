@@ -190,4 +190,15 @@ public class BcnxTxn implements Serializable {
 	public void setStan(String stan) {
 		this.stan = stan;
 	}
+	@Override
+	public String toString() {
+		return "BcnxTxn [slot=" + slot + ", mti=" + mti + ", stan=" + stan
+				+ ", rrn=" + rrn + ", date=" + date + ", time=" + time
+				+ ", card=" + card + ", exp=" + exp + ", proc=" + proc
+				+ ", amount=" + amount + ", fee=" + fee + ", appr=" + appr
+				+ ", res=" + res + ", termId=" + termId + ", location="
+				+ location + ", curr=" + curr + ", mcc=" + mcc + ", country="
+				+ country + ", pos=" + pos + ", condCode=" + condCode
+				+ ", iss=" + iss + ", acq=" + acq + "]";
+	}
 }

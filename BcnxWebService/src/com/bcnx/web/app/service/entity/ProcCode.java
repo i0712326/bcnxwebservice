@@ -27,6 +27,10 @@ public class ProcCode implements Serializable {
 	private List<CardProc> cardProcs;
 	@OneToMany(mappedBy = "procCode", cascade=CascadeType.ALL)
 	private List<ReasonCode> reasonCodes;
+	public ProcCode(){};
+	public ProcCode(String code){
+		this.code = code;
+	}
 	public String getCode() {
 		return code;
 	}

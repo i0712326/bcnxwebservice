@@ -1,5 +1,6 @@
 package com.bcnx.web.app.service;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import com.bcnx.web.app.service.dao.DisputeTxnDao;
+import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 
 public class DisputeTxnServiceImp implements DisputeTxnService {
@@ -40,6 +42,42 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 			return disputeTxnDao.getDisputeTxns(disputeTxn,first,max);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try save dispute data", e);
+			return null;
+		}
+	}
+	@Override
+	public List<BcnxSettle> issChb(Date date, String id) {
+		try {
+			return disputeTxnDao.outGoingChb(date,id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get issuer charge back", e);
+			return null;
+		}
+	}
+	@Override
+	public List<BcnxSettle> acqChb(Date date, String id) {
+		try {
+			return disputeTxnDao.incomingChb(date, id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get acquirer charge back", e);
+			return null;
+		}
+	}
+	@Override
+	public List<BcnxSettle> issAdj(Date date, String id) {
+		try {
+			return disputeTxnDao.outGoingAdj(date,id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get issuer charge back", e);
+			return null;
+		}
+	}
+	@Override
+	public List<BcnxSettle> acqAdj(Date date, String id) {
+		try {
+			return disputeTxnDao.incomingAdj(date, id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get issuer charge back", e);
 			return null;
 		}
 	}

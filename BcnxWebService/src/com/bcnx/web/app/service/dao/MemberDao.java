@@ -10,4 +10,5 @@ public interface MemberDao {
 	public Member getMember(Member member) throws SQLException;
 	public List<Member> getMembers(int first, int max) throws SQLException;
 	public List<Member> getMembers(Member member, int first, int max) throws SQLException;
+	public List<Member> getMembers() throws SQLException;
 }

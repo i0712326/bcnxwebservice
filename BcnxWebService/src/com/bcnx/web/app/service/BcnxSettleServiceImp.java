@@ -53,5 +53,60 @@ public class BcnxSettleServiceImp implements BcnxSettleService {
 			return null;
 		}
 	}
-
+	@Override
+	public List<Date> getSettleDates() {
+		try {
+			return bcnxSettleDao.getSettleDate();
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get settle date", e);
+			return null;
+		}
+	}
+	@Override
+	public Date getMaxDate() {
+		try {
+			return bcnxSettleDao.getMaxDate();
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get max settle date", e);
+			return null;
+		}
+	}
+	// settlement API
+	@Override
+	public List<BcnxSettle> getBcnxFinIss(Date date, String id) {
+		try {
+			return bcnxSettleDao.getBcnxFinIss(date,id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to issing transaction", e);
+			return null;
+		}
+	}
+	@Override
+	public List<BcnxSettle> getBcnxFinAcq(Date date, String id) {
+		try {
+			return bcnxSettleDao.getBcnxFinAcq(date,id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to acquiring transaction", e);
+			return null;
+		}
+	}
+	@Override
+	public List<BcnxSettle> getBcnxRev(Date date, String id) {
+		try {
+			return bcnxSettleDao.getBcnxRev(date,id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to acquiring transaction", e);
+			return null;
+		}
+	}
+	@Override
+	public List<BcnxSettle> getBcnxErr(Date date, String id) {
+		try {
+			return bcnxSettleDao.getBcnxErr(date,id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to acquiring transaction", e);
+			return null;
+		}
+	}
+	
 }

@@ -5,4 +5,5 @@ import java.io.IOException;
 
 public interface BcnxTxnAuditor {
 	public void toBcnxTxn(File file) throws IOException;
+	public void refine();
 }

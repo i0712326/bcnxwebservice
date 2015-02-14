@@ -1,6 +1,7 @@
 package com.bcnx.web.app.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -31,7 +32,7 @@ public class AdjustmentServiceImp implements AdjustmentService {
 			return disputeTxnDao.getInDisp(disp, first, max);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try to get incomming adjustement", e);
-			return null;
+			return new ArrayList<DisputeTxn>();
 		}
 	}
 
@@ -41,7 +42,7 @@ public class AdjustmentServiceImp implements AdjustmentService {
 			return disputeTxnDao.getOutDisp(disp, first, max);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try to get incomming copy request", e);
-			return null;
+			return new ArrayList<DisputeTxn>();
 		}
 	}
 

@@ -2,6 +2,7 @@ package com.bcnx.web.app.service.dao;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -85,9 +86,85 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 			return toList(query.list());
 		}
 	}
-	private List<BcnxSettle> toList(final List<?> beans){
+	@Transactional
+	@Override
+	public List<Date> getSettleDate() throws SQLException, HibernateException {
+		return hibernateTemplate.execute(new HibernateCallback<List<Date>>(){
+			@Override
+			public List<Date> doInHibernate(Session session)
+					throws HibernateException {
+				String sql = "select distinct(bs.date) from BcnxSettle bs order by bs.date desc";
+				Query query = session.createQuery(sql);
+				return toDates(query.list());
+			}
+			
+		});
+	}
+	@Transactional
+	@Override
+	public Date getMaxDate()throws SQLException, HibernateException{
+		return hibernateTemplate.execute(new HibernateCallback<Date>(){
+			@Override
+			public Date doInHibernate(Session session)
+					throws HibernateException {
+				String sql = "select max(bs.date) as date from BcnxSettle bs order by bs.date desc";
+				Query query = session.createQuery(sql);
+				return (Date) query.uniqueResult();
+			}
+		});
+	}
+	@Transactional
+	@Override
+	public List<BcnxSettle> getBcnxFinIss(Date date, String id)
+			throws SQLException, HibernateException {
+		String hql = "from BcnxSettle b where b.date = :date and b.iss = :id and b.res = :res and b.rrn "
+				+ "not in (select bb.rrn from BcnxSettle bb where bb.date =:date and bb.iss = :id and bb.mti = :mti ) "
+				+ "order by b.time";
+		String[] param ={"date","id", "res", "mti"};
+		Object[] values = {date, id, "00", "0420"};
+		return toList(hibernateTemplate.findByNamedParam(hql, param, values));
+	}
+	@Transactional
+	@Override
+	public List<BcnxSettle> getBcnxFinAcq(Date date, String id)
+			throws SQLException, HibernateException {
+		String hql = "from BcnxSettle b where b.date = :date and b.acq = :id and b.res = :res and b.rrn "
+				+ "not in (select bb.rrn from BcnxSettle bb where bb.date =:date and bb.acq = :id and bb.mti = :mti ) "
+				+ "order by b.time";
+		String[] param ={"date","id", "res", "mti"};
+		Object[] values = {date, id, "00", "0420"};
+		return toList(hibernateTemplate.findByNamedParam(hql, param, values));
+	}
+	@Transactional
+	@Override
+	public List<BcnxSettle> getBcnxRev(Date date, String id)
+			throws SQLException, HibernateException {
+		String hql = "from BcnxSettle b where b.date = :date and ( b.acq =:id or b.iss =:id )and b.res = :res and b.mti = :mti order by b.time";
+		String[] param ={"date","id", "res", "mti"};
+		Object[] values = {date, id, "00", "0420"};
+		return toList(hibernateTemplate.findByNamedParam(hql, param, values));
+	}
+	@Transactional
+	@Override
+	public List<BcnxSettle> getBcnxErr(Date date, String id)
+			throws SQLException, HibernateException {
+		String hql = "from BcnxSettle b where b.date = :date and ( b.acq =:id or b.iss =:id )and b.res !=:res and b.mti = :mti and b.rrn not in "
+				+ "( select bb.rrn from BcnxSettle bb where bb.date =:date and bb.acq = :id and bb.mti = :mti ) order by b.time";
+		String[] param ={"date","id", "res", "mti"};
+		Object[] values = {date, id, "00", "0420"};
+		return toList(hibernateTemplate.findByNamedParam(hql, param, values));
+	}
+	private List<Date> toDates(final List<?> beans){
 		if(beans == null ) return null;
 		if(beans.isEmpty()) return null;
+		int size = beans.size();
+		Date[] list = new Date[size];
+		list = beans.toArray(list);
+		return Arrays.asList(list);
+	}
+	private List<BcnxSettle> toList(final List<?> beans){
+		if(beans == null ) return new ArrayList<BcnxSettle>();
+		if(beans.isEmpty()) return new ArrayList<BcnxSettle>();
 		int size = beans.size();
 		BcnxSettle[] list = new BcnxSettle[size];
 		list = beans.toArray(list);

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 @Entity
@@ -34,6 +35,8 @@ public class Member implements Serializable {
 	private List<User> user;
 	@OneToMany(mappedBy="member",cascade=CascadeType.ALL)
 	private List<Report> report;
+	@Transient
+	private double netAmount;
 	public String getIin() {
 		return iin;
 	}
@@ -90,5 +93,11 @@ public class Member implements Serializable {
 	}
 	public void setReport(List<Report> report) {
 		this.report = report;
+	}
+	public double getNetAmount() {
+		return netAmount;
+	}
+	public void setNetAmount(double netAmount) {
+		this.netAmount = netAmount;
 	}
 }

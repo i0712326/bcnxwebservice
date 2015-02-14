@@ -10,17 +10,21 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
 
 @Entity
 @Table(name="BCNXSETL")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) 
 public class BcnxSettle implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -53,6 +57,7 @@ public class BcnxSettle implements Serializable{
 	private String acq;
 	@Column(name="ISSID", nullable=false, length=6)
 	private String iss;
+	
 	@ManyToOne
 	@JoinColumn(name="CARDTYPE_TYPE")
 	private CardType cardType;
@@ -66,6 +71,10 @@ public class BcnxSettle implements Serializable{
 	private BcnxTxn bcnxTxn;
 	@OneToMany(fetch=FetchType.EAGER, mappedBy="bcnxSettle",cascade=CascadeType.ALL)
 	private List<DisputeTxn> disputeTxns = new ArrayList<DisputeTxn>();
+	@Transient
+	private double total;
+	@Transient
+	private double fee;
 	public String getMti() {
 		return mti;
 	}
@@ -162,5 +171,26 @@ public class BcnxSettle implements Serializable{
 	}
 	public void setBcnxTxn(BcnxTxn bcnxTxn) {
 		this.bcnxTxn = bcnxTxn;
+	}
+	public double getTotal() {
+		return total;
+	}
+	public void setTotal(double total) {
+		this.total = total;
+	}
+	public double getFee() {
+		return fee;
+	}
+	public void setFee(double fee) {
+		this.fee = fee;
+	}
+	@Override
+	public String toString() {
+		return "BcnxSettle [mti=" + mti + ", rrn=" + rrn + ", slot=" + slot
+				+ ", stan=" + stan + ", date=" + date + ", time=" + time
+				+ ", card=" + card + ", proc=" + proc + ", res=" + res
+				+ ", amount=" + amount + ", termId=" + termId + ", acq=" + acq
+				+ ", iss=" + iss + ", cardType=" + cardType + ", bcnxTxn="
+				+ bcnxTxn + ", disputeTxns=" + disputeTxns + "]";
 	}
 }

@@ -9,4 +9,5 @@ public interface MemberService {
 	public Member getMember(Member member);
 	public List<Member> getMembers(int first, int max);
 	public List<Member> getMembers(Member member, int first, int max);
+	public List<Member> getMembers();
 }
