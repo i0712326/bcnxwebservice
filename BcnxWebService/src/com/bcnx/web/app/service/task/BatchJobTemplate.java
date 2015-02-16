@@ -4,10 +4,12 @@ import java.sql.Date;
 import java.util.List;
 
 import com.bcnx.web.app.service.BcnxSettleService;
-import com.bcnx.web.app.service.auditor.UtilityService;
+import com.bcnx.web.app.service.BcnxTxnService;
+import com.bcnx.web.app.utility.UtilityService;
 
 public abstract class BatchJobTemplate implements BatchJob{
 	protected BcnxSettleService bcnxSettleService;
+	protected BcnxTxnService bcnxTxnService;
 	protected FileTransfer fileTransfer;
 	protected String localPath;
 	public void setLocalPath(String localPath){
@@ -18,6 +20,9 @@ public abstract class BatchJobTemplate implements BatchJob{
 	}
 	public void setBcnxSettleService(BcnxSettleService bcnxSettleService){
 		this.bcnxSettleService = bcnxSettleService;
+	}
+	public void setBcnxTxnService(BcnxTxnService bcnxTxnService){
+		this.bcnxTxnService = bcnxTxnService;
 	}
 	public abstract List<String> get(String sDate);
 	public abstract void read(List<String> fileList);

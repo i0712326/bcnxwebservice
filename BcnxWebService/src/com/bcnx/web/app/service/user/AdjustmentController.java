@@ -1,14 +1,9 @@
 package com.bcnx.web.app.service.user;
 
-import java.util.List;
-
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
@@ -19,7 +14,7 @@ import com.bcnx.web.app.service.entity.ErrMsg;
 import com.bcnx.web.app.service.entity.ReasonCode;
 import com.bcnx.web.app.service.entity.User;
 @Path("/adjustment")
-public class AdjustmentController extends DisputeController{
+public class AdjustmentController extends DisputeTemplate{
 	private static AdjustmentService adjustementService = (AdjustmentService) BcnxApplicationContext.getBean("adjustmentService");
 	// save adjustment
 	@POST
@@ -72,57 +67,5 @@ public class AdjustmentController extends DisputeController{
 				.status(200)
 				.entity(new ErrMsg("200", "Copy request has sent successfully"))
 				.build();
-	}
-	// view incoming
-	@GET
-	@Path("/incoming/{first}/{max}")
-	@Produces("application/json")
-	public Response chckInComing(@QueryParam("mti") String mti,
-			@QueryParam("rrn") String rrn, @QueryParam("slot") String slot,
-			@QueryParam("stan") String stan, @QueryParam("proc") String proc,
-			@QueryParam("usrId") String userId, @PathParam("first") int first,
-			@PathParam("max") int max) {
-		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProcc(proc);
-		User user = new User();
-		user.setUserId(userId);
-		user = userService.getUser(user);
-		BcnxSettle settle = new BcnxSettle();
-		settle.setSlot(slot);
-		settle.setMti(mti);
-		settle.setRrn(rrn);
-		settle.setStan(stan);
-		settle = bcnxSettleService.getBcnxSettle(settle);
-		disputeTxn.setUser(user);
-		disputeTxn.setBcnxSettle(settle);
-		List<DisputeTxn> list = adjustementService.getInAdjust(disputeTxn, first, max);
-		return Response.status(200).entity(list).build();
-	}
-	// view outgoing
-	@GET
-	@Path("/outgoing/{first}/{max}")
-	@Produces("application/json")
-	public Response chckOutGoing(@QueryParam("mti") String mti,
-			@QueryParam("rrn") String rrn, @QueryParam("slot") String slot,
-			@QueryParam("stan") String stan, @QueryParam("proc") String proc,
-			@QueryParam("usrId") String userId, @PathParam("first") int first,
-			@PathParam("max") int max) {
-		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProcc(proc);
-		disputeTxn.setDate(getDate());
-		disputeTxn.setTime(getTime());
-		User user = new User();
-		user.setUserId(userId);
-		user = userService.getUser(user);
-		BcnxSettle settle = new BcnxSettle();
-		settle.setSlot(slot);
-		settle.setMti(mti);
-		settle.setRrn(rrn);
-		settle.setStan(stan);
-		settle = bcnxSettleService.getBcnxSettle(settle);
-		disputeTxn.setUser(user);
-		disputeTxn.setBcnxSettle(settle);
-		List<DisputeTxn> list = adjustementService.getOutAdjust(disputeTxn, first, max);
-		return Response.status(200).entity(list).build();
 	}
 }

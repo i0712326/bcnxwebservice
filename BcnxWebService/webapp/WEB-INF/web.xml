@@ -14,7 +14,10 @@
 			com.bcnx.web.app.service.user.CopyRequestController,
 			com.bcnx.web.app.service.user.ChargebackController,
 			com.bcnx.web.app.service.user.AdjustmentController,
-			com.bcnx.web.app.service.user.RepresentController
+			com.bcnx.web.app.service.user.RepresentController,
+			com.bcnx.web.app.service.user.OutgoingController,
+			com.bcnx.web.app.service.user.IncomingController,
+			com.bcnx.web.app.service.user.DisputeController
 		</param-value>
 	</context-param>
   	<listener>

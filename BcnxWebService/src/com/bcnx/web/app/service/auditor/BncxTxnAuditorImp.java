@@ -11,27 +11,17 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.bcnx.web.app.service.BcnxTxnService;
-import com.bcnx.web.app.service.BinService;
 import com.bcnx.web.app.service.entity.BcnxTxn;
 import com.bcnx.web.app.service.entity.Bin;
 
-public class BncxTxnAuditorImp implements BcnxTxnAuditor {
+public class BncxTxnAuditorImp extends BatchAuditJob implements BcnxTxnAuditor {
 	private static Logger logger = Logger.getLogger(BncxTxnAuditorImp.class);
 	private static final String breaker = "waiting on router queue for slot....";
-	private BcnxTxnService bcnxTxnService;
-	private BinService binService;
 	private static List<BcnxTxn> list = new ArrayList<BcnxTxn>();
 	private static List<String> slot = new ArrayList<String>();
-	public void setBcnxTxnService(BcnxTxnService bcnxTxnService){
-		this.bcnxTxnService = bcnxTxnService;
-	}
-	public void setBinService(BinService binService){
-		this.binService = binService;
-	}
 	@SuppressWarnings("resource")
 	@Override
-	public void toBcnxTxn(File file) throws IOException {
+	public List<BcnxTxn> toList(File file) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line = null;
 		while((line = br.readLine())!=null){
@@ -44,6 +34,7 @@ public class BncxTxnAuditorImp implements BcnxTxnAuditor {
 			else
 				slot.add(line);
 		}
+		return list;
 	}
 	private static String MTI  = "1";
 	private static String CARD = "2";
@@ -146,7 +137,7 @@ public class BncxTxnAuditorImp implements BcnxTxnAuditor {
 			list.add(bcnxTxn);
 		}
 	}
-	@Override
+	
 	public void refine(){
 		for(BcnxTxn item : list){
 			String mti = item.getMti();

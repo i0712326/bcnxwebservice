@@ -22,7 +22,7 @@
 		<constructor-arg value="bcelpool"/>
 		<constructor-arg value="pool12!@"/>
 		<constructor-arg value="/u02/bcelpool/NARADA/switch/spool"/>
-		<constructor-arg value="C:/output/source"/>
+		<constructor-arg value="D:/output/src"/>
 		<constructor-arg value="22"/>
 	</bean>
 </beans>

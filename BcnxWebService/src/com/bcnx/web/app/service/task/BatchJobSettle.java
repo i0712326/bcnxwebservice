@@ -8,8 +8,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.bcnx.web.app.service.auditor.BcnxSettleAuditor;
-import com.bcnx.web.app.service.auditor.UtilityService;
 import com.bcnx.web.app.service.entity.BcnxSettle;
+import com.bcnx.web.app.utility.UtilityService;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.SftpException;
 
@@ -42,7 +42,7 @@ public class BatchJobSettle extends BatchJobTemplate {
 			String name = file.getName().substring(11);
 			Date date = UtilityService.str2Date2(name);
 			try {
-				settles = bcnxSettleAuditor.doWork(file, date);
+				settles = bcnxSettleAuditor.toList(file, date);
 			} catch (IOException e) {
 				logger.debug("Exception occured while try to get settle records", e);
 			}

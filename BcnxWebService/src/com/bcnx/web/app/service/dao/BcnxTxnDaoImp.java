@@ -29,7 +29,18 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 	@Override
 	public void saveAll(List<BcnxTxn> bcnxTxns) throws SQLException,
 			HibernateException {
-		hibernateTemplate.save(bcnxTxns);
+		for(BcnxTxn item : bcnxTxns){
+			String mti = item.getMti();
+			boolean check = mti.equals("0200")||mti.equals("0420");
+			if(check){
+				BcnxTxn chk = getBcnxTxn(item);
+				if(chk==null)
+					hibernateTemplate.save(item);
+			}
+			else{
+				hibernateTemplate.update(item);
+			}
+		}
 	}
 	@Transactional
 	@Override

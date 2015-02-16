@@ -21,5 +21,6 @@ public interface BcnxSettleDao {
 	public List<BcnxSettle> getBcnxFinIss(Date date, String id) throws SQLException, HibernateException;;
 	public List<BcnxSettle> getBcnxFinAcq(Date date, String id) throws SQLException, HibernateException;;
 	public List<BcnxSettle> getBcnxRev(Date date, String id) throws SQLException, HibernateException;;
-	public List<BcnxSettle> getBcnxErr(Date date, String id) throws SQLException, HibernateException;;
+	public List<BcnxSettle> getBcnxErr(Date date, String id) throws SQLException, HibernateException;
+	public int getRecords(BcnxSettle bs, Date start, Date end) throws SQLException, HibernateException;
 }

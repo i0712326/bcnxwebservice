@@ -41,10 +41,119 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 		try {
 			return disputeTxnDao.getDisputeTxns(disputeTxn,first,max);
 		} catch (HibernateException | SQLException e) {
-			logger.debug("Exception occured while try save dispute data", e);
+			logger.debug("Exception occured while try get dispute data", e);
 			return null;
 		}
 	}
+	// incoming
+	@Override
+	public List<DisputeTxn> getIncoming(String id, int first, int max) {
+		try {
+			return disputeTxnDao.getInDisp(id, first, max);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try get dispute data", e);
+			return null;
+		}
+	}
+	@Override
+	public int getInRecords(String id) {
+		try {
+			return disputeTxnDao.getInRecords(id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try get dispute data", e);
+			return 0;
+		}
+	}
+	@Override
+	public List<DisputeTxn> getIncoming(String id, String proc, int first,
+			int max) {
+		try {
+			return disputeTxnDao.getInDisp(id, proc, first, max);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try get dispute data", e);
+			return null;
+		}
+	}
+	@Override
+	public int getInRecords(String id, String proc) {
+		try {
+			return disputeTxnDao.getInByProc(id, proc);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try get dispute data", e);
+			return 0;
+		}
+	}
+	// outgoing
+	@Override
+	public List<DisputeTxn> getOutgoing(String id, int first, int max) {
+		try {
+			return disputeTxnDao.getOutDisp(id, first, max);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try get dispute data", e);
+			return null;
+		}
+	}
+	@Override
+	public int getOutRecords(String id) {
+		try {
+			return disputeTxnDao.getOutRecords(id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try get dispute data", e);
+			return 0;
+		}
+	}
+	@Override
+	public List<DisputeTxn> getOutgoing(String id, String proc, int first,
+			int max) {
+		try {
+			return disputeTxnDao.getOutDisp(id, proc, first, max);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try get dispute data", e);
+			return null;
+		}
+	}
+	@Override
+	public int getOutRecords(String id, String proc) {
+		try {
+			return disputeTxnDao.getOutByProc(id, proc);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try get dispute data", e);
+			return 0;
+		}
+	}
+	// related
+
+	@Override
+	public List<DisputeTxn> getRelated(DisputeTxn disp, int first, int max) {
+		try {
+			return disputeTxnDao.relatedCase(disp, first, max);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try get dispute data", e);
+			return null;
+		}
+	}
+	@Override
+	public int getRelatedRecords(DisputeTxn disp) {
+		try {
+			return disputeTxnDao.relatedRecords(disp);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try get dispute data", e);
+			return 0;
+		}
+	}
+	
+	// get records number
+	@Override
+	public int getRecords(DisputeTxn disputeTxn){
+		try {
+			return disputeTxnDao.getRecords(disputeTxn);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get dispute records", e);
+			return 0;
+		}
+	}
+	
+	// settlement
 	@Override
 	public List<BcnxSettle> issChb(Date date, String id) {
 		try {

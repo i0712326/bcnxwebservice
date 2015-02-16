@@ -12,8 +12,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.bcnx.web.app.service.MemberService;
-import com.bcnx.web.app.service.auditor.UtilityService;
 import com.bcnx.web.app.service.entity.Member;
+import com.bcnx.web.app.utility.UtilityService;
 
 public class NetSettlementReportImp implements NetSettlementReport {
 	private static final Logger logger = Logger.getLogger(NetSettlementReportImp.class);

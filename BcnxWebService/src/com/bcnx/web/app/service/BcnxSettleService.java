@@ -16,4 +16,5 @@ public interface BcnxSettleService {
 	public List<BcnxSettle> getBcnxFinAcq(Date date, String id);
 	public List<BcnxSettle> getBcnxRev(Date date, String id);
 	public List<BcnxSettle> getBcnxErr(Date date, String id);
+	public int getRecords(BcnxSettle bs, Date start, Date end);
 }

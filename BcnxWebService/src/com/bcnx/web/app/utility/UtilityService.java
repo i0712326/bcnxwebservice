@@ -1,4 +1,4 @@
-package com.bcnx.web.app.service.auditor;
+package com.bcnx.web.app.utility;
 
 import java.sql.Date;
 import java.text.ParseException;

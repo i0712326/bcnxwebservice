@@ -9,4 +9,5 @@ public interface BcnxTxnService {
 	public void update(BcnxTxn bcnx);
 	public BcnxTxn getBcnxTxn(BcnxTxn bcnxTxn);
 	public List<BcnxTxn> getBcnxTxns(BcnxTxn bcnxTxn, int first, int max);
+	public void saveAll(List<BcnxTxn> bcnxTxns);
 }
