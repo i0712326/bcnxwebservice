@@ -53,6 +53,17 @@ public class BcnxSettleServiceImp implements BcnxSettleService {
 			return null;
 		}
 	}
+	
+	@Override
+	public int getRecords(BcnxSettle bs, Date start, Date end) {
+		try {
+			return bcnxSettleDao.getRecords(bs,start,end);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to count records from bcnx settl",e);
+			return 0;
+		}
+	}
+	// batch date checking
 	@Override
 	public List<Date> getSettleDates() {
 		try {
@@ -71,6 +82,7 @@ public class BcnxSettleServiceImp implements BcnxSettleService {
 			return null;
 		}
 	}
+
 	// settlement API
 	@Override
 	public List<BcnxSettle> getBcnxFinIss(Date date, String id) {

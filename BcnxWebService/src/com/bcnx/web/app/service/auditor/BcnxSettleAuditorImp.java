@@ -12,15 +12,12 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import com.bcnx.web.app.service.BcnxSettleService;
-import com.bcnx.web.app.service.BcnxTxnService;
-import com.bcnx.web.app.service.BinService;
 import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.BcnxTxn;
 import com.bcnx.web.app.service.entity.Bin;
 import com.bcnx.web.app.service.entity.CardType;
 
-public class BcnxSettleAuditorImp implements BcnxSettleAuditor {
+public class BcnxSettleAuditorImp extends BatchAuditJob implements BcnxSettleAuditor {
 	private static final Logger logger = Logger.getLogger(BcnxSettleAuditorImp.class);
 	private static final String IGNOR	= "(NOT FINANCIAL TRANSACTION)";
 	private static final String SLOT 	= "([0-9]{1,3})";
@@ -34,21 +31,10 @@ public class BcnxSettleAuditorImp implements BcnxSettleAuditor {
 	private Pattern timePattern;
 	private Matcher matcher;
 	private static List<BcnxSettle> bcnxSettles = new ArrayList<BcnxSettle>();
-	private BinService binService;
-	private BcnxSettleService bcnxSettleService;
-	private BcnxTxnService bcnxTxnService;
-	public void setBinService(BinService binService){
-		this.binService = binService;
-	}
-	public void setBcnxSettleService(BcnxSettleService bcnxSettleService){
-		this.bcnxSettleService = bcnxSettleService;
-	}
-	public void setBcnxTxnService(BcnxTxnService bcnxTxnService){
-		this.bcnxTxnService = bcnxTxnService;
-	}
+	
 	@SuppressWarnings("resource")
 	@Override
-	public List<BcnxSettle> doWork(File file, Date date) throws IOException {
+	public List<BcnxSettle> toList(File file, Date date) throws IOException {
 		BufferedReader bufferReader = new BufferedReader(new FileReader(file));
 		ignorPattern = Pattern.compile(IGNOR);
 		slotPattern = Pattern.compile(SLOT);
@@ -122,7 +108,6 @@ public class BcnxSettleAuditorImp implements BcnxSettleAuditor {
 				
 				if(checkData(bcnxSettle)){
 					logger.debug(bcnxSettle.toString());
-					bcnxSettleService.save(bcnxSettle);
 					bcnxSettles.add(bcnxSettle);
 				}
 			}

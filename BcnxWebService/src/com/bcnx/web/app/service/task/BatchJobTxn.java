@@ -38,7 +38,7 @@ public class BatchJobTxn extends BatchJobTemplate {
 			filePath = super.localPath+"/"+filePath;
 			File file = new File(filePath);
 			try {
-				 bcnxTxnAuditor.toBcnxTxn(file);
+				 bcnxTxns = bcnxTxnAuditor.toList(file);
 			} catch (IOException e) {
 				logger.debug("Exception occured while try to process router audit records", e);
 			}
@@ -47,7 +47,8 @@ public class BatchJobTxn extends BatchJobTemplate {
 
 	@Override
 	public void post() {
-		bcnxTxnAuditor.refine();
+		//bcnxTxnAuditor.refine();
+		super.bcnxTxnService.saveAll(bcnxTxns);
 	}
 
 }

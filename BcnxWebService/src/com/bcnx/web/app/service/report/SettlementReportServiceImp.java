@@ -11,8 +11,8 @@ import java.util.List;
 
 import com.bcnx.web.app.service.BcnxSettleService;
 import com.bcnx.web.app.service.DisputeTxnService;
-import com.bcnx.web.app.service.auditor.UtilityService;
 import com.bcnx.web.app.service.entity.BcnxSettle;
+import com.bcnx.web.app.utility.UtilityService;
 
 public class SettlementReportServiceImp implements SettlementReportService {
 	private BcnxSettleService bcnxSettleService;

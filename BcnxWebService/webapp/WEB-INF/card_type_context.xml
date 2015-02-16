@@ -6,4 +6,7 @@
 	<bean id="cardTypeDao" class="com.bcnx.web.app.service.dao.CardTypeDaoImp">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
+	<bean id="cardProcDao" class="com.bcnx.web.app.service.dao.CardProcDaoImp">
+		<property name="sessionFactory" ref="sessionFactry"/>
+	</bean>
 </beans>

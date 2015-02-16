@@ -5,13 +5,10 @@ import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
@@ -25,7 +22,7 @@ import com.bcnx.web.app.service.entity.ErrMsg;
 import com.bcnx.web.app.service.entity.ReasonCode;
 import com.bcnx.web.app.service.entity.User;
 @Path("/copyrequest")
-public class CopyRequestController extends DisputeController{
+public class CopyRequestController extends DisputeTemplate{
 	private static CopyRequestService copyRequestService = (CopyRequestService) BcnxApplicationContext.getBean("copyRequestService");
 	@POST
 	@Path("/save")
@@ -78,33 +75,6 @@ public class CopyRequestController extends DisputeController{
 				.entity(new ErrMsg("200", "Copy request has sent successfully"))
 				.build();
 	}
-	// check incoming
-	@GET
-	@Path("/incoming/{first}/{max}")
-	@Produces("application/json")
-	public Response chckInComing(@QueryParam("mti") String mti,
-			@QueryParam("rrn") String rrn, @QueryParam("slot") String slot,
-			@QueryParam("stan") String stan, @QueryParam("procc") String proc,
-			@QueryParam("usrId") String userId, @PathParam("first") int first,
-			@PathParam("max") int max) {
-		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProcc(proc);
-		disputeTxn.setDate(getDate());
-		disputeTxn.setTime(getTime());
-		User user = new User();
-		user.setUserId(userId);
-		user = userService.getUser(user);
-		BcnxSettle settle = new BcnxSettle();
-		settle.setSlot(slot);
-		settle.setMti(mti);
-		settle.setRrn(rrn);
-		settle.setStan(stan);
-		settle = bcnxSettleService.getBcnxSettle(settle);
-		disputeTxn.setUser(user);
-		disputeTxn.setBcnxSettle(settle);
-		List<DisputeTxn> list = copyRequestService.getInCpReq(disputeTxn, first, max);
-		return Response.status(200).entity(list).build();
-	}
 	@PUT
 	@Path("/response")
 	@Produces("application/json")
@@ -139,32 +109,4 @@ public class CopyRequestController extends DisputeController{
 		copyRequestService.respCpReq(disputeTxn);
 		return Response.ok(new ErrMsg("200","update successful")).build();
 	}
-	// check out going
-	@GET
-	@Path("/outgoing/{first}/{max}")
-	@Produces("application/json")
-	public Response chckOutGoing(@QueryParam("mti") String mti,
-			@QueryParam("rrn") String rrn, @QueryParam("slot") String slot,
-			@QueryParam("stan") String stan, @QueryParam("proc") String proc,
-			@QueryParam("usrId") String userId, @PathParam("first") int first,
-			@PathParam("max") int max) {
-		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProcc(proc);
-		disputeTxn.setDate(getDate());
-		disputeTxn.setTime(getTime());
-		User user = new User();
-		user.setUserId(userId);
-		user = userService.getUser(user);
-		BcnxSettle settle = new BcnxSettle();
-		settle.setSlot(slot);
-		settle.setMti(mti);
-		settle.setRrn(rrn);
-		settle.setStan(stan);
-		settle = bcnxSettleService.getBcnxSettle(settle);
-		disputeTxn.setUser(user);
-		disputeTxn.setBcnxSettle(settle);
-		List<DisputeTxn> list = copyRequestService.getOutCpReq(disputeTxn, first, max);
-		return Response.status(200).entity(list).build();
-	}
-	
 }

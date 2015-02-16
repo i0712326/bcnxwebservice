@@ -32,7 +32,7 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 	public void saveAll(List<BcnxSettle> bcnxSettles) throws SQLException,
 			HibernateException {
 		for(BcnxSettle bcnx : bcnxSettles)
-			hibernateTemplate.save(bcnx);
+			hibernateTemplate.saveOrUpdate(bcnx);
 	}
 	@Transactional
 	@Override
@@ -85,6 +85,27 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 			query.setMaxResults(max);
 			return toList(query.list());
 		}
+	}
+	@Transactional
+	@Override
+	public int getRecords(final BcnxSettle bs, final Date start, final Date end)
+			throws SQLException, HibernateException {
+		return hibernateTemplate.execute(new HibernateCallback<Integer>(){
+			@Override
+			public Integer doInHibernate(Session session)
+					throws HibernateException {
+				String hql = "select count(bs) from BcnxSettle bs where bs.card like :card or bs.rrn like :rrn or bs.stan like :stan or bs.date between :start and :end";
+				Query query = session.createQuery(hql);
+				query.setString("card", bs.getCard());
+				query.setString("rrn", bs.getRrn());
+				query.setString("stan", bs.getStan());
+				query.setDate("start", start);
+				query.setDate("end", end);
+				Long len = (Long) query.uniqueResult();
+				return len.intValue();
+			}
+			
+		});
 	}
 	@Transactional
 	@Override
