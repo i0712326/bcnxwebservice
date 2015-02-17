@@ -1,25 +1,27 @@
 package com.bcnx.web.app.service.entity;
 
-import java.io.Serializable;
 import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.Table;
 @Entity
-@Table(name="DISPUTETXN") 
-public class DisputeTxn implements Serializable {
+@Table(name="DISPUTETXN")
+@PrimaryKeyJoinColumns({
+	@PrimaryKeyJoinColumn(name="BCNXSETL_MTI",  referencedColumnName="MTI"),
+	@PrimaryKeyJoinColumn(name="BCNXSETL_STAN", referencedColumnName="STAN"),
+	@PrimaryKeyJoinColumn(name="BCNXSETL_SLOT", referencedColumnName="SLOT"),
+	@PrimaryKeyJoinColumn(name="BCNXSETL_RRN", referencedColumnName="RRN"),
+	@PrimaryKeyJoinColumn(name="BCNXSETL_PROCC", referencedColumnName="PROCC")
+})
+public class DisputeTxn extends BcnxSettle {
 	private static final long serialVersionUID = 1L;
-	@Id
 	@Column(name="ID")
 	private int id;
-	@Id
-	@Column(name="PROCC")
-	private String procc;
 	@Column(name="REMARK")
 	private String remark;
 	@Column(name="DATE")
@@ -34,10 +36,6 @@ public class DisputeTxn implements Serializable {
 	private String flag;
 	@Column(name="COUNT")
 	private int count;
-	@Column(name="ISSID")
-	private String iss;
-	@Column(name="ACQID")
-	private String acq;
 	@Column(name="PRB")
 	private String status="N";
 	@Column(name="FILE")
@@ -48,23 +46,19 @@ public class DisputeTxn implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="USRDATA_USRID")
 	private User user;
-	@ManyToOne
-	@JoinColumns({ @JoinColumn(name = "BCNXSETL_MTI", referencedColumnName="MTI"),
-			@JoinColumn(name = "BCNXSETL_RRN", referencedColumnName="RRN"),
-			@JoinColumn(name = "BCNXSETL_SLOT",  referencedColumnName="SLOT"),
-			@JoinColumn(name = "BCNXSETL_STAN",  referencedColumnName="STAN") })
-	private BcnxSettle bcnxSettle;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getProcc() {
-		return procc;
+	@Override
+	public String getProc() {
+		return super.getProc();
 	}
-	public void setProcc(String procc) {
-		this.procc = procc;
+	@Override
+	public void setProc(String proc) {
+		super.setProc(proc);
 	}
 	public String getRemark() {
 		return remark;
@@ -108,18 +102,7 @@ public class DisputeTxn implements Serializable {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	public String getIss() {
-		return iss;
-	}
-	public void setIss(String iss) {
-		this.iss = iss;
-	}
-	public String getAcq() {
-		return acq;
-	}
-	public void setAcq(String acq) {
-		this.acq = acq;
-	}
+	
 	public String getStatus() {
 		return status;
 	}
@@ -144,10 +127,44 @@ public class DisputeTxn implements Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public BcnxSettle getBcnxSettle() {
-		return bcnxSettle;
+	@Override
+	public String getMti() {
+		return super.getMti();
 	}
-	public void setBcnxSettle(BcnxSettle bcnxSettle) {
-		this.bcnxSettle = bcnxSettle;
+	@Override
+	public void setMti(String mti) {
+		super.setMti(mti);
+	}
+	@Override
+	public String getRrn() {
+		return super.getRrn();
+	}
+	@Override
+	public void setRrn(String rrn) {
+		super.setRrn(rrn);
+	}
+	@Override
+	public String getSlot() {
+		return super.getSlot();
+	}
+	@Override
+	public void setSlot(String slot) {
+		super.setSlot(slot);
+	}
+	@Override
+	public String getStan() {
+		return super.getStan();
+	}
+	@Override
+	public void setStan(String stan) {
+		super.setStan(stan);
+	}
+	@Override
+	public String getIss() {
+		return super.getIss();
+	}
+	@Override
+	public String getAcq() {
+		return super.getAcq();
 	}
 }

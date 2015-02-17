@@ -8,7 +8,6 @@ import javax.ws.rs.core.Response;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.AdjustmentService;
-import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.ErrMsg;
 import com.bcnx.web.app.service.entity.ReasonCode;
@@ -29,7 +28,7 @@ public class AdjustmentController extends DisputeTemplate{
 			@FormParam("acq") String acq, @FormParam("usrId") String userId) {
 		
 		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProcc(proc);
+		disputeTxn.setProc(proc);
 		disputeTxn.setRemark(remark);
 		disputeTxn.setAmount(amount);
 		disputeTxn.setFee(fee);
@@ -42,15 +41,12 @@ public class AdjustmentController extends DisputeTemplate{
 		User user = new User();
 		user.setUserId(userId);
 		user = userService.getUser(user);
-		BcnxSettle settle = new BcnxSettle();
-		settle.setSlot(slot);
-		settle.setMti(mti);
-		settle.setRrn(rrn);
-		settle.setStan(stan);
-		settle = bcnxSettleService.getBcnxSettle(settle);
 		disputeTxn.setRc(rc);
 		disputeTxn.setUser(user);
-		disputeTxn.setBcnxSettle(settle);
+		disputeTxn.setSlot(slot);
+		disputeTxn.setMti(mti);
+		disputeTxn.setRrn(rrn);
+		disputeTxn.setStan(stan);
 		// copy request
 		boolean chk = checkAcquirer(disputeTxn, user);
 		if (!chk)

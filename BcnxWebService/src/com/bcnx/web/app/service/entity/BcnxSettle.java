@@ -2,29 +2,22 @@ package com.bcnx.web.app.service.entity;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.codehaus.jackson.annotate.JsonBackReference;
-
 @Entity
 @Table(name="BCNXSETL")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) 
+@Inheritance(strategy=InheritanceType.JOINED)
 public class BcnxSettle implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -45,6 +38,7 @@ public class BcnxSettle implements Serializable{
 	private String time;
 	@Column(name="CARD", nullable=false, length=19)
 	private String card;
+	@Id
 	@Column(name="PROCC", nullable=false, length=6)
 	private String proc;
 	@Column(name="RES", nullable=false, length=2)
@@ -69,8 +63,6 @@ public class BcnxSettle implements Serializable{
 		@JoinColumn(name="BCNXTXN_RRN", referencedColumnName="RRN")
 	})
 	private BcnxTxn bcnxTxn;
-	@OneToMany(fetch=FetchType.EAGER, mappedBy="bcnxSettle",cascade=CascadeType.ALL)
-	private List<DisputeTxn> disputeTxns = new ArrayList<DisputeTxn>();
 	@Transient
 	private double total;
 	@Transient
@@ -159,13 +151,6 @@ public class BcnxSettle implements Serializable{
 	public void setCardType(CardType cardType) {
 		this.cardType = cardType;
 	}
-	@JsonBackReference
-	public List<DisputeTxn> getDisputeTxns() {
-		return disputeTxns;
-	}
-	public void setDisputeTxns(List<DisputeTxn> disputeTxns) {
-		this.disputeTxns = disputeTxns;
-	}
 	public BcnxTxn getBcnxTxn() {
 		return bcnxTxn;
 	}
@@ -191,6 +176,6 @@ public class BcnxSettle implements Serializable{
 				+ ", card=" + card + ", proc=" + proc + ", res=" + res
 				+ ", amount=" + amount + ", termId=" + termId + ", acq=" + acq
 				+ ", iss=" + iss + ", cardType=" + cardType + ", bcnxTxn="
-				+ bcnxTxn + ", disputeTxns=" + disputeTxns + "]";
+				+ bcnxTxn + "]";
 	}
 }

@@ -28,7 +28,7 @@ public class DisputeTemplate {
 	protected static DisputeTxnService disputeTxnService = (DisputeTxnService) BcnxApplicationContext.getBean("disputeTxnService");
 	
 	protected boolean checkIssuer(DisputeTxn txn, User user){
-		String iss = txn.getBcnxSettle().getIss();
+		String iss = txn.getIss();
 		Member mem = user.getMember();
 		if(mem.getIin().equals(iss))
 			return true;
@@ -36,7 +36,7 @@ public class DisputeTemplate {
 	}
 	
 	protected boolean checkAcquirer(DisputeTxn txn, User user){
-		String acq = txn.getBcnxSettle().getAcq();
+		String acq = txn.getAcq();
 		Member mem = user.getMember();
 		if(mem.getIin().equals(acq))
 			return true;

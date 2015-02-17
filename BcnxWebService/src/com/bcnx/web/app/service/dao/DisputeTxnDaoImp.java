@@ -7,10 +7,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.type.LongType;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,10 +40,10 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 				String sql = "SELECT * FROM DISPUTETXN D WHERE D.PROCC = :procc AND D.BCNXSETL_RRN = :rrn AND D.BCNXSETL_SLOT = :slot AND D.BCNXSETL_STAN = :stan";
 				SQLQuery sqlQuery = session.createSQLQuery(sql);
 				sqlQuery.addEntity(DisputeTxn.class);
-				sqlQuery.setString("procc", disputeTxn.getProcc());
-				sqlQuery.setString("rrn", disputeTxn.getBcnxSettle().getRrn());
-				sqlQuery.setString("slot", disputeTxn.getBcnxSettle().getSlot());
-				sqlQuery.setString("stan", disputeTxn.getBcnxSettle().getStan());
+				sqlQuery.setString("procc", disputeTxn.getProc());
+				sqlQuery.setString("rrn", disputeTxn.getRrn());
+				sqlQuery.setString("slot", disputeTxn.getSlot());
+				sqlQuery.setString("stan", disputeTxn.getStan());
 				return (DisputeTxn) sqlQuery.uniqueResult();
 			}
 			
@@ -73,11 +73,11 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 					+"AND D.BCNXSETL_SLOT = :slot AND D.ACQID = :iin";
 			SQLQuery sqlQuery = session.createSQLQuery(sql);
 			sqlQuery.addEntity(DisputeTxn.class);
-			sqlQuery.setString("procc", disputeTxn.getProcc());
-			sqlQuery.setString("slot", disputeTxn.getBcnxSettle().getSlot());
-			sqlQuery.setString("rrn", disputeTxn.getBcnxSettle().getRrn());
-			sqlQuery.setString("stan", disputeTxn.getBcnxSettle().getStan());
-			sqlQuery.setString("mti", disputeTxn.getBcnxSettle().getMti());
+			sqlQuery.setString("procc", disputeTxn.getProc());
+			sqlQuery.setString("slot", disputeTxn.getSlot());
+			sqlQuery.setString("rrn", disputeTxn.getRrn());
+			sqlQuery.setString("stan", disputeTxn.getStan());
+			sqlQuery.setString("mti", disputeTxn.getMti());
 			sqlQuery.setFirstResult(first);
 			sqlQuery.setMaxResults(max);
 			return toList(sqlQuery.list());
@@ -113,13 +113,13 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			@Override
 			public Integer doInHibernate(Session session)
 					throws HibernateException {
-				String sql = "select COUNT(*) from ( select * from DISPUTETXN icr where icr.PROCC = '500001' and icr.ACQID = :id "
+				String sql = "select COUNT(*) as NUM from ( select * from DISPUTETXN icr where icr.PROCC = '500001' and icr.ACQID = :id "
 					 +" union select * from DISPUTETXN irr where irr.PROCC = '500002' and irr.ISSID = :id "
 					 +" union select * from DISPUTETXN icb where icb.PROCC = '600001' and icb.ACQID = :id " 
 					 +" union select * from DISPUTETXN iad where iad.PROCC = '700001' and iad.ISSID = :id "
 					 +" union select * from DISPUTETXN irp where irp.PROCC = '800001' and irp.ISSID = :id ) TXN";
 				SQLQuery sqlQuery = session.createSQLQuery(sql);
-				sqlQuery.addEntity(DisputeTxn.class);
+				sqlQuery.addScalar("NUM", LongType.INSTANCE);
 				sqlQuery.setString("id", id);
 				Long len = (Long) sqlQuery.uniqueResult();
 				return len.intValue();
@@ -158,13 +158,13 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			@Override
 			public Integer doInHibernate(Session session)
 					throws HibernateException {
-				String sql = "select COUNT(*) from ( select * from DISPUTETXN icr where icr.PROCC = :proc and icr.ACQID = :id "
+				String sql = "select COUNT(*) as NUM from ( select * from DISPUTETXN icr where icr.PROCC = :proc and icr.ACQID = :id "
 						+ " union select * from DISPUTETXN irr where irr.PROCC = :proc and irr.ISSID = :id "
 						+ " union select * from DISPUTETXN icb where icb.PROCC = :proc and icb.ACQID = :id "
 						+ " union select * from DISPUTETXN iad where iad.PROCC = :proc and iad.ISSID = :id "
 						+ " union select * from DISPUTETXN irp where irp.PROCC = :proc and irp.ISSID = :id ) TXN";
 				SQLQuery sqlQuery = session.createSQLQuery(sql);
-				sqlQuery.addEntity(DisputeTxn.class);
+				sqlQuery.addScalar("NUM", LongType.INSTANCE);
 				sqlQuery.setString("id", id);
 				sqlQuery.setString("proc", proc);
 				Long len = (Long) sqlQuery.uniqueResult();
@@ -186,7 +186,7 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 					+ " union select * from DISPUTETXN irr where irr.PROCC = '500002' and irr.ACQID = :id "
 					+ " union select * from DISPUTETXN icb where icb.PROCC = '600001' and icb.ISSID = :id "
 					+ " union select * from DISPUTETXN iad where iad.PROCC = '700001' and iad.ACQID = :id "
-					+ " union select * from DISPUTETXN irp where irp.PROCC = '800001' and irp.ACQID = :id ORDER BY TIME, DATE ";
+					+ " union select * from DISPUTETXN irp where irp.PROCC = '800001' and irp.ACQID = :id ORDER BY TIME, DATE DESC";
 				SQLQuery sqlQuery = session.createSQLQuery(sql);
 				sqlQuery.addEntity(DisputeTxn.class);
 				sqlQuery.setString("id", id);
@@ -204,13 +204,13 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			@Override
 			public Integer doInHibernate(Session session)
 					throws HibernateException {
-				String sql = "select COUNT(*) from ( select * from DISPUTETXN icr where icr.PROCC = '500001' and icr.ISSID = :id "
+				String sql = "select COUNT(*) as NUM from ( select * from DISPUTETXN icr where icr.PROCC = '500001' and icr.ISSID = :id "
 						+ " union select * from DISPUTETXN irr where irr.PROCC = '500002' and irr.ACQID = :id "
 						+ " union select * from DISPUTETXN icb where icb.PROCC = '600001' and icb.ISSID = :id "
 						+ " union select * from DISPUTETXN iad where iad.PROCC = '700001' and iad.ACQID = :id "
 						+ " union select * from DISPUTETXN irp where irp.PROCC = '800001' and irp.ACQID = :id ) TXN ";
 				SQLQuery sqlQuery = session.createSQLQuery(sql);
-				sqlQuery.addEntity(DisputeTxn.class);
+				sqlQuery.addScalar("NUM",LongType.INSTANCE);
 				sqlQuery.setString("id", id);
 				Long len = (Long) sqlQuery.uniqueResult();
 				return len.intValue();
@@ -230,7 +230,7 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 					+ " union select * from DISPUTETXN irr where irr.PROCC = :proc and irr.ACQID = :id "
 					+ " union select * from DISPUTETXN icb where icb.PROCC = :proc and icb.ISSID = :id "
 					+ " union select * from DISPUTETXN iad where iad.PROCC = :proc and iad.ACQID = :id "
-					+ " union select * from DISPUTETXN irp where irp.PROCC = :proc and irp.ACQID = :id ORDER BY TIME, DATE ";
+					+ " union select * from DISPUTETXN irp where irp.PROCC = :proc and irp.ACQID = :id ORDER BY TIME, DATE DESC";
 				SQLQuery sqlQuery = session.createSQLQuery(sql);
 				sqlQuery.addEntity(DisputeTxn.class);
 				sqlQuery.setString("id", id);
@@ -250,13 +250,13 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			@Override
 			public Integer doInHibernate(Session session)
 					throws HibernateException {
-				String sql = "select COUNT(*) from ( select * from DISPUTETXN icr where icr.PROCC = :proc and icr.ISSID = :id "
+				String sql = "select COUNT(*) as NUM from ( select * from DISPUTETXN icr where icr.PROCC = :proc and icr.ISSID = :id "
 					+ " union select * from DISPUTETXN irr where irr.PROCC = :proc and irr.ACQID = :id "
 					+ " union select * from DISPUTETXN icb where icb.PROCC = :proc and icb.ISSID = :id "
 					+ " union select * from DISPUTETXN iad where iad.PROCC = :proc and iad.ACQID = :id "
 					+ " union select * from DISPUTETXN irp where irp.PROCC = :proc and irp.ACQID = :id ) TXN";
 				SQLQuery sqlQuery = session.createSQLQuery(sql);
-				sqlQuery.addEntity(DisputeTxn.class);
+				sqlQuery.addScalar("NUM", LongType.INSTANCE);
 				sqlQuery.setString("id", id);
 				sqlQuery.setString("proc", proc);
 				Long len = (Long) sqlQuery.uniqueResult();
@@ -281,18 +281,22 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			@Override
 			public List<DisputeTxn> doInHibernate(Session session)
 					throws HibernateException {
-				String hql = "select d from DisputeTxn d inner join d.BcnxSettle db where db.rrn = :rrn and db.slot = :slot and db.stan = :stan and db.mti = :mti";
-				Query query = session.createQuery(hql);
-				query.setString("rrn", disp.getBcnxSettle().getRrn());
-				query.setString("slot", disp.getBcnxSettle().getSlot());
-				query.setString("stan", disp.getBcnxSettle().getStan());
-				query.setString("mti", disp.getBcnxSettle().getMti());
+				String sql = "select * from DISPUTETXN where BCNXSETL_MTI = :mti and BCNXSETL_SLOT = :slot and BCNXSETL_RRN = :rrn and BCNXSETL_STAN = :stan";
+				SQLQuery query = session.createSQLQuery(sql);
+				query.addEntity(DisputeTxn.class);
+				System.out.println(disp.toString());
+				System.out.println(disp.getRrn());
+				query.setString("mti", disp.getMti());
+				query.setString("slot", disp.getSlot());
+				query.setString("rrn", disp.getRrn());
+				query.setString("stan", disp.getStan());
 				query.setFirstResult(first);
 				query.setMaxResults(max);
 				return toList(query.list());
 			}
 		});
 	}
+	@Transactional
 	@Override
 	public int relatedRecords(final DisputeTxn disp) throws SQLException,
 			HibernateException {
@@ -300,13 +304,14 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			@Override
 			public Integer doInHibernate(Session session)
 					throws HibernateException {
-				String hql = "select count(d) from DisputeTxn d inner join d.BcnxSettle db where db.rrn = :rrn and db.slot = :slot and db.stan = :stan and db.mti = :mti";
-				Query query = session.createQuery(hql);
-				query.setString("rrn", disp.getBcnxSettle().getRrn());
-				query.setString("slot", disp.getBcnxSettle().getSlot());
-				query.setString("stan", disp.getBcnxSettle().getStan());
-				query.setString("mti", disp.getBcnxSettle().getMti());
-				Long len = (Long) query.uniqueResult();
+				String sql = "select count(*) as NUM from DISPUTETXN where BCNXSETL_MTI = :mti and BCNXSETL_SLOT = :slot and BCNXSETL_RRN = :rrn and BCNXSETL_STAN = :stan";
+				SQLQuery sqlQuery = session.createSQLQuery(sql);
+				sqlQuery.addScalar("NUM",LongType.INSTANCE);
+				sqlQuery.setString("rrn", disp.getRrn());
+				sqlQuery.setString("slot", disp.getSlot());
+				sqlQuery.setString("stan", disp.getStan());
+				sqlQuery.setString("mti", disp.getMti());
+				Long len = (Long) sqlQuery.uniqueResult();
 				return len.intValue();
 			}
 		});
@@ -375,10 +380,10 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 				String sql = "SELECT COUNT(*) FROM DISPUTETXN WHERE BCNXSETL_MTI = :mti AND BCNXSETL_RRN = :rrn and AND BCNXSETL_STAN = :stan and BCNXSETL_SLOT = :slot";
 				SQLQuery sqlQuery = session.createSQLQuery(sql);
 				sqlQuery.addEntity(DisputeTxn.class);
-				sqlQuery.setString("mti", dispute.getBcnxSettle().getMti());
-				sqlQuery.setString("rrn", dispute.getBcnxSettle().getRrn());
-				sqlQuery.setString("stan", dispute.getBcnxSettle().getStan());
-				sqlQuery.setString("slot", dispute.getBcnxSettle().getSlot());
+				sqlQuery.setString("mti", dispute.getMti());
+				sqlQuery.setString("rrn", dispute.getRrn());
+				sqlQuery.setString("stan", dispute.getStan());
+				sqlQuery.setString("slot", dispute.getSlot());
 				Long len = (Long) sqlQuery.uniqueResult();
 				return len.intValue();
 			}
@@ -397,13 +402,7 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 	private List<BcnxSettle> toSettles(List<DisputeTxn> disps){
 		List<BcnxSettle> list = new ArrayList<BcnxSettle>();
 		for(DisputeTxn bs : disps){
-			BcnxSettle settle = new BcnxSettle();
-			settle = bs.getBcnxSettle();
-			settle.setAmount(bs.getAmount());
-			settle.setProc(bs.getProcc());
-			settle.setDate(bs.getDate());
-			settle.setTime(bs.getTime());
-			settle.setFee(bs.getFee());
+			BcnxSettle settle = bs;
 			list.add(settle);
 		}
 		return list;

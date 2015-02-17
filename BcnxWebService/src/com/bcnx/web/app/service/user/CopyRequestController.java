@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
@@ -16,7 +15,6 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.CopyRequestService;
-import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.ErrMsg;
 import com.bcnx.web.app.service.entity.ReasonCode;
@@ -34,9 +32,8 @@ public class CopyRequestController extends DisputeTemplate{
 			@FormParam("part") String part, @FormParam("amount") double amount,
 			@FormParam("fee") double fee, @FormParam("iss") String iss,
 			@FormParam("acq") String acq, @FormParam("usrId") String userId) {
-		
 		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProcc(proc);
+		disputeTxn.setProc(proc);
 		disputeTxn.setRemark(remark);
 		disputeTxn.setAmount(amount);
 		disputeTxn.setFee(fee);
@@ -44,20 +41,16 @@ public class CopyRequestController extends DisputeTemplate{
 		disputeTxn.setIss(iss);
 		disputeTxn.setDate(getDate());
 		disputeTxn.setTime(getTime());
-		
 		ReasonCode rc = reasonCodeService.getReasonCode(rea);
 		User user = new User();
 		user.setUserId(userId);
 		user = userService.getUser(user);
-		BcnxSettle settle = new BcnxSettle();
-		settle.setSlot(slot);
-		settle.setMti(mti);
-		settle.setRrn(rrn);
-		settle.setStan(stan);
-		settle = bcnxSettleService.getBcnxSettle(settle);
 		disputeTxn.setRc(rc);
 		disputeTxn.setUser(user);
-		disputeTxn.setBcnxSettle(settle);
+		disputeTxn.setSlot(slot);
+		disputeTxn.setMti(mti);
+		disputeTxn.setRrn(rrn);
+		disputeTxn.setStan(stan);
 		// copy request
 		boolean chk = checkIssuer(disputeTxn, user);
 		if (!chk)
@@ -75,7 +68,7 @@ public class CopyRequestController extends DisputeTemplate{
 				.entity(new ErrMsg("200", "Copy request has sent successfully"))
 				.build();
 	}
-	@PUT
+	@POST
 	@Path("/response")
 	@Produces("application/json")
 	@Consumes("multipart/form-data")
@@ -89,23 +82,18 @@ public class CopyRequestController extends DisputeTemplate{
 		String proc = getDataForm(uploadForm.get("procc"));
 		String userId = getDataForm(uploadForm.get("usrId"));
 		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProcc(proc);
 		User user = new User();
 		user.setUserId(userId);
 		user = userService.getUser(user);
-		BcnxSettle settle = new BcnxSettle();
-		settle.setSlot(slot);
-		settle.setMti(mti);
-		settle.setRrn(rrn);
-		settle.setStan(stan);
-		settle = bcnxSettleService.getBcnxSettle(settle);
 		disputeTxn.setUser(user);
-		disputeTxn.setBcnxSettle(settle);
+		disputeTxn.setSlot(slot);
+		disputeTxn.setMti(mti);
+		disputeTxn.setRrn(rrn);
+		disputeTxn.setStan(stan);
 		disputeTxn = disputeTxnService.getDisputeTxn(disputeTxn);
+		disputeTxn.setProc(proc);
 		disputeTxn.setFlag("Y");
 		disputeTxn.setFileName(fileName);
-		disputeTxn.setIss(settle.getIss());
-		disputeTxn.setAcq(settle.getAcq());
 		copyRequestService.respCpReq(disputeTxn);
 		return Response.ok(new ErrMsg("200","update successful")).build();
 	}
