@@ -10,14 +10,12 @@ import com.bcnx.web.app.service.entity.DisputeTxn;
 public class CopyRequestDaoImp extends DisputeTxnDaoImp {
 	@Transactional
 	@Override
-	public void save(DisputeTxn disputeTxn) throws SQLException,
-			HibernateException {
+	public void save(DisputeTxn disputeTxn) throws SQLException, HibernateException {
 		super.save(disputeTxn);
 	}
 	@Transactional
 	@Override
-	public void update(DisputeTxn disputeTxn) throws SQLException,
-			HibernateException {
+	public void update(DisputeTxn disputeTxn) throws SQLException, HibernateException {
 		super.update(disputeTxn);
 	}
 		

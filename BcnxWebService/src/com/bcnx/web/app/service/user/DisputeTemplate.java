@@ -22,7 +22,14 @@ import com.bcnx.web.app.service.entity.Member;
 import com.bcnx.web.app.service.entity.User;
 
 public class DisputeTemplate {
-	protected static UserService userService = (UserService) BcnxApplicationContext.getBean("userService");
+	
+	private static final String CPRQ = "500001";
+	private static final String CHB  = "600001";
+	private static final String CPRP = "500002";
+	private static final String ADJ  = "700001";
+	private static final String RPS  = "800001";
+	
+	protected static UserService 	   userService 		 = (UserService) BcnxApplicationContext.getBean("userService");
 	protected static BcnxSettleService bcnxSettleService = (BcnxSettleService) BcnxApplicationContext.getBean("bcnxSettleService");
 	protected static ReasonCodeService reasonCodeService = (ReasonCodeService) BcnxApplicationContext.getBean("reasonCodeService");
 	protected static DisputeTxnService disputeTxnService = (DisputeTxnService) BcnxApplicationContext.getBean("disputeTxnService");
@@ -30,17 +37,16 @@ public class DisputeTemplate {
 	protected boolean checkIssuer(DisputeTxn txn, User user){
 		String iss = txn.getIss();
 		Member mem = user.getMember();
-		if(mem.getIin().equals(iss))
-			return true;
-		return false;
+		boolean issChk = mem.getIin().equals(iss);
+		boolean procChk = txn.getProcc().equals(CPRQ)||txn.getProcc().equals(CHB);
+		return issChk&&procChk;
 	}
-	
 	protected boolean checkAcquirer(DisputeTxn txn, User user){
 		String acq = txn.getAcq();
 		Member mem = user.getMember();
-		if(mem.getIin().equals(acq))
-			return true;
-		return false;
+		boolean acqChk = mem.getIin().equals(acq);
+		boolean procChk = txn.getProcc().equals(CPRP)||txn.getProcc().equals(ADJ)||txn.getProcc().equals(RPS);
+		return acqChk&&procChk;
 	}
 	protected java.sql.Date getDate(){
 		java.util.Date d = new java.util.Date();
@@ -112,6 +118,10 @@ public class DisputeTemplate {
 		fop.write(content);
 		fop.flush();
 		fop.close();
- 
+	}
+	// check file name
+	protected boolean checkName(String fileName, User user, String rrn, String stan){
+		String name=user.getMember().getIin()+rrn+stan+".zip";
+		return fileName.equals(name);
 	}
 }

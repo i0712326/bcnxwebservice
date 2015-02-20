@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.ChargebackService;
+import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.ErrMsg;
 import com.bcnx.web.app.service.entity.ReasonCode;
@@ -27,29 +28,34 @@ public class ChargebackController extends DisputeTemplate{
 			@FormParam("fee") double fee, @FormParam("iss") String iss,
 			@FormParam("acq") String acq, @FormParam("usrId") String userId) {
 		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProc(proc);
+		disputeTxn.setProcc(proc);
 		disputeTxn.setRemark(remark);
 		disputeTxn.setAmount(amount);
 		disputeTxn.setFee(fee);
-		disputeTxn.setAcq(acq);
-		disputeTxn.setIss(iss);
+	
 		disputeTxn.setDate(getDate());
 		disputeTxn.setTime(getTime());
 		
 		ReasonCode rc = reasonCodeService.getReasonCode(rea);
 		User user = new User();
+		BcnxSettle bcnxSettle = new BcnxSettle();
+		bcnxSettle.setSlot(slot);
+		bcnxSettle.setMti(mti);
+		bcnxSettle.setRrn(rrn);
+		bcnxSettle.setStan(stan);
+		
+		bcnxSettle = bcnxSettleService.getBcnxSettle(bcnxSettle);
+		
 		user.setUserId(userId);
 		user = userService.getUser(user);
 		
 		disputeTxn.setRc(rc);
 		disputeTxn.setUser(user);
-		disputeTxn.setSlot(slot);
-		disputeTxn.setMti(mti);
-		disputeTxn.setRrn(rrn);
-		disputeTxn.setStan(stan);
+		disputeTxn.setBcnxSettle(bcnxSettle);
 		
 		// copy request
 		boolean chk = checkIssuer(disputeTxn, user);
+		
 		if (!chk)
 			return Response
 					.status(500)

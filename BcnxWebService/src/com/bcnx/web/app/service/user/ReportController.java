@@ -1,8 +1,6 @@
 package com.bcnx.web.app.service.user;
 
 import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +17,7 @@ import com.bcnx.web.app.service.MemberService;
 import com.bcnx.web.app.service.ReportService;
 import com.bcnx.web.app.service.entity.Member;
 import com.bcnx.web.app.service.entity.Report;
+import com.bcnx.web.app.utility.UtilityService;
 @Path("/report")
 public class ReportController {
 	private static ReportService reportService = (ReportService) BcnxApplicationContext.getBean("reportService");
@@ -31,7 +30,7 @@ public class ReportController {
 		Member member = new Member();
 		member.setMemId(memId);
 		member = memberService.getMember(member);
-		List<Report> list = reportService.getReports(member, str2Date(date), 0, 5);
+		List<Report> list = reportService.getReports(member, UtilityService.str2Date2(date), 0, 5);
 		return Response.ok(list).build();
 	}
 	private static final String dir = "report";
@@ -49,14 +48,5 @@ public class ReportController {
 		response.header("Content-Disposition",
 			"attachment; filename=\""+name+"\"");
 		return response.build();
-	}
-	private java.sql.Date str2Date(String date){
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		try {
-			java.util.Date d = format.parse(date);
-			return new java.sql.Date(d.getTime());
-		} catch (ParseException e) {
-			return null;
-		}
 	}
 }

@@ -1,27 +1,26 @@
 package com.bcnx.web.app.service.entity;
 
+import java.io.Serializable;
 import java.sql.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.PrimaryKeyJoinColumns;
 import javax.persistence.Table;
 @Entity
 @Table(name="DISPUTETXN")
-@PrimaryKeyJoinColumns({
-	@PrimaryKeyJoinColumn(name="BCNXSETL_MTI",  referencedColumnName="MTI"),
-	@PrimaryKeyJoinColumn(name="BCNXSETL_STAN", referencedColumnName="STAN"),
-	@PrimaryKeyJoinColumn(name="BCNXSETL_SLOT", referencedColumnName="SLOT"),
-	@PrimaryKeyJoinColumn(name="BCNXSETL_RRN", referencedColumnName="RRN"),
-	@PrimaryKeyJoinColumn(name="BCNXSETL_PROCC", referencedColumnName="PROCC")
-})
-public class DisputeTxn extends BcnxSettle {
+public class DisputeTxn implements Serializable{
 	private static final long serialVersionUID = 1L;
+	@Id
 	@Column(name="ID")
 	private int id;
+	@Id
+	@Column(name="PROCC",nullable=false, length=6)
+	private String procc;
 	@Column(name="REMARK")
 	private String remark;
 	@Column(name="DATE")
@@ -46,19 +45,26 @@ public class DisputeTxn extends BcnxSettle {
 	@ManyToOne
 	@JoinColumn(name="USRDATA_USRID")
 	private User user;
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumns({
+		@JoinColumn(name="BCNXSETL_MTI", referencedColumnName="MTI"),
+		@JoinColumn(name="BCNXSETL_SLOT", referencedColumnName="SLOT"),
+		@JoinColumn(name="BCNXSETL_STAN", referencedColumnName="STAN"),
+		@JoinColumn(name="BCNXSETL_RRN", referencedColumnName="RRN"),
+		@JoinColumn(name="BCNXSETL_PROCC", referencedColumnName="PROCC"),
+	})
+	private BcnxSettle bcnxSettle;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	@Override
-	public String getProc() {
-		return super.getProc();
+	public String getProcc() {
+		return procc;
 	}
-	@Override
-	public void setProc(String proc) {
-		super.setProc(proc);
+	public void setProcc(String procc) {
+		this.procc = procc;
 	}
 	public String getRemark() {
 		return remark;
@@ -69,14 +75,14 @@ public class DisputeTxn extends BcnxSettle {
 	public Date getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(Date dat) {
+		this.date = dat;
 	}
 	public String getTime() {
 		return time;
 	}
-	public void setTime(String time) {
-		this.time = time;
+	public void setTime(String tim) {
+		this.time = tim;
 	}
 	public double getAmount() {
 		return amount;
@@ -127,44 +133,57 @@ public class DisputeTxn extends BcnxSettle {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	@Override
+	public BcnxSettle getBcnxSettle() {
+		return bcnxSettle;
+	}
+	public void setBcnxSettle(BcnxSettle bcnxSettle) {
+		this.bcnxSettle = bcnxSettle;
+	}
+	
 	public String getMti() {
-		return super.getMti();
+		return bcnxSettle.getMti();
 	}
-	@Override
+	
 	public void setMti(String mti) {
-		super.setMti(mti);
+		bcnxSettle.setMti(mti);
 	}
-	@Override
+	
 	public String getRrn() {
-		return super.getRrn();
+		return bcnxSettle.getRrn();
 	}
-	@Override
+	
 	public void setRrn(String rrn) {
-		super.setRrn(rrn);
+		bcnxSettle.setRrn(rrn);
 	}
-	@Override
+	
 	public String getSlot() {
-		return super.getSlot();
+		return bcnxSettle.getSlot();
 	}
-	@Override
+	
 	public void setSlot(String slot) {
-		super.setSlot(slot);
+		bcnxSettle.setSlot(slot);
 	}
-	@Override
+	
 	public String getStan() {
-		return super.getStan();
+		return bcnxSettle.getStan();
 	}
-	@Override
+	
 	public void setStan(String stan) {
-		super.setStan(stan);
+		bcnxSettle.setStan(stan);
 	}
-	@Override
+	
 	public String getIss() {
-		return super.getIss();
+		return bcnxSettle.getIss();
 	}
-	@Override
+	
 	public String getAcq() {
-		return super.getAcq();
+		return bcnxSettle.getAcq();
+	}
+	
+	public void setIss(String iss) {
+		bcnxSettle.setIss(iss);
+	}
+	public void setAcq(String acq) {
+		bcnxSettle.setAcq(acq);
 	}
 }

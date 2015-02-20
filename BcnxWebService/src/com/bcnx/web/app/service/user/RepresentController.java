@@ -38,7 +38,7 @@ public class RepresentController extends DisputeTemplate{
 		String userId = getDataForm(uploadForm.get("usrId"));
 		
 		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProc(proc);
+		disputeTxn.setProcc(proc);
 		disputeTxn.setDate(getDate());
 		disputeTxn.setTime(getTime());
 		disputeTxn.setFileName(fileName);

@@ -23,7 +23,7 @@ public class CopyRequestServiceImp implements CopyRequestService {
 		}
 	}
 	@Override
-	public void respCpReq(DisputeTxn disp) {
+	public void update(DisputeTxn disp) {
 		try {
 			disputeTxnDao.update(disp);
 		} catch (HibernateException | SQLException e) {

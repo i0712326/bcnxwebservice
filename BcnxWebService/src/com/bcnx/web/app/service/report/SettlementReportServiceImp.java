@@ -59,22 +59,23 @@ public class SettlementReportServiceImp implements SettlementReportService {
 		List<BcnxSettle> errTxn = bcnxSettleService.getBcnxErr(date,id);
 		errTxn = bcnxSettleFee.setUpIssFee(errTxn);
 		printReport(pw,"ERROR :",errTxn);
-		
+		//TODO new implementation require
 		// publish charge back ( issuer - acquire )
-		List<BcnxSettle> issChb = disputeTxnService.issChb(date, id);
+		/*
+		List<DisputeTxn> issChb = disputeTxnService.issChb(date, id);
 		issChb = bcnxSettleFee.setUpIssFee(issChb);
 		printReport(pw,"ISSUER CHARGE BACK :",issChb);
 		
-		List<BcnxSettle> acqChb = disputeTxnService.acqChb(date, id);
+		List<DisputeTxn> acqChb = disputeTxnService.acqChb(date, id);
 		acqChb = bcnxSettleFee.setUpAcqFee(acqChb);
 		printReport(pw,"ACQUIRER CHARGE BACK :",acqChb);
 		
 		// publish adjustment ( issuer - acquire )
-		List<BcnxSettle> issAdj = disputeTxnService.issAdj(date, id);
+		List<DisputeTxn> issAdj = disputeTxnService.issAdj(date, id);
 		issAdj = bcnxSettleFee.setUpIssFee(issAdj);
 		printReport(pw,"ISSUER ADJUSTMENT :",issAdj);
 		
-		List<BcnxSettle> acqAdj = disputeTxnService.acqAdj(date, id);
+		List<DisputeTxn> acqAdj = disputeTxnService.acqAdj(date, id);
 		acqAdj = bcnxSettleFee.setUpAcqFee(acqAdj);
 		printReport(pw,"ACQUIRER ADJUSTMENT :",acqAdj);
 		
@@ -100,7 +101,7 @@ public class SettlementReportServiceImp implements SettlementReportService {
 		seq = printReconReports(pw,acqAdj,seq);
 		seq = printReconReports(pw,revTxn,seq);
 		printReconReports(pw,errTxn,seq);
-		
+		*/
 		pw.close();
 
 	}
@@ -120,9 +121,9 @@ public class SettlementReportServiceImp implements SettlementReportService {
 		int count = 1;
 		for (BcnxSettle bcon : list) {
 			pw.printf("%5d\t%10s\t%8s\t%19s\t%6s\t%12s\t%6s\t%2s\t%12s\t%10s\t%8s\t%8s\t%8s\r\n", count, bcon.getDate(), bcon.getTime(),
-					bcon.getCard(), bcon.getProc(), bcon.getRrn(), bcon.getStan(), bcon.getRes(), decimalFormat.format(bcon.getAmount()),
+					bcon.getCard(), bcon.getProc(), bcon.getRrn(), bcon.getStan(), bcon.getRes(), decimalFormat.format(bcon.getAmt()),
 					decimalFormat.format(bcon.getFee()), bcon.getTermId(),bcon.getIss(),bcon.getAcq());
-			total += bcon.getAmount();
+			total += bcon.getAmt();
 			fee += bcon.getFee();
 			count++;
 		}
@@ -171,7 +172,7 @@ public class SettlementReportServiceImp implements SettlementReportService {
 	private int printReconReports(PrintWriter pw,List<BcnxSettle> list, int count){
 		for(BcnxSettle bcon : list){
 			pw.printf("%4d%6s%6s%19s%6s%12s%6s%2s%012d%010d%8s%6s%6s%4s\r\n", count, UtilityService.date2Str(bcon.getDate()), bcon.getTime().replace(":", ""),
-					bcon.getCard(), bcon.getProc(), bcon.getRrn(), bcon.getStan(), bcon.getRes(), (int)bcon.getAmount()*100,
+					bcon.getCard(), bcon.getProc(), bcon.getRrn(), bcon.getStan(), bcon.getRes(), (int)bcon.getAmt()*100,
 					(int)bcon.getFee(), bcon.getTermId(),bcon.getIss(),bcon.getAcq()==null?"------":bcon.getAcq(),bcon.getMti());
 			count++;
 		}
@@ -180,7 +181,7 @@ public class SettlementReportServiceImp implements SettlementReportService {
 	private double getTotal(List<BcnxSettle> list){
 		double total = 0.0;
 		for (BcnxSettle bcnxSettle : list) {
-			total += bcnxSettle.getAmount();
+			total += bcnxSettle.getAmt();
 		}
 		return total;
 	}

@@ -8,6 +8,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.Wrapper;
 
@@ -18,13 +19,13 @@ public class DisputeController extends DisputeTemplate {
 	@Produces("application/json")
 	public Response getRelated(@QueryParam("rrn") String rrn,
 			@QueryParam("slot") String slot, @QueryParam("stan") String stan,
-			@QueryParam("mti") String mti, @QueryParam("page") int page,
-			@QueryParam("rows") int rows) {
+			@QueryParam("page") int page, @QueryParam("rows") int rows) {
+		BcnxSettle settle = new BcnxSettle();
+		settle.setRrn(rrn);
+		settle.setSlot(slot);
+		settle.setStan(stan);
 		DisputeTxn disp = new DisputeTxn();
-		disp.setRrn(rrn);
-		disp.setSlot(slot);
-		disp.setStan(stan);
-		disp.setMti(mti);
+		disp.setBcnxSettle(settle);
 		int first = (page-1)*rows;
 		List<DisputeTxn> list = disputeTxnService.getRelated(disp, first, rows);
 		int records = disputeTxnService.getRelatedRecords(disp);
@@ -37,17 +38,17 @@ public class DisputeController extends DisputeTemplate {
 		return Response.ok(wrapper).build();
 	}
 	@GET
-	@Path("/get/transaction")
+	@Path("/get/txn")
 	@Produces("application/json")
-	public Response getDisputeTxn(@QueryParam("rrn") String rrn, @QueryParam("rrn") String proc,
-			@QueryParam("slot") String slot, @QueryParam("stan") String stan,
-			@QueryParam("mti") String mti){
+	public Response getDisputeTxn(@QueryParam("rrn") String rrn, @QueryParam("proc") String proc,
+			@QueryParam("slot") String slot, @QueryParam("stan") String stan){
+		BcnxSettle settle = new BcnxSettle();
+		settle.setRrn(rrn);
+		settle.setSlot(slot);
+		settle.setStan(stan);
 		DisputeTxn disp = new DisputeTxn();
-		disp.setProc(proc);
-		disp.setRrn(rrn);
-		disp.setSlot(slot);
-		disp.setStan(stan);
-		disp.setMti(mti);
+		disp.setProcc(proc);
+		disp.setBcnxSettle(settle);
 		disp = disputeTxnService.getDisputeTxn(disp);
 		return Response.ok(disp).build();
 	}

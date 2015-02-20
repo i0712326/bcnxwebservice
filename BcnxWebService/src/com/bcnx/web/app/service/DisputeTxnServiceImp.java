@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import com.bcnx.web.app.service.dao.DisputeTxnDao;
-import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 
 public class DisputeTxnServiceImp implements DisputeTxnService {
@@ -35,7 +34,7 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 			return null;
 		}
 	}
-
+	/*
 	@Override
 	public List<DisputeTxn> getDisputeTxns(DisputeTxn disputeTxn, int first, int max) {
 		try {
@@ -44,7 +43,7 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 			logger.debug("Exception occured while try get dispute data", e);
 			return null;
 		}
-	}
+	}*/
 	// incoming
 	@Override
 	public List<DisputeTxn> getIncoming(String id, int first, int max) {
@@ -155,7 +154,7 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 	
 	// settlement
 	@Override
-	public List<BcnxSettle> issChb(Date date, String id) {
+	public List<DisputeTxn> issChb(Date date, String id) {
 		try {
 			return disputeTxnDao.outGoingChb(date,id);
 		} catch (HibernateException | SQLException e) {
@@ -164,7 +163,7 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 		}
 	}
 	@Override
-	public List<BcnxSettle> acqChb(Date date, String id) {
+	public List<DisputeTxn> acqChb(Date date, String id) {
 		try {
 			return disputeTxnDao.incomingChb(date, id);
 		} catch (HibernateException | SQLException e) {
@@ -173,7 +172,7 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 		}
 	}
 	@Override
-	public List<BcnxSettle> issAdj(Date date, String id) {
+	public List<DisputeTxn> issAdj(Date date, String id) {
 		try {
 			return disputeTxnDao.outGoingAdj(date,id);
 		} catch (HibernateException | SQLException e) {
@@ -182,7 +181,7 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 		}
 	}
 	@Override
-	public List<BcnxSettle> acqAdj(Date date, String id) {
+	public List<DisputeTxn> acqAdj(Date date, String id) {
 		try {
 			return disputeTxnDao.incomingAdj(date, id);
 		} catch (HibernateException | SQLException e) {

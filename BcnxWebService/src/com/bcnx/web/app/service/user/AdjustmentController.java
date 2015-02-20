@@ -28,7 +28,7 @@ public class AdjustmentController extends DisputeTemplate{
 			@FormParam("acq") String acq, @FormParam("usrId") String userId) {
 		
 		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProc(proc);
+		disputeTxn.setProcc(proc);
 		disputeTxn.setRemark(remark);
 		disputeTxn.setAmount(amount);
 		disputeTxn.setFee(fee);
