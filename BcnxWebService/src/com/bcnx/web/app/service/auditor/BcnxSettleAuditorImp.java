@@ -92,7 +92,7 @@ public class BcnxSettleAuditorImp extends BatchAuditJob implements BcnxSettleAud
 				bcnxSettle.setCard(card);
 				bcnxSettle.setRes(res);
 				bcnxSettle.setTime(time);
-				bcnxSettle.setAmount(Double.parseDouble(amt)/100);
+				bcnxSettle.setAmt(Double.parseDouble(amt)/100);
 				bcnxSettle.setTermId(atmId);
 				bcnxSettle.setAcq(acqId);
 				bcnxSettle.setIss(issId);

@@ -22,7 +22,7 @@ public class BcnxSettleController {
 	public Response getBcnxSettles(@QueryParam("card") String card,
 			@QueryParam("rrn") String rrn, @QueryParam("stan") String stan,
 			@QueryParam("from") String from, @QueryParam("to") String to,
-			@QueryParam("first") int page, @QueryParam("rows") int rows) {
+			@QueryParam("page") int page, @QueryParam("rows") int rows) {
 		BcnxSettle bs = new BcnxSettle();
 		bs.setCard(card);
 		bs.setRrn(rrn);

@@ -54,37 +54,23 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 	}
 	@Transactional
 	@Override
-	public List<BcnxSettle> getBcnxSettles(BcnxSettle bcnxSettle, Date start, Date end, int first, int max)
+	public List<BcnxSettle> getBcnxSettles(final BcnxSettle bcnxSettle, final Date start, final Date end, final int first, final int max)
 			throws SQLException, HibernateException {
-		return toList(hibernateTemplate.execute(new GetBcnxSettles(bcnxSettle,start,end,first,max)));
-	}
-	private class GetBcnxSettles implements HibernateCallback<List<BcnxSettle>>{
-		private BcnxSettle bcnxSettle;
-		private Date start;
-		private Date end;
-		private int first;
-		private int max;
-		public GetBcnxSettles(BcnxSettle bcnxSettle, Date start, Date end, int first, int max){
-			this.bcnxSettle = bcnxSettle;
-			this.start = start;
-			this.end = end;
-			this.first = first;
-			this.max = max;
-		}
-		@Override
-		public List<BcnxSettle> doInHibernate(Session session)
-				throws HibernateException {
-			String hql = "from BcnxSettle bs where bs.card like :card or bs.rrn like :rrn or bs.stan like :stan or bs.date between :start and :end";
-			Query query = session.createQuery(hql);
-			query.setString("card", bcnxSettle.getCard());
-			query.setString("rrn", bcnxSettle.getRrn());
-			query.setString("stan", bcnxSettle.getStan());
-			query.setDate("start", start);
-			query.setDate("end", end);
-			query.setFirstResult(first);
-			query.setMaxResults(max);
-			return toList(query.list());
-		}
+		return hibernateTemplate.execute(new HibernateCallback<List<BcnxSettle>>(){
+			@Override
+			public List<BcnxSettle> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("getBcnxSettles");
+				query.setString("card", bcnxSettle.getCard());
+				query.setString("rrn", bcnxSettle.getRrn());
+				query.setString("stan", bcnxSettle.getStan());
+				query.setDate("start", start);
+				query.setDate("end", end);
+				query.setFirstResult(first);
+				query.setMaxResults(max);
+				return toList(query.list());
+			}
+		});
 	}
 	@Transactional
 	@Override
@@ -94,8 +80,7 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 			@Override
 			public Integer doInHibernate(Session session)
 					throws HibernateException {
-				String hql = "select count(bs) from BcnxSettle bs where bs.card like :card or bs.rrn like :rrn or bs.stan like :stan or bs.date between :start and :end";
-				Query query = session.createQuery(hql);
+				Query query = session.getNamedQuery("countBcnxSettles");
 				query.setString("card", bs.getCard());
 				query.setString("rrn", bs.getRrn());
 				query.setString("stan", bs.getStan());

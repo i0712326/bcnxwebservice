@@ -6,8 +6,6 @@ import java.sql.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
@@ -17,7 +15,6 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name="BCNXSETL")
-@Inheritance(strategy=InheritanceType.JOINED)
 public class BcnxSettle implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -36,20 +33,20 @@ public class BcnxSettle implements Serializable{
 	private Date date;
 	@Column(name="TIME",nullable=false,length=8)
 	private String time;
-	@Column(name="CARD", nullable=false, length=19)
+	@Column(name="CARD", length=19)
 	private String card;
 	@Id
 	@Column(name="PROCC", nullable=false, length=6)
 	private String proc;
-	@Column(name="RES", nullable=false, length=2)
+	@Column(name="RES",length=2)
 	private String res;
 	@Column(name="AMOUNT")
 	private double amount = 0;
-	@Column(name="TERMID", nullable=false, length=8)
+	@Column(name="TERMID", length=8)
 	private String termId;
-	@Column(name="ACQID", nullable=false, length=6)
+	@Column(name="ACQID", length=6)
 	private String acq;
-	@Column(name="ISSID", nullable=false, length=6)
+	@Column(name="ISSID",length=6)
 	private String iss;
 	
 	@ManyToOne
@@ -121,10 +118,10 @@ public class BcnxSettle implements Serializable{
 	public void setRes(String res) {
 		this.res = res;
 	}
-	public double getAmount() {
+	public double getAmt() {
 		return amount;
 	}
-	public void setAmount(double amount) {
+	public void setAmt(double amount) {
 		this.amount = amount;
 	}
 	public String getTermId() {

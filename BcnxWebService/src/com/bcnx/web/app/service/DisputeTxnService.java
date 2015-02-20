@@ -3,7 +3,6 @@ package com.bcnx.web.app.service;
 import java.sql.Date;
 import java.util.List;
 
-import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 
 public interface DisputeTxnService {
@@ -29,14 +28,14 @@ public interface DisputeTxnService {
 	public int getRelatedRecords(DisputeTxn disp);
 	
 	// get list of data
-	public List<DisputeTxn> getDisputeTxns(DisputeTxn disputeTxn, int first, int max);
+	//public List<DisputeTxn> getDisputeTxns(DisputeTxn disputeTxn, int first, int max);
 	// get related data
 	public int getRecords(DisputeTxn disputeTxn);
 	
 	// get settle module
-	public List<BcnxSettle> issChb(Date date, String id);
-	public List<BcnxSettle> acqChb(Date date, String id);
-	public List<BcnxSettle> issAdj(Date date, String id);
-	public List<BcnxSettle> acqAdj(Date date, String id);
+	public List<DisputeTxn> issChb(Date date, String id);
+	public List<DisputeTxn> acqChb(Date date, String id);
+	public List<DisputeTxn> issAdj(Date date, String id);
+	public List<DisputeTxn> acqAdj(Date date, String id);
 	
 }

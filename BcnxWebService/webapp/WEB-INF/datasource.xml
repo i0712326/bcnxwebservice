@@ -35,6 +35,12 @@
 				<value>com.bcnx.web.app.service.entity.Bin</value>
 			</list>
 		</property>
+		<property name="mappingResources">
+                <list>
+                	<value>DisputeTxn.hbm.xml</value>
+                	<value>BcnxSettle.hbm.xml</value>
+                </list>
+        </property>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.show_sql">true</prop>

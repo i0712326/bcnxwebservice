@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.hibernate.HibernateException;
 
-import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 
 public interface DisputeTxnDao {
@@ -34,13 +33,13 @@ public interface DisputeTxnDao {
 	
 	// view incoming
 	public DisputeTxn getDisputeTxn(DisputeTxn disputeTxn) throws SQLException, HibernateException;
-	public List<DisputeTxn> getDisputeTxns(DisputeTxn disputeTxn,int first, int max) throws SQLException, HibernateException;
+	//public List<DisputeTxn> getDisputeTxns(DisputeTxn disputeTxn,int first, int max) throws SQLException, HibernateException;
 	
 	/*settlement data*/
-	public List<BcnxSettle> outGoingChb(Date date, String id) throws SQLException, HibernateException;
-	public List<BcnxSettle> incomingChb(Date date, String id) throws SQLException, HibernateException;
-	public List<BcnxSettle> outGoingAdj(Date date, String id) throws SQLException, HibernateException;
-	public List<BcnxSettle> incomingAdj(Date date, String id) throws SQLException, HibernateException;
+	public List<DisputeTxn> outGoingChb(Date date, String id) throws SQLException, HibernateException;
+	public List<DisputeTxn> incomingChb(Date date, String id) throws SQLException, HibernateException;
+	public List<DisputeTxn> outGoingAdj(Date date, String id) throws SQLException, HibernateException;
+	public List<DisputeTxn> incomingAdj(Date date, String id) throws SQLException, HibernateException;
 	
 	public int getRecords(DisputeTxn disputeTxn) throws SQLException, HibernateException;
 	

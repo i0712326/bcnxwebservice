@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
@@ -15,6 +16,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.CopyRequestService;
+import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.ErrMsg;
 import com.bcnx.web.app.service.entity.ReasonCode;
@@ -33,12 +35,10 @@ public class CopyRequestController extends DisputeTemplate{
 			@FormParam("fee") double fee, @FormParam("iss") String iss,
 			@FormParam("acq") String acq, @FormParam("usrId") String userId) {
 		DisputeTxn disputeTxn = new DisputeTxn();
-		disputeTxn.setProc(proc);
+		disputeTxn.setProcc(proc);
 		disputeTxn.setRemark(remark);
 		disputeTxn.setAmount(amount);
 		disputeTxn.setFee(fee);
-		disputeTxn.setAcq(acq);
-		disputeTxn.setIss(iss);
 		disputeTxn.setDate(getDate());
 		disputeTxn.setTime(getTime());
 		ReasonCode rc = reasonCodeService.getReasonCode(rea);
@@ -47,11 +47,16 @@ public class CopyRequestController extends DisputeTemplate{
 		user = userService.getUser(user);
 		disputeTxn.setRc(rc);
 		disputeTxn.setUser(user);
-		disputeTxn.setSlot(slot);
-		disputeTxn.setMti(mti);
-		disputeTxn.setRrn(rrn);
-		disputeTxn.setStan(stan);
-		// copy request
+		BcnxSettle settle = new BcnxSettle();
+		settle.setSlot(slot);
+		settle.setRrn(rrn);
+		settle.setStan(stan);
+		settle.setMti(mti);
+		settle = bcnxSettleService.getBcnxSettle(settle);
+		if(settle==null)
+			return Response.status(500)
+					.entity(new ErrMsg("412", "invalid transactions")).build();
+		disputeTxn.setBcnxSettle(settle);
 		boolean chk = checkIssuer(disputeTxn, user);
 		if (!chk)
 			return Response
@@ -68,7 +73,7 @@ public class CopyRequestController extends DisputeTemplate{
 				.entity(new ErrMsg("200", "Copy request has sent successfully"))
 				.build();
 	}
-	@POST
+	@PUT
 	@Path("/response")
 	@Produces("application/json")
 	@Consumes("multipart/form-data")
@@ -80,21 +85,63 @@ public class CopyRequestController extends DisputeTemplate{
 		String stan = getDataForm(uploadForm.get("stan"));
 		String mti = getDataForm(uploadForm.get("mti"));
 		String proc = getDataForm(uploadForm.get("procc"));
+		String rea = getDataForm(uploadForm.get("rea"));
 		String userId = getDataForm(uploadForm.get("usrId"));
+		
 		DisputeTxn disputeTxn = new DisputeTxn();
+		disputeTxn.setDate(getDate());
+		disputeTxn.setTime(getTime());
+		disputeTxn.setProcc(proc);
+				
 		User user = new User();
 		user.setUserId(userId);
 		user = userService.getUser(user);
 		disputeTxn.setUser(user);
-		disputeTxn.setSlot(slot);
-		disputeTxn.setMti(mti);
-		disputeTxn.setRrn(rrn);
-		disputeTxn.setStan(stan);
-		disputeTxn = disputeTxnService.getDisputeTxn(disputeTxn);
-		disputeTxn.setProc(proc);
-		disputeTxn.setFlag("Y");
+		// check file name
+		boolean chkName = checkName(fileName, user,rrn, stan);
+		if (!chkName)
+			return Response.status(500)
+					.entity(new ErrMsg("409", "Invalid Attachment Name"))
+					.build();
+		ReasonCode rc = reasonCodeService.getReasonCode(rea);
+		disputeTxn.setRc(rc);
+		BcnxSettle settle = new BcnxSettle();
+		settle.setRrn(rrn);
+		settle.setSlot(slot);
+		settle.setStan(stan);
+		settle.setMti(mti);
+		
+		settle = bcnxSettleService.getBcnxSettle(settle);
+		if(settle==null)
+			return Response.status(500)
+					.entity(new ErrMsg("412", "Invalid transactions")).build();
+		disputeTxn.setBcnxSettle(settle);
+		
+		DisputeTxn txn = disputeTxnService.getDisputeTxn(disputeTxn);
+		if (txn != null)
+			return Response.status(500)
+					.entity(new ErrMsg("411", "Duplicated request")).build();
+		boolean chk = checkAcquirer(disputeTxn, user);
+		if (!chk)
+			return Response
+					.status(500)
+					.entity(new ErrMsg("410",
+							"User is not allowed to perform function")).build();
+		DisputeTxn disp = new DisputeTxn();
+		disp.setProcc("500001");
+		disp.setBcnxSettle(settle);
+		disp = disputeTxnService.getDisputeTxn(disp);
+		if(disp==null)
+			return Response
+					.status(500)
+					.entity(new ErrMsg("413",
+							"Invalid copy request")).build();
+		disp.setStatus("Y");
+		copyRequestService.update(disp);
+		disputeTxn.setAmount(disp.getAmount());
+		disputeTxn.setFee(disp.getFee());
 		disputeTxn.setFileName(fileName);
-		copyRequestService.respCpReq(disputeTxn);
+		copyRequestService.save(disputeTxn);
 		return Response.ok(new ErrMsg("200","update successful")).build();
 	}
 }
