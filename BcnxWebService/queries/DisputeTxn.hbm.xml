@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+ "-//Hibernate/Hibernate Mapping DTD//EN"
+ "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
+<hibernate-mapping>
+  	<query name="getRelated">
+   		select d from DisputeTxn d inner join d.bcnxSettle b where
+			b.rrn = :rrn and b.stan = :stan and b.slot = :slot
+	</query>
+	<query name="countRelated">
+		select count(d) from DisputeTxn d inner join d.bcnxSettle b where
+			b.rrn = :rrn and b.stan = :stan and b.slot = :slot
+	</query>
+	<!--  get single dispute transaction -->
+	<query name="getDisputeTxn">
+		select d from DisputeTxn d inner join d.bcnxSettle b where d.procc = :procc and b.rrn =
+		:rrn and b.stan = :stan and b.slot = :slot
+	</query>
+	
+	<!-- 
+		INCOMING QUERIES
+	 -->
+	
+	<sql-query name="getInComing">
+		<return alias="incomings" class="com.bcnx.web.app.service.entity.DisputeTxn"/>
+			<![CDATA[
+				select * from (
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '500001' and b.acqid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '500002' and b.issid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '600001' and b.acqid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '700001' and b.issid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '800001' and b.issid = :id
+		 		) t order by t.time, t.date desc
+			]]>
+	</sql-query>
+	<sql-query name="countInComing">
+		<return-scalar column="num" type="long"/>
+		<![CDATA[
+			select count(*) as num from (
+			 	  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '500001' and b.acqid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '500002' and b.issid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '600001' and b.acqid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '700001' and b.issid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '800001' and b.issid = :id
+			) as t
+		]]>
+	</sql-query>
+	<sql-query name="getProcIncoming">
+		<return alias="procIncomings" class="com.bcnx.web.app.service.entity.DisputeTxn"/>
+		<![CDATA[
+			select * from (
+				  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.acqid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.acqid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id
+			) as t order by t.time, t.date desc
+		]]>
+	</sql-query>
+	<sql-query name="countProcIncoming">
+		<return-scalar column="num" type="long"/>
+		<![CDATA[
+		select count(*) as num from (
+				  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.acqid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.acqid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id 
+		 		union 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id
+			) as t
+		]]>
+	</sql-query>
+	
+	<!-- 
+		OUTGOING QUERIES
+	 -->
+	
+	<sql-query name="getOutgoings">
+		<return alias="outGoings" class="com.bcnx.web.app.service.entity.DisputeTxn"/>
+		<![CDATA[
+			select * from (
+				  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '500001' and b.issid = :id 
+			union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '500002' and b.acqid = :id 
+			union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '600001' and b.issid = :id 
+			union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '700001' and b.acqid = :id 
+			union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '800001' and b.acqid = :id 
+			) as t order by time, date desc
+		]]>
+	</sql-query>
+	<sql-query name="countOutgoings">
+		<return-scalar column="num" type="long"/>
+		<![CDATA[
+			select count(*) as num from (
+					  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '500001' and b.issid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '500002' and b.acqid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '600001' and b.issid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '700001' and b.acqid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = '800001' and b.acqid = :id 
+			) as t
+		]]>
+	</sql-query>
+	
+	<sql-query name="getProcOutgoings">
+		<return alias="procOutgoins" class="com.bcnx.web.app.service.entity.DisputeTxn"/>
+		<![CDATA[
+			select * from (
+				      select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.issid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.issid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
+			) as t order by t.time, t.date desc
+		]]>
+	</sql-query>
+	<sql-query name="countProcOutgoing">
+		<return-scalar column="num" type="long"/>
+		<![CDATA[
+			select count(*) as num from ( 
+					  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.issid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.issid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
+			) as t
+		]]>
+	</sql-query>
+</hibernate-mapping>

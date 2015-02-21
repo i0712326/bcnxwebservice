@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Context[
+	<!ELEMENT Context (Resource+)>
+	<!ELEMENT Resource EMPTY >
+	<!ATTLIST Resource name CDATA #REQUIRED>
+	<!ATTLIST Resource auth CDATA #REQUIRED>
+	<!ATTLIST Resource type CDATA #IMPLIED>
+	<!ATTLIST Resource maxActive CDATA #REQUIRED>
+	<!ATTLIST Resource  maxIdle CDATA #REQUIRED>
+	<!ATTLIST Resource maxWait CDATA #REQUIRED>
+	<!ATTLIST Resource username CDATA #REQUIRED>
+	<!ATTLIST Resource password CDATA #REQUIRED>
+	<!ATTLIST Resource driverClassName CDATA #REQUIRED>
+	<!ATTLIST Resource url CDATA #REQUIRED>
+]>
+<Context>
+	<Resource name="jdbc/bcnx" auth="Container" type="javax.sql.DataSource"
+               maxActive="100" maxIdle="30" maxWait="10000"
+               username="root" password="123456" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3307/bcnx"/>
+</Context>

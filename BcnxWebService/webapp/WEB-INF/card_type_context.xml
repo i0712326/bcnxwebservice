@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<import resource="datasource.xml"/>
+	<bean id="cardTypeDao" class="com.bcnx.web.app.service.dao.CardTypeDaoImp">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	<bean id="cardProcDao" class="com.bcnx.web.app.service.dao.CardProcDaoImp">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+</beans>
