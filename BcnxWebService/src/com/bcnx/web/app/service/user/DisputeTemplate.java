@@ -59,7 +59,7 @@ public class DisputeTemplate {
 	}
 	protected static final String UPLOADED_FILE_PATH = "D:\\Share\\tik\\Work"; 
 	protected String getFileData(List<InputPart> inputParts){
-		String fileName = "unkwonk";
+		String fileName = "unknown";
 		for (InputPart inputPart : inputParts) {
 			 try {
 				MultivaluedMap<String, String> header = inputPart.getHeaders();

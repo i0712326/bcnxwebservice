@@ -64,15 +64,7 @@ public class BcnxSettleServiceImp implements BcnxSettleService {
 		}
 	}
 	// batch date checking
-	@Override
-	public List<Date> getSettleDates() {
-		try {
-			return bcnxSettleDao.getSettleDate();
-		} catch (HibernateException | SQLException e) {
-			logger.debug("Exception occured while try to get settle date", e);
-			return null;
-		}
-	}
+	
 	@Override
 	public Date getMaxDate() {
 		try {

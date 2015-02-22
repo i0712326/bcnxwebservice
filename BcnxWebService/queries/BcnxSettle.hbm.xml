@@ -7,9 +7,23 @@
 		from BcnxSettle b where b.rrn = :rrn and b.mti = :mti and b.stan = :stan and b.slot = :slot
 	</query>
 	<query name="getBcnxSettles">
-		from BcnxSettle bs where bs.card like :card or bs.rrn like :rrn or bs.stan like :stan or bs.date between :start and :end
+		from BcnxSettle bs where bs.card like :card and bs.rrn like :rrn and bs.stan like :stan and bs.date between :start and :end
 	</query>
 	<query name="countBcnxSettles">
-		select count(bs) from BcnxSettle bs where bs.card like :card or bs.rrn like :rrn or bs.stan like :stan or bs.date between :start and :end
+		select count(bs) from BcnxSettle bs where bs.card like :card and bs.rrn like :rrn and bs.stan like :stan and bs.date between :start and :end
+	</query>
+	<!--  settlement calculation -->
+	<query name="getMaxDate">
+		select max(bs.date) as date from BcnxSettle bs order by bs.date desc
+	</query>
+	<query name="getBcnxFinIss">
+		from BcnxSettle b where b.date = :date and b.iss = :id and b.res = :res and b.rrn 
+			not in (select bb.rrn from BcnxSettle bb where bb.date =:date and bb.iss = :id and bb.mti = :mti ) 
+			order by b.time 
+	</query>
+	<query name="getBcnxFinAcq">
+		from BcnxSettle b where b.date = :date and b.acq = :id and b.res = :res and b.rrn 
+				not in (select bb.rrn from BcnxSettle bb where bb.date =:date and bb.acq = :id and bb.mti = :mti ) "
+				order by b.time;
 	</query>
 </hibernate-mapping>

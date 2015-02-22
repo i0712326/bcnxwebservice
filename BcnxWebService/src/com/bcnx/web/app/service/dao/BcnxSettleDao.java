@@ -15,7 +15,7 @@ public interface BcnxSettleDao {
 	public List<BcnxSettle> getBcnxSettles(BcnxSettle bcnxSettle, Date start,
 			Date end, int first, int max) throws SQLException,
 			HibernateException;
-	public List<Date> getSettleDate() throws SQLException, HibernateException;
+	/*public List<Date> getSettleDate() throws SQLException, HibernateException;*/
 	public Date getMaxDate() throws SQLException, HibernateException;
 	
 	public List<BcnxSettle> getBcnxFinIss(Date date, String id) throws SQLException, HibernateException;;

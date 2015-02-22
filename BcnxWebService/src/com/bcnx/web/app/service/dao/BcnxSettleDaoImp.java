@@ -42,8 +42,7 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 			@Override
 			public BcnxSettle doInHibernate(Session session)
 					throws HibernateException {
-				String hql = "from BcnxSettle b where b.rrn = :rrn and b.mti = :mti and b.stan = :stan and b.slot = :slot";
-				Query query = session.createQuery(hql);
+				Query query = session.getNamedQuery("getBcnxSettle");
 				query.setString("rrn", bcnxSettle.getRrn());
 				query.setString("mti", bcnxSettle.getMti());
 				query.setString("stan", bcnxSettle.getStan());
@@ -92,20 +91,7 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 			
 		});
 	}
-	@Transactional
-	@Override
-	public List<Date> getSettleDate() throws SQLException, HibernateException {
-		return hibernateTemplate.execute(new HibernateCallback<List<Date>>(){
-			@Override
-			public List<Date> doInHibernate(Session session)
-					throws HibernateException {
-				String sql = "select distinct(bs.date) from BcnxSettle bs order by bs.date desc";
-				Query query = session.createQuery(sql);
-				return toDates(query.list());
-			}
-			
-		});
-	}
+	// batch file upload support module
 	@Transactional
 	@Override
 	public Date getMaxDate()throws SQLException, HibernateException{
@@ -159,14 +145,6 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 		String[] param ={"date","id", "res", "mti"};
 		Object[] values = {date, id, "00", "0420"};
 		return toList(hibernateTemplate.findByNamedParam(hql, param, values));
-	}
-	private List<Date> toDates(final List<?> beans){
-		if(beans == null ) return null;
-		if(beans.isEmpty()) return null;
-		int size = beans.size();
-		Date[] list = new Date[size];
-		list = beans.toArray(list);
-		return Arrays.asList(list);
 	}
 	private List<BcnxSettle> toList(final List<?> beans){
 		if(beans == null ) return new ArrayList<BcnxSettle>();

@@ -32,8 +32,7 @@ public class CopyRequestController extends DisputeTemplate{
 			@FormParam("stan") String stan, @FormParam("proc") String proc,
 			@FormParam("rea") String rea, @FormParam("remark") String remark,
 			@FormParam("part") String part, @FormParam("amount") double amount,
-			@FormParam("fee") double fee, @FormParam("iss") String iss,
-			@FormParam("acq") String acq, @FormParam("usrId") String userId) {
+			@FormParam("fee") double fee, @FormParam("usrId") String userId) {
 		DisputeTxn disputeTxn = new DisputeTxn();
 		disputeTxn.setProcc(proc);
 		disputeTxn.setRemark(remark);
