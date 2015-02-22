@@ -23,7 +23,14 @@
 	</query>
 	<query name="getBcnxFinAcq">
 		from BcnxSettle b where b.date = :date and b.acq = :id and b.res = :res and b.rrn 
-				not in (select bb.rrn from BcnxSettle bb where bb.date =:date and bb.acq = :id and bb.mti = :mti ) "
-				order by b.time;
+				not in (select bb.rrn from BcnxSettle bb where bb.date =:date and bb.acq = :id and bb.mti = :mti ) 
+				order by b.time
+	</query>
+	<query name="getBcnxRev">
+		from BcnxSettle b where b.date = :date and ( b.acq =:id or b.iss =:id )and b.res = :res and b.mti = :mti order by b.time
+	</query>
+	<query name="">
+		 from BcnxSettle b where b.date = :date and ( b.acq =:id or b.iss =:id )and b.res !=:res and b.mti = :mti and b.rrn not in 
+				( select bb.rrn from BcnxSettle bb where bb.date =:date and bb.acq = :id and bb.mti = :mti ) order by b.time
 	</query>
 </hibernate-mapping>
