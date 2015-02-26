@@ -11,7 +11,7 @@
 	    </layout>
 	</appender>
  	<appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="${catalina.home}/logger/webservice.log" />
+		<param name="File" value="${catalina.home}/logs/logger/webservice.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%m%n" />
