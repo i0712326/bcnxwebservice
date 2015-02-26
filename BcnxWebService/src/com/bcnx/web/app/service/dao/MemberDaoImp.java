@@ -42,6 +42,20 @@ public class MemberDaoImp implements MemberDao {
 	}
 	@Transactional
 	@Override
+	public Member getMemIin(final String iin) throws SQLException {
+		return hibernateTemplate.execute(new HibernateCallback<Member>(){
+			@Override
+			public Member doInHibernate(Session session) throws HibernateException {
+				String hql = "from Member m where m.iin = :iin";
+				Query query = session.createQuery(hql);
+				query.setString("iin", iin);
+				return (Member) query.uniqueResult();
+			}
+			
+		});
+	}
+	@Transactional
+	@Override
 	public List<Member> getMembers(int first, int max) throws SQLException {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Member.class);
 		return toList(hibernateTemplate.findByCriteria(criteria, first, max));

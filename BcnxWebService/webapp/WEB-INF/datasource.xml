@@ -30,7 +30,7 @@
 				<value>com.bcnx.web.app.service.entity.BcnxSettle</value>
 				<value>com.bcnx.web.app.service.entity.CardType</value>
 				<value>com.bcnx.web.app.service.entity.CardProc</value>
-				<value>com.bcnx.web.app.service.entity.Report</value>
+				<value>com.bcnx.web.app.service.entity.SettleBcnx</value>
 				<value>com.bcnx.web.app.service.entity.ProcCode</value>
 				<value>com.bcnx.web.app.service.entity.Bin</value>
 			</list>
@@ -39,6 +39,7 @@
                 <list>
                 	<value>DisputeTxn.hbm.xml</value>
                 	<value>BcnxSettle.hbm.xml</value>
+                	<value>SettleBcnx.hbm.xml</value>
                 </list>
         </property>
 		<property name="hibernateProperties">

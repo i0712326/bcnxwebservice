@@ -34,7 +34,7 @@ public class Member implements Serializable {
 	@OneToMany(mappedBy="member",cascade=CascadeType.ALL)
 	private List<User> user;
 	@OneToMany(mappedBy="member",cascade=CascadeType.ALL)
-	private List<Report> report;
+	private List<SettleBcnx> settleBcnx;
 	@Transient
 	private double netAmount;
 	public String getIin() {
@@ -88,11 +88,11 @@ public class Member implements Serializable {
 		this.user = user;
 	}
 	@JsonIgnore
-	public List<Report> getReport() {
-		return report;
+	public List<SettleBcnx> getSettleBcnx() {
+		return settleBcnx;
 	}
-	public void setReport(List<Report> report) {
-		this.report = report;
+	public void setSettleBcnx(List<SettleBcnx> settleBcnx) {
+		this.settleBcnx = settleBcnx;
 	}
 	public double getNetAmount() {
 		return netAmount;

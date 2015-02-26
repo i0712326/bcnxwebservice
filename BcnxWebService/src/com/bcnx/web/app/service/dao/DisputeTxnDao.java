@@ -35,12 +35,24 @@ public interface DisputeTxnDao {
 	public DisputeTxn getDisputeTxn(DisputeTxn disputeTxn) throws SQLException, HibernateException;
 	
 	/*settlement data*/
-	public List<DisputeTxn> outGoingChb(Date date, String id) throws SQLException, HibernateException;
+	public List<DisputeTxn> outgoingChb(Date date, String id) throws SQLException, HibernateException;
 	public List<DisputeTxn> incomingChb(Date date, String id) throws SQLException, HibernateException;
-	public List<DisputeTxn> outGoingAdj(Date date, String id) throws SQLException, HibernateException;
+	
+	public List<DisputeTxn> outgoingAdj(Date date, String id) throws SQLException, HibernateException;
 	public List<DisputeTxn> incomingAdj(Date date, String id) throws SQLException, HibernateException;
 	
+	public List<DisputeTxn> outgoingRp(Date date, String id) throws SQLException, HibernateException;
+	public List<DisputeTxn> incomingRp(Date date, String id) throws SQLException, HibernateException;
+	
+	public List<DisputeTxn> outgoinCp(Date date, String id) throws SQLException, HibernateException;
+	public List<DisputeTxn> incomingCp(Date date, String id) throws SQLException, HibernateException;
+	
+	public List<DisputeTxn> outgoingCrs(Date date, String id) throws SQLException, HibernateException;
+	public List<DisputeTxn> incomingCrs(Date date, String id) throws SQLException, HibernateException;
+	
 	public int getRecords(DisputeTxn disputeTxn) throws SQLException, HibernateException;
+
+	
 	
 	
 	

@@ -32,6 +32,15 @@ public class MemberServiceImp implements MemberService {
 		}
 	}
 	@Override
+	public Member getMemIin(String iin) {
+		try {
+			return memberDao.getMemIin(iin);
+		} catch (SQLException e) {
+			logger.debug("Exception occured while try to get member", e);
+			return null;
+		}
+	}
+	@Override
 	public List<Member> getMembers(int first, int max) {
 		try {
 			return memberDao.getMembers(first, max);

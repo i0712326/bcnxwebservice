@@ -228,15 +228,17 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 	
 	// settlement API
 	@Transactional
-	public List<DisputeTxn> outGoingRp(Date date, String id) throws SQLException, HibernateException{
-		String hql = "from DisputeTxn d where d.date = :date and d.acq = :id and d.procc = :proc order by d.time";
+	@Override
+	public List<DisputeTxn> outgoingRp(Date date, String id) throws SQLException, HibernateException{
+		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time";
 		String[] param = {"date","id","proc"};
 		Object[] values = {date, id, "800001"};
 		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
 	}
 	@Transactional
-	public List<DisputeTxn> inComingRp(Date date, String id) throws SQLException, HibernateException{
-		String hql = "from DisputeTxn d where d.date = :date and d.iss = :id and d.procc = :proc order by d.time";
+	@Override
+	public List<DisputeTxn> incomingRp(Date date, String id) throws SQLException, HibernateException{
+		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time";
 		String[] param = {"date","id","proc"};
 		Object[] values = {date, id, "800001"};
 		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
@@ -244,9 +246,9 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 	
 	@Transactional
 	@Override
-	public List<DisputeTxn> outGoingChb(Date date, String id) throws SQLException,
+	public List<DisputeTxn> outgoingChb(Date date, String id) throws SQLException,
 			HibernateException {
-		String hql = "from DisputeTxn d where d.date = :date and d.iss = :id and d.procc = :proc order by d.time";
+		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time";
 		String[] param = {"date","id","proc"};
 		Object[] values = {date, id, "600001"};
 		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
@@ -255,16 +257,16 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 	@Override
 	public List<DisputeTxn> incomingChb(Date date, String id) throws SQLException,
 			HibernateException {
-		String hql = "from DisputeTxn d where d.date = :date and d.acq = :id and d.procc = :proc order by d.time";
+		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time";
 		String[] param = {"date","id","proc"};
 		Object[] values = {date, id, "600001"};
 		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> outGoingAdj(Date date, String id) throws SQLException,
+	public List<DisputeTxn> outgoingAdj(Date date, String id) throws SQLException,
 			HibernateException {
-		String hql = "from DisputeTxn d where d.date = :date and d.acq = :id and d.procc = :proc order by d.time";
+		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time";
 		String[] param = {"date","id","proc"};
 		Object[] values = {date, id, "700001"};
 		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
@@ -273,12 +275,47 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 	@Override
 	public List<DisputeTxn> incomingAdj(Date date, String id) throws SQLException,
 			HibernateException {
-		String hql = "from DisputeTxn d where d.date = :date and d.iss = :id and d.procc = :proc order by d.time";
+		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time";
 		String[] param = {"date","id","proc"};
 		Object[] values = {date, id, "700001"};
 		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
 	}
-	
+	@Transactional
+	@Override
+	public List<DisputeTxn> outgoinCp(Date date, String id)
+			throws SQLException, HibernateException {
+		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time";
+		String[] param = {"date","id","proc"};
+		Object[] values = {date, id, "500001"};
+		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+	}
+	@Transactional
+	@Override
+	public List<DisputeTxn> incomingCp(Date date, String id)
+			throws SQLException, HibernateException {
+		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time";
+		String[] param = {"date","id","proc"};
+		Object[] values = {date, id, "500001"};
+		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+	}
+	@Transactional
+	@Override
+	public List<DisputeTxn> outgoingCrs(Date date, String id)
+			throws SQLException, HibernateException {
+		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time";
+		String[] param = {"date","id","proc"};
+		Object[] values = {date, id, "500002"};
+		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+	}
+	@Transactional
+	@Override
+	public List<DisputeTxn> incomingCrs(Date date, String id)
+			throws SQLException, HibernateException {
+		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time";
+		String[] param = {"date","id","proc"};
+		Object[] values = {date, id, "500002"};
+		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+	}
 	@Transactional
 	@Override
 	public int getRecords(final DisputeTxn dispute) throws SQLException, HibernateException {
@@ -286,8 +323,8 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			@Override
 			public Integer doInHibernate(Session session)
 					throws HibernateException {
-				String sql = "SELECT COUNT(*) FROM DISPUTETXN WHERE BCNXSETL_MTI = :mti AND BCNXSETL_RRN = :rrn and AND BCNXSETL_STAN = :stan and BCNXSETL_SLOT = :slot";
-				SQLQuery sqlQuery = session.createSQLQuery(sql);
+				String hql = "select count(*) from DisputeTxn d join inner d.bcnxSettle b where b.mti = :mti and b.rrn = :rrn and b.stan = :stan and b.slot = :slot";
+				SQLQuery sqlQuery = session.createSQLQuery(hql);
 				sqlQuery.addEntity(DisputeTxn.class);
 				sqlQuery.setString("mti", dispute.getMti());
 				sqlQuery.setString("rrn", dispute.getRrn());
@@ -299,7 +336,6 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			
 		});
 	}
-	
 	protected List<DisputeTxn> toList(final List<?> beans){
 		if(beans==null) return new ArrayList<DisputeTxn>();
 		if(beans.isEmpty()) return new ArrayList<DisputeTxn>();

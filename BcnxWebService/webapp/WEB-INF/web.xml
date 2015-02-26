@@ -17,7 +17,8 @@
 			com.bcnx.web.app.service.user.RepresentController,
 			com.bcnx.web.app.service.user.OutgoingController,
 			com.bcnx.web.app.service.user.IncomingController,
-			com.bcnx.web.app.service.user.DisputeController
+			com.bcnx.web.app.service.user.DisputeController,
+			com.bcnx.web.app.service.user.SettleBcnxController
 		</param-value>
 	</context-param>
   	<listener>

@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 
 import com.bcnx.web.app.service.MemberService;
 import com.bcnx.web.app.service.entity.Member;
+import com.bcnx.web.app.service.entity.SettleBcnx;
 import com.bcnx.web.app.utility.UtilityService;
 
 public class NetSettlementReportImp implements NetSettlementReport {
@@ -43,7 +44,8 @@ public class NetSettlementReportImp implements NetSettlementReport {
 				if(!dir.exists())
 					dir.mkdir();
 				settlementReportService.publishSettlement(dest, backDate, id);
-				mem.setNetAmount(settlementReportService.getNet());
+				SettleBcnx settle = settlementReportService.getSettleBcnx();
+				mem.setNetAmount(settle.getNetAmt());
 			} catch (IOException e) {
 				logger.debug("Exception occured while try to export member daily reports",e);
 			}

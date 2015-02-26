@@ -28,9 +28,18 @@ public interface DisputeTxnService {
 	public int getRelatedRecords(DisputeTxn disp);
 	
 	// get settle module
-	public List<DisputeTxn> issChb(Date date, String id);
-	public List<DisputeTxn> acqChb(Date date, String id);
-	public List<DisputeTxn> issAdj(Date date, String id);
-	public List<DisputeTxn> acqAdj(Date date, String id);
+	public List<DisputeTxn> outgoingChb(Date date, String id);
+	public List<DisputeTxn> incomingChb(Date date, String id);
 	
+	public List<DisputeTxn> outgoingAdj(Date date, String id);
+	public List<DisputeTxn> incomingAdj(Date date, String id);
+	
+	public List<DisputeTxn> outgoingRpm(Date date, String id);
+	public List<DisputeTxn> incomingRpm(Date date, String id);
+	
+	public List<DisputeTxn> outgoingCp(Date date, String id);
+	public List<DisputeTxn> incomingCp(Date date, String id);
+	
+	public List<DisputeTxn> outgoingCrs(Date date, String id);
+	public List<DisputeTxn> incomingCrs(Date date, String id);
 }

@@ -14,6 +14,7 @@ import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.RepresentService;
+import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.ErrMsg;
 import com.bcnx.web.app.service.entity.ReasonCode;
@@ -35,6 +36,9 @@ public class RepresentController extends DisputeTemplate{
 		String mti = getDataForm(uploadForm.get("mti"));
 		String proc = getDataForm(uploadForm.get("procc"));
 		String rea = getDataForm(uploadForm.get("rea"));
+		String part = getDataForm(uploadForm.get("part"));
+		String amount = getDataForm(uploadForm.get("amount"));
+		String fee = getDataForm(uploadForm.get("fee"));
 		String userId = getDataForm(uploadForm.get("usrId"));
 		
 		DisputeTxn disputeTxn = new DisputeTxn();
@@ -42,17 +46,31 @@ public class RepresentController extends DisputeTemplate{
 		disputeTxn.setDate(getDate());
 		disputeTxn.setTime(getTime());
 		disputeTxn.setFileName(fileName);
+		disputeTxn.setStatus(part);
+		disputeTxn.setAmount(Double.parseDouble(amount));
+		disputeTxn.setFee(Double.parseDouble(fee));
 		ReasonCode rc = reasonCodeService.getReasonCode(rea);
 		User user = new User();
 		user.setUserId(userId);
 		user = userService.getUser(user);
 		
-		disputeTxn.setRc(rc);
-		disputeTxn.setUser(user);
-		disputeTxn.setSlot(slot);
-		disputeTxn.setMti(mti);
-		disputeTxn.setRrn(rrn);
-		disputeTxn.setStan(stan);
+		BcnxSettle settle = new BcnxSettle();
+		settle.setSlot(slot);
+		settle.setMti(mti);
+		settle.setRrn(rrn);
+		settle.setStan(stan);
+		settle = bcnxSettleService.getBcnxSettle(settle);
+		
+		
+		DisputeTxn disp = new DisputeTxn();
+		disp.setProcc("600001");
+		disp.setBcnxSettle(settle);
+		disp = disputeTxnService.getDisputeTxn(disp);
+		if(disp==null)
+			return Response
+					.status(500)
+					.entity(new ErrMsg("413",
+							"Invalid copy request")).build();
 		boolean chk = checkAcquirer(disputeTxn, user);
 		if (!chk) return Response
 					.status(500)
@@ -62,6 +80,9 @@ public class RepresentController extends DisputeTemplate{
 		if (txn != null)
 			return Response.status(500)
 					.entity(new ErrMsg("411", "Duplicated request")).build();
+		disputeTxn.setRc(rc);
+		disputeTxn.setUser(user);
+		disputeTxn.setBcnxSettle(settle);
 		representService.save(disputeTxn);
 		return Response
 				.ok(new ErrMsg("200", "Copy request has sent successfully"))

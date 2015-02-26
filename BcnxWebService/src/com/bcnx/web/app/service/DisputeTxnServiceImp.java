@@ -132,41 +132,95 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 	}
 	
 	// settlement
+	
 	@Override
-	public List<DisputeTxn> issChb(Date date, String id) {
+	public List<DisputeTxn> outgoingChb(Date date, String id) {
 		try {
-			return disputeTxnDao.outGoingChb(date,id);
+			return disputeTxnDao.outgoingChb(date,id);
 		} catch (HibernateException | SQLException e) {
-			logger.debug("Exception occured while try to get issuer charge back", e);
+			logger.debug("Exception occured while try to out out going chargeback", e);
 			return null;
 		}
 	}
 	@Override
-	public List<DisputeTxn> acqChb(Date date, String id) {
+	public List<DisputeTxn> incomingChb(Date date, String id) {
 		try {
 			return disputeTxnDao.incomingChb(date, id);
 		} catch (HibernateException | SQLException e) {
-			logger.debug("Exception occured while try to get acquirer charge back", e);
+			logger.debug("Exception occured while try to get incoming charge back", e);
 			return null;
 		}
 	}
 	@Override
-	public List<DisputeTxn> issAdj(Date date, String id) {
+	public List<DisputeTxn> incomingAdj(Date date, String id) {
 		try {
-			return disputeTxnDao.outGoingAdj(date,id);
+			return disputeTxnDao.outgoingAdj(date,id);
 		} catch (HibernateException | SQLException e) {
-			logger.debug("Exception occured while try to get issuer charge back", e);
+			logger.debug("Exception occured while try to get incoming adjustment", e);
 			return null;
 		}
 	}
 	@Override
-	public List<DisputeTxn> acqAdj(Date date, String id) {
+	public List<DisputeTxn> outgoingAdj(Date date, String id) {
 		try {
 			return disputeTxnDao.incomingAdj(date, id);
 		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get out going adjustment", e);
+			return null;
+		}
+	}
+	@Override
+	public List<DisputeTxn> outgoingRpm(Date date, String id) {
+		try {
+			return disputeTxnDao.outgoingRp(date, id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get out going representment", e);
+			return null;
+		}
+	}
+	@Override
+	public List<DisputeTxn> incomingRpm(Date date, String id) {
+		try {
+			return disputeTxnDao.incomingRp(date, id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get incoming representment", e);
+			return null;
+		}
+	}
+	@Override
+	public List<DisputeTxn> outgoingCp(Date date, String id) {
+		try {
+			return disputeTxnDao.outgoinCp(date,id);
+		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try to get issuer charge back", e);
 			return null;
 		}
 	}
-
+	@Override
+	public List<DisputeTxn> incomingCp(Date date, String id) {
+		try {
+			return disputeTxnDao.incomingCp(date, id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get incoming copy resquest", e);
+			return null;
+		}
+	}
+	@Override
+	public List<DisputeTxn> outgoingCrs(Date date, String id) {
+		try {
+			return disputeTxnDao.outgoingCrs(date, id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get outgoing copy response", e);
+			return null;
+		}
+	}
+	@Override
+	public List<DisputeTxn> incomingCrs(Date date, String id) {
+		try {
+			return disputeTxnDao.incomingCrs(date, id);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get incoming copy response", e);
+			return null;
+		}
+	}
 }
