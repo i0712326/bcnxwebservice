@@ -27,7 +27,7 @@ public class SettleBcnxServiceImp implements SettleBcnxService {
 	@Override
 	public SettleBcnx getSettleBcnx(Date date, String id) {
 		try {
-			return settleBcnxDao.getBcnx(date,id);
+			return settleBcnxDao.getSettleBcnx(date,id);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try to get Settle Bcnx date", e);
 			return null;

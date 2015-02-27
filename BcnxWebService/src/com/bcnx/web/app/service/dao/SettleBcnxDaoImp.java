@@ -26,7 +26,7 @@ public class SettleBcnxDaoImp implements SettleBcnxDao {
 	}
 	@Transactional
 	@Override
-	public SettleBcnx getBcnx(final Date date, final String id) throws SQLException,
+	public SettleBcnx getSettleBcnx(final Date date, final String id) throws SQLException,
 			HibernateException {
 		return hibernateTemplate.execute(new HibernateCallback<SettleBcnx>(){
 

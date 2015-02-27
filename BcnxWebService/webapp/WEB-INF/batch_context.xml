@@ -11,6 +11,8 @@
 	<import resource="dispute_context.xml"/>
 	<import resource="auditor_context.xml"/>
 	<import resource="cardProc_context.xml"/>
+	<import resource="settleBcnx_context.xml"/>
+	<import resource="member_context.xml"/>
 	<bean id="batchJob" class="com.bcnx.web.app.service.task.BatchJobTemplate" abstract="true">
 		<property name="bcnxSettleService" ref="bcnxSettleService"/>
 		<property name="fileTransfer" ref="fileTransfer"/>
@@ -30,6 +32,8 @@
 	<bean id="settlementReportService" class="com.bcnx.web.app.service.report.SettlementReportServiceImp">
 		<property name="bcnxSettleService" ref="bcnxSettleService"/>
 		<property name="disputeTxnService" ref="disputeTxnService"/>
+		<property name="settleBcnxService" ref="settleBcnxService"/>
+		<property name="memberService" ref="memberService"/>
 		<property name="bcnxSettleFee" ref="bcnxSettleFee"/>
 	</bean>
 	<bean id="netSettlementReport" class="com.bcnx.web.app.service.report.NetSettlementReportImp">

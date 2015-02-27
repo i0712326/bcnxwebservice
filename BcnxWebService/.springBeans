@@ -23,7 +23,7 @@
 		<config>webapp/WEB-INF/reasoncode_context.xml</config>
 		<config>webapp/WEB-INF/batch_context.xml</config>
 		<config>configure/cardProc_context.xml</config>
-		<config>webapp/WEB-INF/settle_batch_context.xml</config>
+		<config>webapp/WEB-INF/batch_scheduler.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

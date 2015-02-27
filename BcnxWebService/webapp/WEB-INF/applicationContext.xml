@@ -23,4 +23,5 @@
 	<import resource="dispute_context.xml"/>
 	<import resource="reasoncode_context.xml"/>
 	<import resource="batch_context.xml"/>
+	<import resource="settleBcnx_context.xml"/>
 </beans>

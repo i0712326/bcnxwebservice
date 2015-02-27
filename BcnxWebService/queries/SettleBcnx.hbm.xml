@@ -2,6 +2,6 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
 <hibernate-mapping>
 	<query name="getSettleBcnx">
-		from SettleBcnx s inner join s.member m where s.date = :date and m.iin = :id 
+		select s from SettleBcnx s inner join s.member m where s.date = :date and m.iin = :id 
 	</query>
 </hibernate-mapping>

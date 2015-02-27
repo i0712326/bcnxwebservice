@@ -8,4 +8,5 @@ import com.bcnx.web.app.service.entity.BcnxTxn;
 
 public interface BcnxTxnAuditor {
 	public List<BcnxTxn> toList(File file) throws IOException;
+	public void refine();
 }

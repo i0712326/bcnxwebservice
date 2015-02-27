@@ -21,8 +21,8 @@ public class BcnxSettleAuditorImpTest {
 	public void testDoWork() {
 		@SuppressWarnings("resource")
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		File file = new File("sample/verify.log.150113");
-		java.sql.Date date = UtilityService.str2Date2("150113");
+		File file = new File("sample/verify.log.150214");
+		java.sql.Date date = UtilityService.str2Date2("150214");
 		BcnxSettleAuditor bean = (BcnxSettleAuditor) context.getBean("bcnxSettleAuditor");
 		BcnxSettleService service = (BcnxSettleService) context.getBean("bcnxSettleService");
 		try {
@@ -31,7 +31,7 @@ public class BcnxSettleAuditorImpTest {
 			service.saveAll(list);
 			assertNotNull(list);
 		} catch (IOException e) {
-			fail("Exxception occured");
+			fail("Exception occured");
 		}
 	}
 }

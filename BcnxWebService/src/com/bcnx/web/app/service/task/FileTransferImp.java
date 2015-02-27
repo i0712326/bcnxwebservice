@@ -58,7 +58,7 @@ public class FileTransferImp implements FileTransfer {
         	 Date currentDate = UtilityService.getCurrentDate();
     		 String str = UtilityService.date2Str(currentDate);
         	 boolean check = Integer.parseInt(fileDate)>Integer.parseInt(date);
-        	 check = check&&(Integer.parseInt(fileDate)<Integer.parseInt(str));
+    		 check = check&&(Integer.parseInt(fileDate)<Integer.parseInt(str));
         	 logger.debug("checking file : "+fileName + "-> result :"+check);
         	 if(check){
 				String localFile = localPath + "/" + fileName;

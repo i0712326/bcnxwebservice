@@ -9,5 +9,5 @@ import com.bcnx.web.app.service.entity.SettleBcnx;
 
 public interface SettleBcnxDao {
 	public void save(SettleBcnx settleBcnx) throws SQLException, HibernateException;
-	public SettleBcnx getBcnx(Date date, String id) throws SQLException, HibernateException;
+	public SettleBcnx getSettleBcnx(Date date, String id) throws SQLException, HibernateException;
 }

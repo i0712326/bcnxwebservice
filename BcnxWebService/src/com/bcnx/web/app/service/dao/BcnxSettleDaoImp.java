@@ -29,10 +29,23 @@ public class BcnxSettleDaoImp implements BcnxSettleDao {
 	}
 	@Transactional
 	@Override
-	public void saveAll(List<BcnxSettle> bcnxSettles) throws SQLException,
+	public void saveAll(final List<BcnxSettle> bcnxSettles) throws SQLException,
 			HibernateException {
-		for(BcnxSettle bcnx : bcnxSettles)
-			hibernateTemplate.saveOrUpdate(bcnx);
+		hibernateTemplate.execute(new HibernateCallback<Void>() {
+			@Override
+			public Void doInHibernate(Session session)
+					throws HibernateException {
+				int count = 0;
+				for (BcnxSettle bcnx : bcnxSettles)
+					session.saveOrUpdate(bcnx);
+				if (++count % 50 == 0) {
+					session.flush();
+					session.clear();
+				}
+				return null;
+			}
+		});
+		
 	}
 	@Transactional
 	@Override

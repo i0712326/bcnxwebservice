@@ -137,7 +137,7 @@ public class BncxTxnAuditorImp extends BatchAuditJob implements BcnxTxnAuditor {
 			list.add(bcnxTxn);
 		}
 	}
-	
+	@Override
 	public void refine(){
 		for(BcnxTxn item : list){
 			String mti = item.getMti();

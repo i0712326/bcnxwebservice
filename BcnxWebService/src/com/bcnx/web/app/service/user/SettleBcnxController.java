@@ -31,7 +31,9 @@ public class SettleBcnxController {
 		User user = new User();
 		user.setUserId(id);
 		user = userBean.getUser(user);
-		SettleBcnx settleBcnx = settleBean.getSettleBcnx(UtilityService.str2Date2(date), id);
+		Member member = user.getMember();
+		String iin = member.getIin();
+		SettleBcnx settleBcnx = settleBean.getSettleBcnx(UtilityService.str2Date(date), iin);
 		return Response.ok(settleBcnx).build();
 	}
 	@GET

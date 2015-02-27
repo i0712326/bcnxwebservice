@@ -27,20 +27,34 @@ public class BcnxTxnDaoImp implements BcnxTxnDao {
 	}
 	@Transactional
 	@Override
-	public void saveAll(List<BcnxTxn> bcnxTxns) throws SQLException,
+	public void saveAll(final List<BcnxTxn> bcnxTxns) throws SQLException,
 			HibernateException {
-		for(BcnxTxn item : bcnxTxns){
-			String mti = item.getMti();
-			boolean check = mti.equals("0200")||mti.equals("0420");
-			if(check){
-				BcnxTxn chk = getBcnxTxn(item);
-				if(chk==null)
-					hibernateTemplate.save(item);
+		hibernateTemplate.execute(new HibernateCallback<Void>(){
+			@Override
+			public Void doInHibernate(Session session)
+					throws HibernateException {
+				int count = 0;
+				for(BcnxTxn item : bcnxTxns){
+					String mti = item.getMti();
+					boolean check = mti.equals("0200")||mti.equals("0420");
+					if(check){
+						System.out.println("update : "+item);
+						session.saveOrUpdate(item);
+					}
+					else{
+						System.out.println("update : "+item);
+						session.update(item);
+					}
+					if ( ++count % 50 == 0 ) {
+					      session.flush();
+					      session.clear();
+					 }
+				}
+				return null;
 			}
-			else{
-				hibernateTemplate.update(item);
-			}
-		}
+			
+		});
+		
 	}
 	@Transactional
 	@Override

@@ -47,8 +47,8 @@ public class BatchJobTxn extends BatchJobTemplate {
 
 	@Override
 	public void post() {
-		//bcnxTxnAuditor.refine();
-		super.bcnxTxnService.saveAll(bcnxTxns);
+		bcnxTxnAuditor.refine();
+		//super.bcnxTxnService.saveAll(bcnxTxns);
 	}
 
 }
