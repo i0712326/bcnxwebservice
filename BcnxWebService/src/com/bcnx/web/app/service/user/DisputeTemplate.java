@@ -57,8 +57,7 @@ public class DisputeTemplate {
 		java.util.Date d = new java.util.Date();
 		return format.format(d);
 	}
-	protected static final String UPLOADED_FILE_PATH = "D:\\Share\\tik\\Work"; 
-	protected String getFileData(List<InputPart> inputParts){
+	protected String getFileData(List<InputPart> inputParts, String path){
 		String fileName = "unkwonk";
 		for (InputPart inputPart : inputParts) {
 			 try {
@@ -68,7 +67,7 @@ public class DisputeTemplate {
 				InputStream inputStream = inputPart.getBody(InputStream.class,null);
 				byte [] bytes = IOUtils.toByteArray(inputStream);
 				//constructs upload file path
-				String filePath = UPLOADED_FILE_PATH +"\\"+ fileName;
+				String filePath = path +"/"+ fileName;
 				writeFile(bytes,filePath);
 				return fileName;
 			  } catch (IOException e) {

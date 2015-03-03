@@ -3,12 +3,14 @@ package com.bcnx.web.app.service.user;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
@@ -76,9 +78,10 @@ public class CopyRequestController extends DisputeTemplate{
 	@Path("/response")
 	@Produces("application/json")
 	@Consumes("multipart/form-data")
-	public Response resCpRq(MultipartFormDataInput input) {
+	public Response resCpRq(MultipartFormDataInput input, @Context ServletContext context) {
+		String path = context.getInitParameter("uploadFolder");
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-		String fileName = getFileData(uploadForm.get("file"));
+		String fileName = getFileData(uploadForm.get("file"),path);
 		String rrn = getDataForm(uploadForm.get("rrn"));
 		String slot = getDataForm(uploadForm.get("slot"));
 		String stan = getDataForm(uploadForm.get("stan"));

@@ -96,23 +96,13 @@ public class SettlementReportServiceImp implements SettlementReportService {
 		iRpm = bcnxSettleFee.setDispIssFee(iRpm);
 		
 		// check data folder
-		String pathName = path+"/"+id;
-		String dataName = pathName+"/"+UtilityService.date2Str(date);
-		File mainDir = new File(pathName);
-		if(!mainDir.exists())
-			mainDir.mkdir();
-		
-		File dataDir = new File(dataName);
-		if(!dataDir.exists())
-			dataDir.mkdir();
-		
 		String setlName = "SETL"+UtilityService.date2Str(date)+id+".txt";
-		String setlFile =  dataName+"/"+setlName;
+		String setlFile =  path+"/"+setlName;
 		printSetlReport(date, id, issTxn, acqTxn, revTxn, errTxn, oCp, iCp, iCrs,
 				oCrs, oChb, iChb, iAdj, oAdj, oRpm, iRpm, setlFile);
 		//printRecnReport()
 		String recnName = "RECN"+UtilityService.date2Str(date)+id+".txt";
-		String recnFile = dataName+"/"+recnName;
+		String recnFile = path+"/"+recnName;
 		printRecnReport(issTxn, acqTxn, revTxn, errTxn, oCp, iCp, iCrs, oCrs,
 				oChb, iChb, iAdj, oAdj, oRpm, iRpm, recnFile);
 		saveSettleBcnx(date, id, issTxn, acqTxn, revTxn, errTxn, iCp, oCp,

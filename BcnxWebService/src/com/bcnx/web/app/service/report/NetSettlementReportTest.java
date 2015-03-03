@@ -11,8 +11,7 @@ public class NetSettlementReportTest {
 	public void testPrintNetSettlementReport() {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		NetSettlementReport bean = (NetSettlementReport) context.getBean("netSettlementReport");
-		String path = "D:\\output\\Reports";
-		bean.printNetSettlementReport(path);
+		bean.printNetSettlementReport();
 	}
 
 }

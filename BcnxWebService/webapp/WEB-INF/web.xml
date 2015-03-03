@@ -5,6 +5,10 @@
     	<param-name>reportPath</param-name>
     	<param-value>D:\output\Reports</param-value>
   	</context-param>
+  	<context-param>
+  		<param-name>uploadFolder</param-name>
+  		<param-value>D:\Share\tik\Work</param-value>
+  	</context-param>
  	<context-param>
 		<param-name>resteasy.resources</param-name>
 		<param-value>

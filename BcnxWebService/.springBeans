@@ -21,9 +21,12 @@
 		<config>configure/dispute_context.xml</config>
 		<config>webapp/WEB-INF/card_type_context.xml</config>
 		<config>webapp/WEB-INF/reasoncode_context.xml</config>
-		<config>webapp/WEB-INF/batch_context.xml</config>
 		<config>configure/cardProc_context.xml</config>
-		<config>webapp/WEB-INF/batch_scheduler.xml</config>
+		<config>webapp/WEB-INF/quartz/batchJobTxn.xml</config>
+		<config>webapp/WEB-INF/quartz/batch_scheduler.xml</config>
+		<config>webapp/WEB-INF/quartz/batchJobSettle.xml</config>
+		<config>webapp/WEB-INF/quartz/batch_context.xml</config>
+		<config>webapp/WEB-INF/quartz/batchReportGen.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

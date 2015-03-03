@@ -18,8 +18,12 @@ import com.bcnx.web.app.utility.UtilityService;
 
 public class NetSettlementReportImp implements NetSettlementReport {
 	private static final Logger logger = Logger.getLogger(NetSettlementReportImp.class);
+	private String path;
 	private SettlementReportService settlementReportService;
 	private MemberService memberService;
+	public void setPath(String path){
+		this.path = path;
+	}
 	public void setSettlementReportService(SettlementReportService settlementReportService){
 		this.settlementReportService = settlementReportService;
 	}
@@ -27,7 +31,7 @@ public class NetSettlementReportImp implements NetSettlementReport {
 		this.memberService = memberService;
 	}
 	@Override
-	public void printNetSettlementReport(String path) {
+	public void printNetSettlementReport() {
 		List<Member> members = memberService.getMembers();
 		Date backDate = UtilityService.getBackDate();
 		String folderName = UtilityService.date2Str(backDate);
