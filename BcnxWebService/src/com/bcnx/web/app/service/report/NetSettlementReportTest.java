@@ -5,7 +5,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class NetSettlementReportTest {
-
 	@SuppressWarnings("resource")
 	@Test
 	public void testPrintNetSettlementReport() {

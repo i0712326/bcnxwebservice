@@ -223,4 +223,21 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 			return null;
 		}
 	}
+	@Override
+	public List<DisputeTxn> getValidDispute() {
+		try {
+			return disputeTxnDao.getValidDispute();
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to get valid disputes", e);
+			return null;
+		}
+	}
+	@Override
+	public void updateAll(List<DisputeTxn> list) {
+		try {
+			disputeTxnDao.updateAll(list);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to update disputes", e);
+		}
+	}
 }

@@ -15,8 +15,6 @@ import javax.persistence.Transient;
 public class SettleBcnx implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name="ID")
-	private int id;
 	@Column(name="DATE",unique=true)
 	private Date date;
 	@Column(name="ISSTXN")
@@ -50,7 +48,7 @@ public class SettleBcnx implements Serializable {
 	@Column(name="ERRFEE")
 	private double errFee = 0;
 	@Transient
-	private double errTol = 0;
+	private double errTot = 0;
 	
 	@Column(name="INCPRTXN")
 	private int inCprNum = 0;
@@ -140,15 +138,10 @@ public class SettleBcnx implements Serializable {
 	private String setlFile;
 	@Column(name="RECFILE")
 	private String recFile;
+	@Id
 	@ManyToOne
 	@JoinColumn(name="MEMDATA_IIN")
 	private Member member;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public Date getDate() {
 		return date;
 	}
@@ -245,11 +238,11 @@ public class SettleBcnx implements Serializable {
 	public void setErrFee(double errFee) {
 		this.errFee = errFee;
 	}
-	public double getErrTol() {
-		return errTol;
+	public double getErrTot() {
+		return errTot;
 	}
-	public void setErrTol(double errTol) {
-		this.errTol = errTol;
+	public void setErrTot(double errTot) {
+		this.errTot = errTot;
 	}
 	public int getInCprNum() {
 		return inCprNum;

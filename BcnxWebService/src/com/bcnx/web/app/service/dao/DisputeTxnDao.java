@@ -51,9 +51,8 @@ public interface DisputeTxnDao {
 	public List<DisputeTxn> incomingCrs(Date date, String id) throws SQLException, HibernateException;
 	
 	public int getRecords(DisputeTxn disputeTxn) throws SQLException, HibernateException;
-
 	
-	
-	
-	
+	// update valid transaction
+	public List<DisputeTxn> getValidDispute() throws SQLException, HibernateException;
+	public void updateAll(List<DisputeTxn> list) throws SQLException, HibernateException;
 }

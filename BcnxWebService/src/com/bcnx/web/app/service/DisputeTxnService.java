@@ -42,4 +42,8 @@ public interface DisputeTxnService {
 	
 	public List<DisputeTxn> outgoingCrs(Date date, String id);
 	public List<DisputeTxn> incomingCrs(Date date, String id);
+	
+	// update count
+	public List<DisputeTxn> getValidDispute();
+	public void updateAll(List<DisputeTxn> list);
 }

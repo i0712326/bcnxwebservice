@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.AdjustmentService;
+import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.ErrMsg;
 import com.bcnx.web.app.service.entity.ReasonCode;
@@ -41,12 +42,18 @@ public class AdjustmentController extends DisputeTemplate{
 		User user = new User();
 		user.setUserId(userId);
 		user = userService.getUser(user);
+		
+		
+		BcnxSettle bcnxSettle = new BcnxSettle();
+		bcnxSettle.setSlot(slot);
+		bcnxSettle.setMti(mti);
+		bcnxSettle.setRrn(rrn);
+		bcnxSettle.setStan(stan);
+		bcnxSettle = bcnxSettleService.getBcnxSettle(bcnxSettle);
+		
+		disputeTxn.setBcnxSettle(bcnxSettle);
 		disputeTxn.setRc(rc);
 		disputeTxn.setUser(user);
-		disputeTxn.setSlot(slot);
-		disputeTxn.setMti(mti);
-		disputeTxn.setRrn(rrn);
-		disputeTxn.setStan(stan);
 		// copy request
 		boolean chk = checkAcquirer(disputeTxn, user);
 		if (!chk)
@@ -54,6 +61,12 @@ public class AdjustmentController extends DisputeTemplate{
 					.status(500)
 					.entity(new ErrMsg("410",
 							"User is not allowed to perform function")).build();
+		
+		boolean valid = checkValidDate(bcnxSettle.getDate());
+		if(!valid)
+			return Response.status(500)
+					.entity(new ErrMsg("414", "Exceed valid date request")).build();
+		
 		DisputeTxn txn = disputeTxnService.getDisputeTxn(disputeTxn);
 		if (txn != null)
 			return Response.status(500)

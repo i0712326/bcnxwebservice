@@ -71,8 +71,22 @@ public class MemberDaoImp implements MemberDao {
 	@Transactional
 	@Override
 	public List<Member> getMembers() throws SQLException {
-		String hql = "from Member m order by m.iin";
+		String hql = "from Member m where m.type= 'member' order by m.iin";
 		return toList(hibernateTemplate.find(hql));
+	}
+	@Transactional
+	@Override
+	public Member getOwner() throws SQLException {
+		return hibernateTemplate.execute(new HibernateCallback<Member>(){
+			@Override
+			public Member doInHibernate(Session session)
+					throws HibernateException {
+				String hql = "from Member m where m.type= 'owner' order by m.iin";
+				Query query = session.createQuery(hql);
+				return (Member) query.uniqueResult();
+			}
+			
+		});
 	}
 	private List<Member> toList(final List<?> beans){
 		if(beans == null ) return null;

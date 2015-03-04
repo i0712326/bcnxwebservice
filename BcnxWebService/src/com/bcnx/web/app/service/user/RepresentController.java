@@ -74,6 +74,12 @@ public class RepresentController extends DisputeTemplate{
 					.status(500)
 					.entity(new ErrMsg("413",
 							"Invalid copy request")).build();
+		if(disp.getCount()==0)
+			return Response
+					.status(500)
+					.entity(new ErrMsg("414",
+							"Exceed valid date request")).build();
+		
 		boolean chk = checkAcquirer(disputeTxn, user);
 		if (!chk) return Response
 					.status(500)

@@ -59,6 +59,11 @@ public class ChargebackController extends DisputeTemplate{
 					.status(500)
 					.entity(new ErrMsg("410",
 							"User is not allowed to perform function")).build();
+		boolean valid = checkValidDate(bcnxSettle.getDate());
+		if(!valid)
+			return Response.status(500)
+					.entity(new ErrMsg("414", "Exceed valid date request")).build();
+		
 		DisputeTxn txn = disputeTxnService.getDisputeTxn(disputeTxn);
 		if (txn != null)
 			return Response.status(500)

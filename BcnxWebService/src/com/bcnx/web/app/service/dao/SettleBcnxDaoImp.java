@@ -2,6 +2,8 @@ package com.bcnx.web.app.service.dao;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -26,6 +28,27 @@ public class SettleBcnxDaoImp implements SettleBcnxDao {
 	}
 	@Transactional
 	@Override
+	public void saveAll(final List<SettleBcnx> settleBcnxs) throws SQLException,
+			HibernateException {
+		hibernateTemplate.execute(new HibernateCallback<Void>(){
+			@Override
+			public Void doInHibernate(Session session)
+					throws HibernateException {
+				int count = 0;
+				for(SettleBcnx item : settleBcnxs){
+					session.save(item);
+					if(++count%50==0){
+						session.flush();
+						session.clear();
+					}
+				}
+				return null;
+			}
+		});
+	}
+
+	@Transactional
+	@Override
 	public SettleBcnx getSettleBcnx(final Date date, final String id) throws SQLException,
 			HibernateException {
 		return hibernateTemplate.execute(new HibernateCallback<SettleBcnx>(){
@@ -40,5 +63,18 @@ public class SettleBcnxDaoImp implements SettleBcnxDao {
 			}
 		});
 	}
-
+	@Transactional
+	@Override
+	public List<SettleBcnx> getSettleBcnxs(Date date) throws SQLException, HibernateException{
+		String hql = "from SettleBcnx sb where sb.date = :date";
+		return toList(hibernateTemplate.findByNamedParam(hql, "date", date));
+	}
+	private List<SettleBcnx> toList(final List<?> beans){
+		if(beans==null) return null;
+		if(beans.isEmpty()) return null;
+		int size = beans.size();
+		SettleBcnx[] list = new SettleBcnx[size];
+		list = beans.toArray(list);
+		return Arrays.asList(list);
+	}
 }

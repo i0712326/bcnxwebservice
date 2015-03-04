@@ -11,7 +11,7 @@
 		<!-- generate report -->
 		<import resource="batchReportGen.xml"/>
 		<!-- update status on dispute -->
-		
+		<import resource="batchUpdateDisp.xml"/>
 		<!-- launcher detail -->
 		<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 			<property name="jobDetails">
@@ -19,6 +19,7 @@
 					<ref bean="bcnxTxnJobQuartz" />
 					<ref bean="bcnxSettleJobQuartz"/>
 					<ref bean="netSettleJobQuartz"/>
+					<ref bean="batchJobUpdateDisp"/>
 				</list>
 			</property>
 			<property name="triggers">
@@ -26,6 +27,7 @@
 					<ref bean="bcnxTxnJobTrigger" />
 					<ref bean="bcnxSettleJobTrigger"/>
 					<ref bean="netSettleJobTrigger"/>
+					<ref bean="batchUpdateDispTrigger"/>
 				</list>
 			</property>
 		</bean>

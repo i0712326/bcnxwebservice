@@ -2,6 +2,7 @@ package com.bcnx.web.app.service;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -31,6 +32,14 @@ public class SettleBcnxServiceImp implements SettleBcnxService {
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try to get Settle Bcnx date", e);
 			return null;
+		}
+	}
+	@Override
+	public void saveAll(List<SettleBcnx> settleBcnxs) {
+		try {
+			settleBcnxDao.saveAll(settleBcnxs);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to save Settle Bcnxs", e);
 		}
 	}
 

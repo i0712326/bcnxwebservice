@@ -64,6 +64,10 @@ public class CopyRequestController extends DisputeTemplate{
 					.status(500)
 					.entity(new ErrMsg("410",
 							"User is not allowed to perform function")).build();
+		boolean valid = checkValidDate(settle.getDate());
+		if(!valid)
+			return Response.status(500)
+					.entity(new ErrMsg("414", "Exceed valid date request")).build();
 		DisputeTxn txn = disputeTxnService.getDisputeTxn(disputeTxn);
 		if (txn != null)
 			return Response.status(500)
@@ -138,6 +142,11 @@ public class CopyRequestController extends DisputeTemplate{
 					.status(500)
 					.entity(new ErrMsg("413",
 							"Invalid copy request")).build();
+		if(disp.getCount()==0)
+			return Response
+					.status(500)
+					.entity(new ErrMsg("414",
+							"Exceed valid date request")).build();
 		disp.setStatus("Y");
 		copyRequestService.update(disp);
 		disputeTxn.setAmount(disp.getAmount());

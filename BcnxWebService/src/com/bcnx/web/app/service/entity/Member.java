@@ -29,6 +29,10 @@ public class Member implements Serializable {
 	private String fax;
 	@Column(name="ADDRESS", nullable=true, length=128)
 	private String address;
+	@Column(name="FLAG", nullable=false, length=1)
+	private String flag;
+	@Column(name="TYPE", nullable=false, length=10)
+	private String type;
 	@OneToMany(mappedBy="member",cascade=CascadeType.ALL)
 	private List<Bin> bins;
 	@OneToMany(mappedBy="member",cascade=CascadeType.ALL)
@@ -72,6 +76,18 @@ public class Member implements Serializable {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	@JsonIgnore
 	public List<Bin> getBins() {

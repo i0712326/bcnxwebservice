@@ -14,6 +14,6 @@
 	</bean>
 	<bean id="netSettleJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="netSettleJobQuartz" />
-		<property name="cronExpression" value="0 0 3 * * ?" />
+		<property name="cronExpression" value="0 30 3 * * ?" />
 	</bean>
 </beans>

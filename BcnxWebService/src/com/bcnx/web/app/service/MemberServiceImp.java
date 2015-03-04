@@ -67,5 +67,14 @@ public class MemberServiceImp implements MemberService {
 			return null;
 		}
 	}
-
+	@Override
+	public Member getOwner() {
+		try {
+			return memberDao.getOwner();
+		} catch (SQLException e) {
+			logger.debug("Exception occured while try to get owner", e);
+			return null;
+		}
+	}
+	
 }

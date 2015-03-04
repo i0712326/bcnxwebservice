@@ -26,20 +26,23 @@
 		<property name="bcnxTxnAuditor" ref="bcnxTxnAuditor"/>
 		<property name="expression" value="router.audit.*"/>
 	</bean>
+	<bean id="batchUpdateDisp" class="com.bcnx.web.app.service.task.BatchDispUpdate">
+		<property name="disputeTxnService" ref="disputeTxnService"/>
+	</bean>
 	<bean id="bcnxSettleFee" class="com.bcnx.web.app.service.report.BcnxSettleFeeImp">
 		<property name="cardProcService" ref="cardProcService"/>
 	</bean>
 	<bean id="settlementReportService" class="com.bcnx.web.app.service.report.SettlementReportServiceImp">
 		<property name="bcnxSettleService" ref="bcnxSettleService"/>
 		<property name="disputeTxnService" ref="disputeTxnService"/>
-		<property name="settleBcnxService" ref="settleBcnxService"/>
 		<property name="memberService" ref="memberService"/>
 		<property name="bcnxSettleFee" ref="bcnxSettleFee"/>
 	</bean>
 	<bean id="netSettlementReport" class="com.bcnx.web.app.service.report.NetSettlementReportImp">
 		<property name="settlementReportService" ref="settlementReportService"/>
 		<property name="memberService" ref="memberService"/>
-		<property name="path" value="D:\\output\\Reports"/>	
+		<property name="settleBcnxService" ref="settleBcnxService"/>
+		<property name="path" value="D:\\output\\Reports"/>
 	</bean>
 	
 </beans>

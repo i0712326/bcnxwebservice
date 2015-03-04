@@ -336,6 +336,34 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			
 		});
 	}
+	@Transactional
+	@Override
+	public List<DisputeTxn> getValidDispute() throws SQLException,
+			HibernateException {
+		String hql = "from DisputeTxn d where d.count> 0 order by d.date, d.time desc";
+		return toList(hibernateTemplate.find(hql));
+	}
+	@Transactional
+	@Override
+	public void updateAll(final List<DisputeTxn> list) throws SQLException,
+			HibernateException {
+		hibernateTemplate.execute(new HibernateCallback<Void>(){
+			@Override
+			public Void doInHibernate(Session session)
+					throws HibernateException {
+				int count = 0;
+				for(DisputeTxn disp : list){
+					session.update(disp);
+					if(++count%50==0){
+						session.flush();
+						session.clear();
+					}
+				}
+				return null;
+			}
+			
+		});
+	}
 	protected List<DisputeTxn> toList(final List<?> beans){
 		if(beans==null) return new ArrayList<DisputeTxn>();
 		if(beans.isEmpty()) return new ArrayList<DisputeTxn>();

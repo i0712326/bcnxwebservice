@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import org.apache.commons.io.IOUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.BcnxSettleService;
@@ -20,6 +23,7 @@ import com.bcnx.web.app.service.UserService;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.Member;
 import com.bcnx.web.app.service.entity.User;
+import com.bcnx.web.app.utility.UtilityService;
 
 public class DisputeTemplate {
 	
@@ -122,5 +126,14 @@ public class DisputeTemplate {
 	protected boolean checkName(String fileName, User user, String rrn, String stan){
 		String name=user.getMember().getIin()+rrn+stan+".zip";
 		return fileName.equals(name);
+	}
+	// check valid date
+	protected boolean checkValidDate(Date org){
+		Date date = UtilityService.getCurrentDate();
+		LocalDate start = new LocalDate(org);
+		LocalDate end = new LocalDate(date);
+		int valid = Days.daysBetween(start, end).getDays();
+		return valid>30;
+		
 	}
 }
