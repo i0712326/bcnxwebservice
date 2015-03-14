@@ -10,7 +10,6 @@ import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.CardProc;
 
 public class CardProcDaoImp implements CardProcDao {
@@ -20,7 +19,7 @@ public class CardProcDaoImp implements CardProcDao {
 	}
 	@Transactional
 	@Override
-	public CardProc getCardProc(final BcnxSettle settle) throws SQLException,
+	public CardProc getCardProc(final String cardType, final String proc) throws SQLException,
 			HibernateException {
 		return hibernateTemplate.execute(new HibernateCallback<CardProc>(){
 			@Override
@@ -29,8 +28,8 @@ public class CardProcDaoImp implements CardProcDao {
 				String sql ="select ISSFEE, ACQFEE, CARDTYPE_TYPE, PROCC_PCODE from CARDTYPE_has_PROCC where CARDTYPE_TYPE =:type and PROCC_PCODE =:code";
 				SQLQuery sqlQuery = session.createSQLQuery(sql);
 				sqlQuery.addEntity(CardProc.class);
-				sqlQuery.setString("type", settle.getCardType().getType());
-				sqlQuery.setString("code", settle.getProc());
+				sqlQuery.setString("type", cardType);
+				sqlQuery.setString("code", proc);
 				return (CardProc) sqlQuery.uniqueResult();
 			}
 			

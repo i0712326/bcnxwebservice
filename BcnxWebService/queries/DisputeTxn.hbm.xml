@@ -57,15 +57,20 @@
 		<return alias="procIncomings" class="com.bcnx.web.app.service.entity.DisputeTxn"/>
 		<![CDATA[
 			select * from (
-				  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.acqid = :id 
+				  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.acqid = :id and
+				  	( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
 		 		union 
-		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.issid = :id and
+		 		    ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end )
 		 		union 
-		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.acqid = :id 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.acqid = :id and
+		 		    ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
 		 		union 
-		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.issid = :id and
+		 		 	( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end )  
 		 		union 
-		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.issid = :id and 
+		 		  	( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
 			) as t order by t.time, t.date desc
 		]]>
 	</sql-query>
@@ -73,15 +78,20 @@
 		<return-scalar column="num" type="long"/>
 		<![CDATA[
 		select count(*) as num from (
-				  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.acqid = :id 
+				  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.acqid = :id and 
+		 			( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
 		 		union 
-		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.issid = :id and 
+		 			( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
 		 		union 
-		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.acqid = :id 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.acqid = :id and 
+		 			( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
 		 		union 
-		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id 
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.issid = :id and 
+		 			( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
 		 		union 
-		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :proc and b.issid = :id
+		 		  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.issid = :id and
+		 		  	( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
 			) as t
 		]]>
 	</sql-query>
@@ -119,11 +129,20 @@
 		<return alias="procOutgoins" class="com.bcnx.web.app.service.entity.DisputeTxn"/>
 		<![CDATA[
 			select * from (
-				      select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.issid = :id 
-				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
-				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.issid = :id 
-				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
-				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
+				    select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.issid = :id
+				      	and ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end )  
+				union
+					select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.acqid = :id
+						and ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end )  
+				union
+					select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.issid = :id
+						and ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end )  
+				union
+					select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.acqid = :id
+						and ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end )  
+				union 
+					select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.acqid = :id
+				 		and ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
 			) as t order by t.time, t.date desc
 		]]>
 	</sql-query>
@@ -131,12 +150,24 @@
 		<return-scalar column="num" type="long"/>
 		<![CDATA[
 			select count(*) as num from ( 
-					  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.issid = :id 
-				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
-				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.issid = :id 
-				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
-				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and d.procc = :procc and b.acqid = :id 
+					  select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.issid = :id
+					   and ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end )
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.acqid = :id
+					and ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.issid = :id
+					and ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.acqid = :id
+					and ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
+				union select d.* from disputetxn d , bcnxsetl b where d.bcnxsetl_slot = b.slot and d.bcnxsetl_stan = b.stan and d.bcnxsetl_rrn = b.rrn and d.bcnxsetl_mti = b.mti and d.bcnxsetl_procc = b.procc and b.acqid = :id
+					and ( b.card like :card and b.rrn like :rrn and b.stan like :stan and d.procc like :proc and  d.date between :start and :end ) 
 			) as t
 		]]>
 	</sql-query>
+	<!-- select dispute by proc, date, iss -->
+	<query name="disputeIss">
+		select d from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time
+	</query>
+	<query name="disputeAcq">
+		select d from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time
+	</query>
 </hibernate-mapping>

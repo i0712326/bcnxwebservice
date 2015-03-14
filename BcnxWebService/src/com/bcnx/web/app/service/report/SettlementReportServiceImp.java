@@ -324,11 +324,11 @@ public class SettlementReportServiceImp implements SettlementReportService {
 		int count = 1;
 		for (DisputeTxn disp : list) {
 			BcnxSettle bcon = disp.getBcnxSettle();
-			pw.printf("%5d\t%10s\t%8s\t%19s\t%6s\t%12s\t%6s\t%2s\t%12s\t%10s\t%8s\t%8s\t%8s\r\n", count, bcon.getDate(), bcon.getTime(),
-					bcon.getCard(), bcon.getProc(), bcon.getRrn(), bcon.getStan(), bcon.getRes(), decimalFormat.format(bcon.getAmt()),
-					decimalFormat.format(bcon.getFee()), bcon.getTermId(),bcon.getIss(),bcon.getAcq());
-			total += bcon.getAmt();
-			fee += bcon.getFee();
+			pw.printf("%5d\t%10s\t%8s\t%19s\t%6s\t%12s\t%6s\t%2s\t%12s\t%10s\t%8s\t%8s\t%8s\r\n", count, disp.getDate(), disp.getTime(),
+					bcon.getCard(), disp.getProcc(), bcon.getRrn(), bcon.getStan(), bcon.getRes(), decimalFormat.format(disp.getAmount()),
+					decimalFormat.format(disp.getFee()), bcon.getTermId(),bcon.getIss(),bcon.getAcq());
+			total += disp.getAmount();
+			fee += disp.getFee();
 			count++;
 		}
 		pw.println("\r\nSUMMARY\r\n----------------------------------\r\n");

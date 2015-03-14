@@ -15,13 +15,15 @@ public interface DisputeTxnService {
 	// get incoming
 	public List<DisputeTxn> getIncoming(String id, int first, int max);
 	public int getInRecords(String id);
-	public List<DisputeTxn> getIncoming(String id, String proc, int first, int max);
-	public int getInRecords(String id, String proc);
+	
+	public List<DisputeTxn> getIncoming(String id, String card, String rrn, String stan, String proc, Date start, Date end, int first, int max);
+	public int getInRecords(String id, String card, String rrn, String stan, String proc, Date start, Date end);
 	// get outgoing
 	public List<DisputeTxn> getOutgoing(String id, int first, int max);
 	public int getOutRecords(String id);
-	public List<DisputeTxn> getOutgoing(String id, String proc, int first, int max);
-	public int getOutRecords(String id, String proc);
+	
+	public List<DisputeTxn> getOutgoing(String id, String card, String rrn, String stan, String proc, Date start, Date end, int first, int max);
+	public int getOutRecords(String id, String card, String rrn, String stan, String proc, Date start, Date end);
 	
 	// get related cases
 	public List<DisputeTxn> getRelated(DisputeTxn disp, int first, int max);

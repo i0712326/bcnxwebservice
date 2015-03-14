@@ -133,7 +133,7 @@ public class DisputeTemplate {
 		LocalDate start = new LocalDate(org);
 		LocalDate end = new LocalDate(date);
 		int valid = Days.daysBetween(start, end).getDays();
-		return valid>30;
+		return valid<30;
 		
 	}
 }

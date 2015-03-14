@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.batch.item.ItemWriter;
 
-public class BcnxTxnWirteItem implements ItemWriter<Void> {
+import com.bcnx.web.app.service.entity.BcnxTxn;
+
+public class BcnxTxnWirteItem implements ItemWriter<BcnxTxn> {
 	
 	@Override
-	public void write(List<? extends Void> list) throws Exception {
-		
+	public void write(List<? extends BcnxTxn> list) throws Exception {
+		System.out.println("Writing item.............."+list);
 	}
 
 }

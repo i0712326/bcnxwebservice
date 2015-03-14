@@ -51,6 +51,7 @@ public class BcnxSettleAuditorImp extends BatchAuditJob implements BcnxSettleAud
 				String slot = null;
 				if(matcher.find())
 					slot = matcher.group().trim();
+				logger.debug("slot number : "+slot);
 				String type = token[1].trim();
 				String proc = token[2].trim();
 				String card	= token[3].trim();

@@ -82,7 +82,7 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> getInDisp(final String id, final String proc, final int first, final int max)
+	public List<DisputeTxn> getInDisp(final String id, final String card, final String rrn, final String stan, final String proc, final Date start, final Date end, final int first, final int max)
 			throws SQLException, HibernateException {
 		return toList(hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
 			@Override
@@ -90,7 +90,12 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 					throws HibernateException {
 				Query query = session.getNamedQuery("getProcIncoming");
 				query.setString("id", id);
+				query.setString("card", card);
+				query.setString("rrn", rrn);
+				query.setString("stan", stan);
 				query.setString("proc", proc);
+				query.setDate("start", start);
+				query.setDate("end", end);
 				query.setFirstResult(first);
 				query.setMaxResults(max);
 				return toList(query.list());
@@ -99,19 +104,26 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 	}
 	@Transactional
 	@Override
-	public int getInByProc(final String id, final String proc) throws SQLException, HibernateException{
+	public int getInBy(final String id, final String card, final String rrn, final String stan, final String proc, final Date start, final Date end) throws SQLException, HibernateException{
 		return hibernateTemplate.execute(new HibernateCallback<Integer>(){
 			@Override
 			public Integer doInHibernate(Session session)
 					throws HibernateException {
 				Query query = session.getNamedQuery("countProcIncoming");
 				query.setString("id", id);
+				query.setString("card", card);
+				query.setString("rrn", rrn);
+				query.setString("stan", stan);
 				query.setString("proc", proc);
+				query.setDate("start", start);
+				query.setDate("end", end);
 				Long len = (Long) query.uniqueResult();
 				return len.intValue();
 			}
 		});
 	}
+	// filter data module;
+	
 	
 	// outgoing retrieval module
 	@Transactional
@@ -148,7 +160,7 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> getOutDisp(final String id, final String proc, final int first, final int max)
+	public List<DisputeTxn> getOutDisp(final String id, final String card, final String rrn, final String stan, final String proc, final Date start, final Date end, final int first, final int max)
 			throws SQLException, HibernateException {
 		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
 			@Override
@@ -156,7 +168,12 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 					throws HibernateException {
 				Query query = session.getNamedQuery("getProcOutgoings");
 				query.setString("id", id);
-				query.setString("procc", proc);
+				query.setString("card", card);
+				query.setString("rrn", rrn);
+				query.setString("stan", stan);
+				query.setString("proc", proc);
+				query.setDate("start", start);
+				query.setDate("end", end);
 				query.setFirstResult(first);
 				query.setMaxResults(max);
 				return toList(query.list());
@@ -166,7 +183,7 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 	}
 	@Transactional
 	@Override
-	public int getOutByProc(final String id, final String proc)
+	public int getOutBy(final String id, final String card, final String rrn, final String stan, final String proc, final Date start, final Date end)
 			throws SQLException, HibernateException {
 		return hibernateTemplate.execute(new HibernateCallback<Integer>(){
 			@Override
@@ -174,13 +191,19 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 					throws HibernateException {
 				Query query = session.getNamedQuery("countProcOutgoing");
 				query.setString("id", id);
-				query.setString("procc", proc);
+				query.setString("card", card);
+				query.setString("rrn", rrn);
+				query.setString("stan", stan);
+				query.setString("proc", proc);
+				query.setDate("start", start);
+				query.setDate("end", end);
 				Long len = (Long) query.uniqueResult();
 				return len.intValue();
 			}
 			
 		});
 	}
+	
 	@Transactional
 	@Override
 	public void update(DisputeTxn disputeTxn) throws SQLException,
@@ -229,92 +252,172 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 	// settlement API
 	@Transactional
 	@Override
-	public List<DisputeTxn> outgoingRp(Date date, String id) throws SQLException, HibernateException{
-		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time";
-		String[] param = {"date","id","proc"};
-		Object[] values = {date, id, "800001"};
-		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+	public List<DisputeTxn> outgoingRp(final Date date, final String id) throws SQLException, HibernateException{
+		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
+			@Override
+			public List<DisputeTxn> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("disputeAcq");
+				query.setDate("date", date);
+				query.setString("id", id);
+				query.setString("proc", "800001");
+				return toList(query.list());
+			}
+			
+		});
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> incomingRp(Date date, String id) throws SQLException, HibernateException{
-		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time";
-		String[] param = {"date","id","proc"};
-		Object[] values = {date, id, "800001"};
-		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+	public List<DisputeTxn> incomingRp(final Date date, final String id) throws SQLException, HibernateException{
+		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
+			@Override
+			public List<DisputeTxn> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("disputeIss");
+				query.setDate("date", date);
+				query.setString("id", id);
+				query.setString("proc", "800001");
+				return toList(query.list());
+			}
+			
+		});
 	}
 	
 	@Transactional
 	@Override
-	public List<DisputeTxn> outgoingChb(Date date, String id) throws SQLException,
+	public List<DisputeTxn> outgoingChb(final Date date, final String id) throws SQLException,
 			HibernateException {
-		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time";
-		String[] param = {"date","id","proc"};
-		Object[] values = {date, id, "600001"};
-		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
+			@Override
+			public List<DisputeTxn> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("disputeIss");
+				query.setDate("date", date);
+				query.setString("id", id);
+				query.setString("proc", "600001");
+				return toList(query.list());
+			}
+			
+		});
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> incomingChb(Date date, String id) throws SQLException,
+	public List<DisputeTxn> incomingChb(final Date date, final String id) throws SQLException,
 			HibernateException {
-		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time";
-		String[] param = {"date","id","proc"};
-		Object[] values = {date, id, "600001"};
-		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
+			@Override
+			public List<DisputeTxn> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("disputeAcq");
+				query.setDate("date", date);
+				query.setString("id", id);
+				query.setString("proc", "600001");
+				return toList(query.list());
+			}
+			
+		});
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> outgoingAdj(Date date, String id) throws SQLException,
+	public List<DisputeTxn> outgoingAdj(final Date date, final String id) throws SQLException,
 			HibernateException {
-		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time";
-		String[] param = {"date","id","proc"};
-		Object[] values = {date, id, "700001"};
-		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
+			@Override
+			public List<DisputeTxn> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("disputeAcq");
+				query.setDate("date", date);
+				query.setString("id", id);
+				query.setString("proc", "700001");
+				return toList(query.list());
+			}
+			
+		});
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> incomingAdj(Date date, String id) throws SQLException,
+	public List<DisputeTxn> incomingAdj(final Date date, final String id) throws SQLException,
 			HibernateException {
-		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time";
-		String[] param = {"date","id","proc"};
-		Object[] values = {date, id, "700001"};
-		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
+			@Override
+			public List<DisputeTxn> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("disputeIss");
+				query.setDate("date", date);
+				query.setString("id", id);
+				query.setString("proc", "700001");
+				return toList(query.list());
+			}
+			
+		});
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> outgoinCp(Date date, String id)
+	public List<DisputeTxn> outgoinCp(final Date date, final String id)
 			throws SQLException, HibernateException {
-		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time";
-		String[] param = {"date","id","proc"};
-		Object[] values = {date, id, "500001"};
-		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
+			@Override
+			public List<DisputeTxn> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("disputeIss");
+				query.setDate("date", date);
+				query.setString("id", id);
+				query.setString("proc", "500001");
+				return toList(query.list());
+			}
+			
+		});
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> incomingCp(Date date, String id)
+	public List<DisputeTxn> incomingCp(final Date date, final String id)
 			throws SQLException, HibernateException {
-		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time";
-		String[] param = {"date","id","proc"};
-		Object[] values = {date, id, "500001"};
-		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
+			@Override
+			public List<DisputeTxn> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("disputeAcq");
+				query.setDate("date", date);
+				query.setString("id", id);
+				query.setString("proc", "500001");
+				return toList(query.list());
+			}
+			
+		});
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> outgoingCrs(Date date, String id)
+	public List<DisputeTxn> outgoingCrs(final Date date, final String id)
 			throws SQLException, HibernateException {
-		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.acq = :id and d.procc = :proc order by d.time";
-		String[] param = {"date","id","proc"};
-		Object[] values = {date, id, "500002"};
-		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
+			@Override
+			public List<DisputeTxn> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("disputeAcq");
+				query.setDate("date", date);
+				query.setString("id", id);
+				query.setString("proc", "500002");
+				return toList(query.list());
+			}
+			
+		});
 	}
 	@Transactional
 	@Override
-	public List<DisputeTxn> incomingCrs(Date date, String id)
+	public List<DisputeTxn> incomingCrs(final Date date, final String id)
 			throws SQLException, HibernateException {
-		String hql = "from DisputeTxn d inner join d.bcnxSettle b where d.date = :date and b.iss = :id and d.procc = :proc order by d.time";
-		String[] param = {"date","id","proc"};
-		Object[] values = {date, id, "500002"};
-		return toList(hibernateTemplate.findByNamedParam(hql,param,values));
+		return hibernateTemplate.execute(new HibernateCallback<List<DisputeTxn>>(){
+			@Override
+			public List<DisputeTxn> doInHibernate(Session session)
+					throws HibernateException {
+				Query query = session.getNamedQuery("disputeIss");
+				query.setDate("date", date);
+				query.setString("id", id);
+				query.setString("proc", "500002");
+				return toList(query.list());
+			}
+			
+		});
 	}
 	@Transactional
 	@Override
@@ -364,7 +467,7 @@ public class DisputeTxnDaoImp implements DisputeTxnDao {
 			
 		});
 	}
-	protected List<DisputeTxn> toList(final List<?> beans){
+	private List<DisputeTxn> toList(final List<?> beans){
 		if(beans==null) return new ArrayList<DisputeTxn>();
 		if(beans.isEmpty()) return new ArrayList<DisputeTxn>();
 		int size = beans.size();

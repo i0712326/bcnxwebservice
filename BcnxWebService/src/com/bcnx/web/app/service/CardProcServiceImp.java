@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import com.bcnx.web.app.service.dao.CardProcDao;
-import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.CardProc;
 
 public class CardProcServiceImp implements CardProcService {
@@ -16,9 +15,9 @@ public class CardProcServiceImp implements CardProcService {
 		this.cardProcDao = cardProcDao;
 	}
 	@Override
-	public CardProc getCardProc(BcnxSettle settle) {
+	public CardProc getCardProc(String cardType, String proc) {
 		try {
-			return cardProcDao.getCardProc(settle);
+			return cardProcDao.getCardProc(cardType,proc);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try to get Card Processing code", e);
 			return null;

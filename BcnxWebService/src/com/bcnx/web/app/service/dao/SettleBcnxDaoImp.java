@@ -2,6 +2,7 @@ package com.bcnx.web.app.service.dao;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -70,8 +71,8 @@ public class SettleBcnxDaoImp implements SettleBcnxDao {
 		return toList(hibernateTemplate.findByNamedParam(hql, "date", date));
 	}
 	private List<SettleBcnx> toList(final List<?> beans){
-		if(beans==null) return null;
-		if(beans.isEmpty()) return null;
+		if(beans==null) return new ArrayList<SettleBcnx>();
+		if(beans.isEmpty()) return new ArrayList<SettleBcnx>();
 		int size = beans.size();
 		SettleBcnx[] list = new SettleBcnx[size];
 		list = beans.toArray(list);

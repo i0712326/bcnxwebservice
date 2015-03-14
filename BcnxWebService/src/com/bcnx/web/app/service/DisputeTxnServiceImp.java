@@ -33,7 +33,8 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 			logger.debug("Exception occured while try save dispute data", e);
 			return null;
 		}
-	}	
+	}
+	
 	// incoming
 	@Override
 	public List<DisputeTxn> getIncoming(String id, int first, int max) {
@@ -44,6 +45,7 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 			return null;
 		}
 	}
+	
 	@Override
 	public int getInRecords(String id) {
 		try {
@@ -54,19 +56,19 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 		}
 	}
 	@Override
-	public List<DisputeTxn> getIncoming(String id, String proc, int first,
+	public List<DisputeTxn> getIncoming(String id, String card, String rrn, String stan, String proc, Date start, Date end, int first,
 			int max) {
 		try {
-			return disputeTxnDao.getInDisp(id, proc, first, max);
+			return disputeTxnDao.getInDisp(id, card, rrn, stan, proc, start, end, first, max);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try get dispute data", e);
 			return null;
 		}
 	}
 	@Override
-	public int getInRecords(String id, String proc) {
+	public int getInRecords(String id, String card, String rrn, String stan, String proc, Date start, Date end) {
 		try {
-			return disputeTxnDao.getInByProc(id, proc);
+			return disputeTxnDao.getInBy(id, card, rrn, stan, proc, start, end);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try get dispute data", e);
 			return 0;
@@ -92,19 +94,19 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 		}
 	}
 	@Override
-	public List<DisputeTxn> getOutgoing(String id, String proc, int first,
+	public List<DisputeTxn> getOutgoing(String id, String card, String rrn, String stan, String proc, Date start, Date end, int first,
 			int max) {
 		try {
-			return disputeTxnDao.getOutDisp(id, proc, first, max);
+			return disputeTxnDao.getOutDisp(id, card, rrn, stan, proc, start, end, first, max);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try get dispute data", e);
 			return null;
 		}
 	}
 	@Override
-	public int getOutRecords(String id, String proc) {
+	public int getOutRecords(String id, String card, String rrn, String stan, String proc, Date start, Date end) {
 		try {
-			return disputeTxnDao.getOutByProc(id, proc);
+			return disputeTxnDao.getOutBy(id, card, rrn, stan, proc, start, end);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try get dispute data", e);
 			return 0;
@@ -154,7 +156,7 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 	@Override
 	public List<DisputeTxn> incomingAdj(Date date, String id) {
 		try {
-			return disputeTxnDao.outgoingAdj(date,id);
+			return disputeTxnDao.incomingAdj(date, id);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try to get incoming adjustment", e);
 			return null;
@@ -163,7 +165,8 @@ public class DisputeTxnServiceImp implements DisputeTxnService {
 	@Override
 	public List<DisputeTxn> outgoingAdj(Date date, String id) {
 		try {
-			return disputeTxnDao.incomingAdj(date, id);
+			
+			return disputeTxnDao.outgoingAdj(date,id);
 		} catch (HibernateException | SQLException e) {
 			logger.debug("Exception occured while try to get out going adjustment", e);
 			return null;

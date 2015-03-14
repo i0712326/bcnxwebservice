@@ -1,5 +1,6 @@
 package com.bcnx.web.app.service.user;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -7,9 +8,12 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
@@ -63,8 +67,9 @@ public class RepresentController extends DisputeTemplate{
 		settle.setRrn(rrn);
 		settle.setStan(stan);
 		settle = bcnxSettleService.getBcnxSettle(settle);
-		
-		
+		disputeTxn.setRc(rc);
+		disputeTxn.setUser(user);
+		disputeTxn.setBcnxSettle(settle);
 		DisputeTxn disp = new DisputeTxn();
 		disp.setProcc("600001");
 		disp.setBcnxSettle(settle);
@@ -73,8 +78,9 @@ public class RepresentController extends DisputeTemplate{
 			return Response
 					.status(500)
 					.entity(new ErrMsg("413",
-							"Invalid copy request")).build();
-		if(disp.getCount()==0)
+							"Invalid Representment request")).build();
+		boolean valid = checkValidDate(disp.getDate());
+		if(!valid)
 			return Response
 					.status(500)
 					.entity(new ErrMsg("414",
@@ -89,12 +95,20 @@ public class RepresentController extends DisputeTemplate{
 		if (txn != null)
 			return Response.status(500)
 					.entity(new ErrMsg("411", "Duplicated request")).build();
-		disputeTxn.setRc(rc);
-		disputeTxn.setUser(user);
-		disputeTxn.setBcnxSettle(settle);
+		
 		representService.save(disputeTxn);
 		return Response
 				.ok(new ErrMsg("200", "Copy request has sent successfully"))
 				.build();
+	}
+	@Path("download/{fileName}")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response download(@PathParam("fileName")String fileName, @Context ServletContext context){
+		String path = context.getInitParameter("uploadFolder");
+		String target = path+"/"+fileName;
+		File file = new File(target);
+	    ResponseBuilder response = Response.ok((Object) file);
+	    response.header("Content-Disposition","attachment; filename="+fileName);
+	    return response.build();
 	}
 }

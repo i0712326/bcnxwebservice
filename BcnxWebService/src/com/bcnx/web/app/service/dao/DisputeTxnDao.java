@@ -18,14 +18,16 @@ public interface DisputeTxnDao {
 	// view incoming dispute
 	public List<DisputeTxn> getInDisp(String id, int first, int max) throws SQLException, HibernateException;
 	public int getInRecords(String id) throws SQLException, HibernateException;
-	public List<DisputeTxn> getInDisp(String id, String proc, int first, int max) throws SQLException, HibernateException;
-	public int getInByProc(String id, String proc) throws SQLException, HibernateException;
+	
+	public List<DisputeTxn> getInDisp(String id,  String card, String rrn, String stan, String proc, Date start, Date end, int first, int max) throws SQLException, HibernateException;
+	public int getInBy(String id, String card, String rrn, String stan, String proc, Date start, Date end) throws SQLException, HibernateException;
 	
 	// view outgoing
 	public List<DisputeTxn> getOutDisp(String id, int first, int max) throws SQLException, HibernateException;
 	public int getOutRecords(String id) throws SQLException, HibernateException;
-	public List<DisputeTxn> getOutDisp(String id, String proc, int first, int max) throws SQLException, HibernateException;
-	public int getOutByProc(String id, String proc) throws SQLException, HibernateException;
+	
+	public List<DisputeTxn> getOutDisp(String id,  String card, String rrn, String stan, String proc, Date start, Date end, int first, int max) throws SQLException, HibernateException;
+	public int getOutBy(String id,  String card, String rrn, String stan, String proc, Date start, Date end) throws SQLException, HibernateException;
 	
 	// related case
 	public List<DisputeTxn> relatedCase(DisputeTxn disp, int first, int max) throws SQLException, HibernateException;

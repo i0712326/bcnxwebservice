@@ -1,5 +1,6 @@
 package com.bcnx.web.app.service.user;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -9,9 +10,12 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
@@ -142,7 +146,8 @@ public class CopyRequestController extends DisputeTemplate{
 					.status(500)
 					.entity(new ErrMsg("413",
 							"Invalid copy request")).build();
-		if(disp.getCount()==0)
+		boolean valid = checkValidDate(disp.getDate());
+		if(valid)
 			return Response
 					.status(500)
 					.entity(new ErrMsg("414",
@@ -154,5 +159,15 @@ public class CopyRequestController extends DisputeTemplate{
 		disputeTxn.setFileName(fileName);
 		copyRequestService.save(disputeTxn);
 		return Response.ok(new ErrMsg("200","update successful")).build();
+	}
+	@Path("download/{fileName}")
+	@Produces(MediaType.APPLICATION_OCTET_STREAM)
+	public Response download(@PathParam("fileName")String fileName, @Context ServletContext context){
+		String path = context.getInitParameter("uploadFolder");
+		String target = path+"/"+fileName;
+		File file = new File(target);
+	    ResponseBuilder response = Response.ok((Object) file);
+	    response.header("Content-Disposition","attachment; filename="+fileName);
+	    return response.build();
 	}
 }

@@ -33,8 +33,6 @@ public class AdjustmentController extends DisputeTemplate{
 		disputeTxn.setRemark(remark);
 		disputeTxn.setAmount(amount);
 		disputeTxn.setFee(fee);
-		disputeTxn.setAcq(acq);
-		disputeTxn.setIss(iss);
 		disputeTxn.setDate(getDate());
 		disputeTxn.setTime(getTime());
 		
@@ -42,7 +40,6 @@ public class AdjustmentController extends DisputeTemplate{
 		User user = new User();
 		user.setUserId(userId);
 		user = userService.getUser(user);
-		
 		
 		BcnxSettle bcnxSettle = new BcnxSettle();
 		bcnxSettle.setSlot(slot);
@@ -54,7 +51,6 @@ public class AdjustmentController extends DisputeTemplate{
 		disputeTxn.setBcnxSettle(bcnxSettle);
 		disputeTxn.setRc(rc);
 		disputeTxn.setUser(user);
-		// copy request
 		boolean chk = checkAcquirer(disputeTxn, user);
 		if (!chk)
 			return Response

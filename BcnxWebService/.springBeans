@@ -28,6 +28,7 @@
 		<config>webapp/WEB-INF/quartz/batch_context.xml</config>
 		<config>webapp/WEB-INF/quartz/batchReportGen.xml</config>
 		<config>webapp/WEB-INF/quartz/batchUpdateDisp.xml</config>
+		<config>batch/batch_configure.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

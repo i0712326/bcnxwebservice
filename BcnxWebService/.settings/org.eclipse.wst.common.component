@@ -8,6 +8,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/sample"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/datamodel"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/queries"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/batch"/>
         <property name="context-root" value="BcnxWebService"/>
         <property name="java-output-path" value="/BcnxWebService/build/classes"/>
     </wb-module>

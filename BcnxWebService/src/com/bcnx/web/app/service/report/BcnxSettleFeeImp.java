@@ -15,7 +15,10 @@ public class BcnxSettleFeeImp implements BcnxSettleFee{
 	@Override
 	public List<BcnxSettle> setIssFee(List<BcnxSettle> settles) {
 		for(int i=0;i<settles.size();i++){
-			CardProc cardProc = cardProcService.getCardProc(settles.get(i));
+			BcnxSettle settle = settles.get(i);
+			String proc = settle.getProc();
+			String cardType = settle.getCardType().getType();
+			CardProc cardProc = cardProcService.getCardProc(cardType,proc);
 			if(cardProc!=null)
 			settles.get(i).setFee(cardProc.getIssFee());
 		}
@@ -24,7 +27,10 @@ public class BcnxSettleFeeImp implements BcnxSettleFee{
 	@Override
 	public List<BcnxSettle> setAcqFee(List<BcnxSettle> settles) {
 		for(int i=0;i<settles.size();i++){
-			CardProc cardProc = cardProcService.getCardProc(settles.get(i));
+			BcnxSettle settle = settles.get(i);
+			String proc = settle.getProc();
+			String cardType = settle.getCardType().getType();
+			CardProc cardProc = cardProcService.getCardProc(cardType,proc);
 			if(cardProc!=null)
 				settles.get(i).setFee(cardProc.getAcqFee());
 		}
@@ -33,7 +39,11 @@ public class BcnxSettleFeeImp implements BcnxSettleFee{
 	@Override
 	public List<DisputeTxn> setDispIssFee(List<DisputeTxn> list) {
 		for(int i=0;i<list.size();i++){
-			CardProc cardProc = cardProcService.getCardProc(list.get(i).getBcnxSettle());
+			DisputeTxn disp = list.get(i);
+			BcnxSettle settle = disp.getBcnxSettle();
+			String cardType = settle.getCardType().getType();
+			String proc = disp.getProcc();
+			CardProc cardProc = cardProcService.getCardProc(cardType, proc);
 			if(cardProc!=null)
 				list.get(i).setFee(cardProc.getIssFee());
 		}
@@ -42,7 +52,11 @@ public class BcnxSettleFeeImp implements BcnxSettleFee{
 	@Override
 	public List<DisputeTxn> setDispAcqFee(List<DisputeTxn> list) {
 		for(int i=0;i<list.size();i++){
-			CardProc cardProc = cardProcService.getCardProc(list.get(i).getBcnxSettle());
+			DisputeTxn disp = list.get(i);
+			BcnxSettle settle = disp.getBcnxSettle();
+			String cardType = settle.getCardType().getType();
+			String proc = disp.getProcc();
+			CardProc cardProc = cardProcService.getCardProc(cardType, proc);
 			if(cardProc!=null)
 				list.get(i).setFee(cardProc.getAcqFee());
 		}

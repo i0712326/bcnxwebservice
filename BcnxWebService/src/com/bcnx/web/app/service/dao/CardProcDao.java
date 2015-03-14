@@ -4,9 +4,8 @@ import java.sql.SQLException;
 
 import org.hibernate.HibernateException;
 
-import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.CardProc;
 
 public interface CardProcDao {
-	public CardProc getCardProc(BcnxSettle settle) throws SQLException, HibernateException;
+	public CardProc getCardProc(String cardType, String proc) throws SQLException, HibernateException;
 }
