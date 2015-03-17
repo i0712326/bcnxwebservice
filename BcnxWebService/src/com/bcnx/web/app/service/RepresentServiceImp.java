@@ -22,4 +22,13 @@ public class RepresentServiceImp implements RepresentService {
 			logger.debug("Exception occured while try to save representment", e);
 		}
 	}
+	@Override
+	public void update(DisputeTxn disp) {
+		try {
+			disputeTxnDao.update(disp);
+		} catch (HibernateException | SQLException e) {
+			logger.debug("Exception occured while try to update representment", e);
+		}
+	}
+	
 }

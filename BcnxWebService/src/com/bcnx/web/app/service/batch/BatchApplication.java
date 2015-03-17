@@ -16,10 +16,8 @@ public class BatchApplication {
 		Job job = (Job) context.getBean("job1");
 	 
 		try {
-	 
 			JobExecution execution = jobLauncher.run(job, new JobParameters());
 			System.out.println("Exit Status : " + execution.getStatus());
-	 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -95,7 +95,8 @@ public class RepresentController extends DisputeTemplate{
 		if (txn != null)
 			return Response.status(500)
 					.entity(new ErrMsg("411", "Duplicated request")).build();
-		
+		disp.setStatus("Y");
+		representService.update(disp);
 		representService.save(disputeTxn);
 		return Response
 				.ok(new ErrMsg("200", "Copy request has sent successfully"))

@@ -4,4 +4,5 @@ import com.bcnx.web.app.service.entity.DisputeTxn;
 
 public interface RepresentService {
 	public void save(DisputeTxn disp);
+	public void update(DisputeTxn disp);
 }
