@@ -33,6 +33,10 @@ public class FileTransferImp implements FileTransfer {
 		this.localPath = localPath;
 	}
 	@Override
+	public void setLocalPath(String localPath){
+		this.localPath = localPath;
+	}
+	@Override
 	public void setExpression(String expression){
 		this.expression = expression;
 	}

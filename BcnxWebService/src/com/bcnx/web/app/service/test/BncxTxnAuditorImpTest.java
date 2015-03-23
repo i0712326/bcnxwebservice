@@ -19,10 +19,9 @@ public class BncxTxnAuditorImpTest {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		BcnxTxnAuditor bean = (BcnxTxnAuditor) context.getBean("bcnxTxnAuditor");
 		//BcnxTxnService service = (BcnxTxnService) context.getBean("bcnxTxnService");
-		File file = new File("sample/router.audit.150313");
+		File file = new File("sample/router.audit.150320");
 		try {
 			bean.toList(file);
-			bean.refine();
 			assertTrue(true);
 		} catch (IOException e) {
 			e.printStackTrace();

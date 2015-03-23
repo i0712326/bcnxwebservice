@@ -46,27 +46,46 @@ public class BcnxSettleAuditorImp extends BatchAuditJob implements BcnxSettleAud
 		while((line = bufferReader.readLine())!=null){
 			matcher = ignorPattern.matcher(line);
 			String[] token = line.split(" ");
-			if(!matcher.find()&&(token.length>1)){
+			if(!matcher.find()&&(token.length==13)){
 				matcher = slotPattern.matcher(token[0]);
 				String slot = null;
 				if(matcher.find())
 					slot = matcher.group().trim();
 				logger.debug("slot number : "+slot);
+				if(token[1]==null)
+					continue;
 				String type = token[1].trim();
+				if(token[2]==null)
+					continue;
 				String proc = token[2].trim();
+				if(token[3]==null)
+					continue;
 				String card	= token[3].trim();
+				if(token[5]==null)
+					continue;
 				String res	= token[5].trim();
+				if(token[6]==null)
+					continue;
 				String stan = token[6].trim();
+				if(previous==null)
+					continue;
 				String time	= previous.trim();
+				if(token[7]==null)
+					continue;
 				String amt	= token[7].trim();
+				if(token[8]==null)
+					continue;
 				String atmId= token[8].substring(12,20).trim();
+				if(token[9]==null)
+					continue;
 				String refer= token[9].trim();
+				if(token[11]==null)
+					continue;
 				String acqId= token[11].trim();
 				
 				matcher = numPattern.matcher(amt.trim());
 				if(!matcher.find())
 					continue;
-				
 				matcher = balPattern.matcher(proc);
 				if(matcher.find())
 					amt = "0";
@@ -108,7 +127,7 @@ public class BcnxSettleAuditorImp extends BatchAuditJob implements BcnxSettleAud
 				bcnxSettle.setBcnxTxn(bcnxTxn);
 				
 				if(checkData(bcnxSettle)){
-					logger.debug(bcnxSettle.toString());
+					logger.debug(bcnxSettle);
 					bcnxSettles.add(bcnxSettle);
 				}
 			}

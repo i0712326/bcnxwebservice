@@ -21,7 +21,7 @@ public class BncxTxnAuditorImp extends BatchAuditJob implements BcnxTxnAuditor {
 	private static List<String> slot = new ArrayList<String>();
 	@SuppressWarnings("resource")
 	@Override
-	public List<BcnxTxn> toList(File file) throws IOException {
+	public void toList(File file) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		String line = null;
 		while((line = br.readLine())!=null){
@@ -34,7 +34,7 @@ public class BncxTxnAuditorImp extends BatchAuditJob implements BcnxTxnAuditor {
 			else
 				slot.add(line);
 		}
-		return list;
+		refine();
 	}
 	private static String MTI  = "1";
 	private static String CARD = "2";
@@ -77,7 +77,7 @@ public class BncxTxnAuditorImp extends BatchAuditJob implements BcnxTxnAuditor {
 				if(de.equals(MTI)){
 					bcnxTxn.setMti(data);
 					if(data.equals("0800")||data.equals("0810"))
-						continue;
+						return;
 				}
 				if(de.equals(CARD))
 					bcnxTxn.setCard(data);
@@ -101,8 +101,15 @@ public class BncxTxnAuditorImp extends BatchAuditJob implements BcnxTxnAuditor {
 					bcnxTxn.setPos(data);
 				if(de.equals(CONC))
 					bcnxTxn.setCondCode(data);
-				if(de.equals(FEE))
-					bcnxTxn.setFee(Double.parseDouble(data.replaceAll("D", "").replaceAll("C", "")));
+				if(de.equals(FEE)){
+					Pattern feePattern = Pattern.compile("^[D|C]([0-9]{8})$");
+					matcher = feePattern.matcher(data);
+					bcnxTxn.setFee(0);
+					if (matcher.find()) {
+						String fee = matcher.group(1);
+						bcnxTxn.setFee(Double.parseDouble(fee));
+					}
+				}
 				if(de.equals(ACQ))
 					bcnxTxn.setAcq(data);
 				if(de.equals(RRN))
@@ -121,7 +128,7 @@ public class BncxTxnAuditorImp extends BatchAuditJob implements BcnxTxnAuditor {
 		}
 		String mti = bcnxTxn.getMti();
 		if(mti==null){
-			logger.info(bcnxTxn.toString());
+			logger.debug(bcnxTxn);
 			return ;
 		}
 		boolean check = mti.equals("0200")||mti.equals("0210")||mti.equals("0420")||mti.equals("0430");
@@ -137,8 +144,7 @@ public class BncxTxnAuditorImp extends BatchAuditJob implements BcnxTxnAuditor {
 			list.add(bcnxTxn);
 		}
 	}
-	@Override
-	public void refine(){
+	private void refine(){
 		for(BcnxTxn item : list){
 			String mti = item.getMti();
 			boolean check = mti.equals("0200")||mti.equals("0420");

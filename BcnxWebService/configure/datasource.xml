@@ -11,7 +11,7 @@
 	<!-- <jee:jndi-lookup id="dataSource" jndi-name="jdbc/bcnx"/> -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3307/bcnx"/>
+        <property name="url" value="jdbc:mysql://localhost:3307/test"/>
         <property name="username" value="root"/>
         <property name="password" value="123456"/>
     </bean>

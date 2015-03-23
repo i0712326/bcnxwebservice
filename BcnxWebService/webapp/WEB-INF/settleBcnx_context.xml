@@ -7,6 +7,25 @@
 		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.1.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd">
 	<import resource="datasource.xml"/>
+	<import resource="member_context.xml"/>
+	<import resource="bcnxSettle_context.xml"/>
+	<import resource="cardProc_context.xml"/>
+	<import resource="dispute_context.xml"/>
+	<bean id="bcnxSettleFee" class="com.bcnx.web.app.service.report.BcnxSettleFeeImp">
+		<property name="cardProcService" ref="cardProcService"/>
+	</bean>
+	<bean id="settlementReportService" class="com.bcnx.web.app.service.report.SettlementReportServiceImp">
+		<property name="bcnxSettleService" ref="bcnxSettleService"/>
+		<property name="disputeTxnService" ref="disputeTxnService"/>
+		<property name="memberService" ref="memberService"/>
+		<property name="bcnxSettleFee" ref="bcnxSettleFee"/>
+	</bean>
+	<bean id="netSettlementReport" class="com.bcnx.web.app.service.report.NetSettlementReportImp">
+		<property name="settlementReportService" ref="settlementReportService"/>
+		<property name="memberService" ref="memberService"/>
+		<property name="settleBcnxService" ref="settleBcnxService"/>
+		<property name="path" value="D:\\output\\Reports"/>
+	</bean>
 	<bean id="settleBcnxDao" class="com.bcnx.web.app.service.dao.SettleBcnxDaoImp">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
