@@ -17,6 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.jboss.resteasy.spi.ApplicationException;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.BulletinService;
@@ -26,7 +27,7 @@ public class BulletinController {
 	@POST
     @Path("/upload")
     @Consumes("multipart/form-data")
-	public Response upload(@MultipartForm Bulletin bulletin){
+	public Response upload(@MultipartForm Bulletin bulletin) throws ApplicationException {
 		String title = bulletin.getTitle() == null ? "Unknown" : bulletin.getTitle();
         String completeFilePath = "D:/Server/Storage/" + title+"."+bulletin.getType(); 
         try
@@ -48,14 +49,14 @@ public class BulletinController {
 	@POST
 	@Path("/save")
 	@Produces("application/json")
-	public Response save(Bulletin bulletin){
+	public Response save(Bulletin bulletin) throws ApplicationException {
 		BulletinService service = (BulletinService) BcnxApplicationContext.getBean("bulletinService");
 		service.save(bulletin);
 		return Response.status(200).entity(bulletin).build();
 	}
 	@GET
 	@Path("/get/{first}/{max}")
-	public Response getBulletns(@PathParam("first")int first, @PathParam("max")int max){
+	public Response getBulletns(@PathParam("first")int first, @PathParam("max")int max) throws ApplicationException {
 		BulletinService service = (BulletinService) BcnxApplicationContext.getBean("bulletinService");
 		List<Bulletin> bulletins = service.getBulletin(first, max);
 		return Response.status(200).entity(bulletins).build();
@@ -63,7 +64,7 @@ public class BulletinController {
 	@GET
 	@Path("/get/{date}/{first}/{max}")
 	public Response getBulletins(@PathParam("date") String date,
-			@PathParam("first") int first, @PathParam("max") int max) {
+			@PathParam("first") int first, @PathParam("max") int max) throws ApplicationException {
 		BulletinService service = (BulletinService) BcnxApplicationContext
 				.getBean("bulletinService");
 		Timestamp start = toTimestamp(date.replaceAll("-", "") + "000000");

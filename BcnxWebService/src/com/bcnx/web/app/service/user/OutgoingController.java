@@ -9,6 +9,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
+import org.jboss.resteasy.spi.ApplicationException;
+
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.User;
 import com.bcnx.web.app.service.entity.Wrapper;
@@ -19,7 +21,7 @@ public class OutgoingController extends DisputeTemplate {
 	@Path("/get")
 	@Produces("application/json")
 	public Response getOutgoing(@QueryParam("usrId") String usrId,
-			@QueryParam("page") int page, @QueryParam("rows") int rows) {
+			@QueryParam("page") int page, @QueryParam("rows") int rows) throws ApplicationException {
 		User usr = new User();
 		usr.setUserId(usrId);
 		usr = userService.getUser(usr);
@@ -42,7 +44,7 @@ public class OutgoingController extends DisputeTemplate {
 			@QueryParam("card") String card, @QueryParam("rrn") String rrn,
 			@QueryParam("stan") String stan, @QueryParam("proc") String proc,
 			@QueryParam("start") String start, @QueryParam("end") String end,
-			@QueryParam("page") int page, @QueryParam("rows") int rows) {
+			@QueryParam("page") int page, @QueryParam("rows") int rows) throws ApplicationException {
 		User usr = new User();
 		usr.setUserId(usrId);
 		usr = userService.getUser(usr);

@@ -25,6 +25,8 @@
 		<config>batch/batch_configure.xml</config>
 		<config>webapp/WEB-INF/quartz/batch_job_context.xml</config>
 		<config>webapp/WEB-INF/quartz/batch_job_scheduler.xml</config>
+		<config>webapp/WEB-INF/proccode_context.xml</config>
+		<config>webapp/WEB-INF/exception_context.xml</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

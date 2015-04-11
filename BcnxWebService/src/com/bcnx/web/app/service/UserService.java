@@ -8,6 +8,7 @@ public interface UserService {
 	public void save(User user);
 	public void update(User user);
 	public void updatePasswd(User user);
+	public boolean checkComplex(String passwd);
 	public User getUser(User user);
 	public List<User> getUsers(int first, int max);
 	public List<User> getUsers(User user, int first, int max);

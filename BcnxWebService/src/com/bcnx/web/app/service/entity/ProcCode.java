@@ -23,6 +23,8 @@ public class ProcCode implements Serializable {
 	private String code;
 	@Column(name="REMARK")
 	private String remark;
+	@Column(name="LIMIT")
+	private int limit;
 	@OneToMany(mappedBy = "cardProcId.procCode", cascade=CascadeType.ALL)
 	private List<CardProc> cardProcs;
 	@OneToMany(mappedBy = "procCode", cascade=CascadeType.ALL)
@@ -42,6 +44,12 @@ public class ProcCode implements Serializable {
 	}
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+	public int getLimit() {
+		return limit;
+	}
+	public void setLimit(int limit) {
+		this.limit = limit;
 	}
 	@JsonIgnore
 	public List<CardProc> getCardProcs() {

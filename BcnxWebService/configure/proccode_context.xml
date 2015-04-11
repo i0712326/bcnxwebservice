@@ -2,11 +2,12 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
 	<import resource="datasource.xml"/>
-	<bean id="bcnxSettleDao" class="com.bcnx.web.app.service.dao.BcnxSettleDaoImp">
+	<bean id="procCodeDao" class="com.bcnx.web.app.service.dao.ProcCodeDaoImp">
 		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-	<bean id="bcnxSettleService" class="com.bcnx.web.app.service.BcnxSettleServiceImp">
-		<property name="bcnxSettleDao" ref="bcnxSettleDao"/>
+	<bean id="procCodeService" class="com.bcnx.web.app.service.ProcCodeServiceImp">
+		<property name="procCodeDao" ref="procCodeDao"/>
 	</bean>
 </beans>

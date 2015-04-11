@@ -106,11 +106,25 @@ public class UserController {
 		if(!check){
 			return Response.status(401).entity(new ErrMsg("407","invalid current password")).build();
 		}
+		check = userService.checkComplex(nPasswd);
+		if (!check)
+			return Response
+					.status(501)
+					.entity(new ErrMsg(
+							"405",
+							"bad password,password is at least 8 characters and require number, character (upper and lower) and special characters"))
+					.build();
 		if (!nPasswd.equals(cPasswd))
-			return Response.status(401).entity(new ErrMsg("406","new password and confirm password is no match")).build();
+			return Response
+					.status(401)
+					.entity(new ErrMsg("406",
+							"new password and confirm password is no match"))
+					.build();
 		user.setPasswd(Encryptography.encrypt(nPasswd));
 		userService.updatePasswd(user);
-		return Response.status(200).entity(new ErrMsg("200","password change successful")).build();
+		return Response.status(200)
+				.entity(new ErrMsg("200", "password change successful"))
+				.build();
 	}
 	// log on service
 	@POST

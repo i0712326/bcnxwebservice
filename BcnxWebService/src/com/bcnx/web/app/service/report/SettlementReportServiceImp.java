@@ -122,8 +122,8 @@ public class SettlementReportServiceImp implements SettlementReportService {
 		printReport(pw,"ERROR :",errTxn);
 		printDispReports(pw,"OUTGONG COPY REQUEST :",oCp);
 		printDispReports(pw,"INCOMING COPY REQUEST",iCp);
-		printDispReports(pw,"INCOMING COPY REQUEST RESPONSE :", iCrs);
-		printDispReports(pw,"OUTGOIN COPY REQUEST RESPONSE :", oCrs);
+		printDispReports(pw,"INCOMING FULLFILLMENT :", iCrs);
+		printDispReports(pw,"OUTGOIN FULLFILLMENT :", oCrs);
 		printDispReports(pw,"OUTGOING CHARGE BACK :",oChb);
 		printDispReports(pw,"INCOMING CHARGE BACK :",iChb);
 		printDispReports(pw,"OUTGOING ADJUSTMENT :",oAdj);
@@ -224,8 +224,7 @@ public class SettlementReportServiceImp implements SettlementReportService {
 		double orFee = getDispFee(or);
 		double orTot = orAmt + orFee;
 		
-		double net = (acqAmt +acqFee) + (issAmt + issFee) + (ocAmt + ocFee) + (icAmt + icFee) 
-				+ (iaAmt + iaAmt) + (oaAmt + oaFee)	+ (orAmt + orFee) + (irAmt + irFee);
+		double net = issTot + acqTot + icTot + ocTot + iaTot + oaTot + irTot + orTot;
 		
 		settleBcnx.setMember(member);
 		settleBcnx.setDate(date);
@@ -348,9 +347,9 @@ public class SettlementReportServiceImp implements SettlementReportService {
 		pw.printf("%23s\t%13d\t%20s\t%17s\r\n","REVERSAL",settleBcnx.getRevNum(),decimalFormat.format(settleBcnx.getRevTot()),decimalFormat.format(settleBcnx.getRevFee()));
 		pw.printf("%23s\t%13d\t%20s\t%17s\r\n","ERROR",settleBcnx.getErrNum(),decimalFormat.format(settleBcnx.getErrAmt()),decimalFormat.format(settleBcnx.getErrFee()));
 		pw.printf("%23s\t%13d\t%20s\t%17s\r\n","COPY REQUEST (OUT)",settleBcnx.getOuCprNum(),null,null);
-		pw.printf("%23s\t%13d\t%20s\t%17s\r\n","COPY REQUEST RES.(OUT)",settleBcnx.getOuCrsNum(),null,null);
+		pw.printf("%23s\t%13d\t%20s\t%17s\r\n","FULLFILLMENT (OUT)",settleBcnx.getOuCrsNum(),null,null);
 		pw.printf("%23s\t%13d\t%20s\t%17s\r\n","COPY REQUEST (IN)",settleBcnx.getInCprNum(),null,null);
-		pw.printf("%23s\t%13d\t%20s\t%17s\r\n","COPY REQUEST RES.(IN)",settleBcnx.getInCrsNum(),null,null);
+		pw.printf("%23s\t%13d\t%20s\t%17s\r\n","FULLFILLMENT (IN)",settleBcnx.getInCrsNum(),null,null);
 		
 		pw.println("\r\nFINANCAIL TRANSACTION SUMMARY");
 		pw.println("+----------------------+---------------+----------------------+--------------------+");

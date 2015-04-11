@@ -29,7 +29,7 @@
 		<batch:step id="bcnxTxnDeleteStep" next="bcnxSetteFetchStep">
 			<batch:tasklet ref="bcnxTxnFileDelete"/>
 		</batch:step>
-		<!-- verify log process -->
+		<!-- settle -->
 		<batch:step id="bcnxSetteFetchStep" next="bcnxSettleReadStep">
 			<batch:tasklet ref="bcnxSettleFileFetch"/>
 		</batch:step>

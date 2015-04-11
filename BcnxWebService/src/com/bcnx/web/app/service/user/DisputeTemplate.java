@@ -18,10 +18,12 @@ import org.joda.time.LocalDate;
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.BcnxSettleService;
 import com.bcnx.web.app.service.DisputeTxnService;
+import com.bcnx.web.app.service.ProcCodeService;
 import com.bcnx.web.app.service.ReasonCodeService;
 import com.bcnx.web.app.service.UserService;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.Member;
+import com.bcnx.web.app.service.entity.ProcCode;
 import com.bcnx.web.app.service.entity.User;
 import com.bcnx.web.app.utility.UtilityService;
 
@@ -37,6 +39,7 @@ public class DisputeTemplate {
 	protected static BcnxSettleService bcnxSettleService = (BcnxSettleService) BcnxApplicationContext.getBean("bcnxSettleService");
 	protected static ReasonCodeService reasonCodeService = (ReasonCodeService) BcnxApplicationContext.getBean("reasonCodeService");
 	protected static DisputeTxnService disputeTxnService = (DisputeTxnService) BcnxApplicationContext.getBean("disputeTxnService");
+	protected static ProcCodeService procCodeService = (ProcCodeService) BcnxApplicationContext.getBean("procCodeService");
 	
 	protected boolean checkIssuer(DisputeTxn txn, User user){
 		String iss = txn.getIss();
@@ -135,5 +138,17 @@ public class DisputeTemplate {
 		int valid = Days.daysBetween(start, end).getDays();
 		return valid<30;
 		
+	}
+	protected boolean checkValidDate(Date org, String code){
+		Date date = UtilityService.getCurrentDate();
+		LocalDate start = new LocalDate(org);
+		LocalDate end = new LocalDate(date);
+		int valid = Days.daysBetween(start, end).getDays();
+		ProcCode procCode = new ProcCode();
+		procCode.setCode(code);
+		procCode = procCodeService.getProcCode(procCode);
+		if(procCode == null)
+			return false;
+		return valid<=procCode.getLimit();
 	}
 }

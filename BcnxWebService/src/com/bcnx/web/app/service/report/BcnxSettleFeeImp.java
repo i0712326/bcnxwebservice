@@ -40,6 +40,8 @@ public class BcnxSettleFeeImp implements BcnxSettleFee{
 	public List<DisputeTxn> setDispIssFee(List<DisputeTxn> list) {
 		for(int i=0;i<list.size();i++){
 			DisputeTxn disp = list.get(i);
+			if(disp.getFlag()!=null)
+				continue;
 			BcnxSettle settle = disp.getBcnxSettle();
 			String cardType = settle.getCardType().getType();
 			String proc = disp.getProcc();
@@ -53,6 +55,8 @@ public class BcnxSettleFeeImp implements BcnxSettleFee{
 	public List<DisputeTxn> setDispAcqFee(List<DisputeTxn> list) {
 		for(int i=0;i<list.size();i++){
 			DisputeTxn disp = list.get(i);
+			if(disp.getFlag()!=null)
+				continue;
 			BcnxSettle settle = disp.getBcnxSettle();
 			String cardType = settle.getCardType().getType();
 			String proc = disp.getProcc();

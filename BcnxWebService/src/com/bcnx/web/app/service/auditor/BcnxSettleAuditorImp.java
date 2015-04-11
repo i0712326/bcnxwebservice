@@ -46,7 +46,7 @@ public class BcnxSettleAuditorImp extends BatchAuditJob implements BcnxSettleAud
 		while((line = bufferReader.readLine())!=null){
 			matcher = ignorPattern.matcher(line);
 			String[] token = line.split(" ");
-			if(!matcher.find()&&(token.length==13)){
+			if(!matcher.find()&&(token.length>=13)){
 				matcher = slotPattern.matcher(token[0]);
 				String slot = null;
 				if(matcher.find())

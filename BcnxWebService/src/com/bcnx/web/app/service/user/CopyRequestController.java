@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.jboss.resteasy.spi.ApplicationException;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.CopyRequestService;
@@ -38,7 +39,7 @@ public class CopyRequestController extends DisputeTemplate{
 			@FormParam("stan") String stan, @FormParam("proc") String proc,
 			@FormParam("rea") String rea, @FormParam("remark") String remark,
 			@FormParam("part") String part, @FormParam("amount") double amount,
-			@FormParam("fee") double fee, @FormParam("usrId") String userId) {
+			@FormParam("fee") double fee, @FormParam("usrId") String userId) throws ApplicationException {
 		DisputeTxn disputeTxn = new DisputeTxn();
 		disputeTxn.setProcc(proc);
 		disputeTxn.setRemark(remark);
@@ -68,7 +69,7 @@ public class CopyRequestController extends DisputeTemplate{
 					.status(500)
 					.entity(new ErrMsg("410",
 							"User is not allowed to perform function")).build();
-		boolean valid = checkValidDate(settle.getDate());
+		boolean valid = checkValidDate(settle.getDate(),proc);
 		if(!valid)
 			return Response.status(500)
 					.entity(new ErrMsg("414", "Exceed valid date request")).build();
@@ -86,7 +87,7 @@ public class CopyRequestController extends DisputeTemplate{
 	@Path("/response")
 	@Produces("application/json")
 	@Consumes("multipart/form-data")
-	public Response resCpRq(MultipartFormDataInput input, @Context ServletContext context) {
+	public Response resCpRq(MultipartFormDataInput input, @Context ServletContext context) throws ApplicationException {
 		String path = context.getInitParameter("uploadFolder");
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
 		String fileName = getFileData(uploadForm.get("file"),path);
@@ -146,7 +147,7 @@ public class CopyRequestController extends DisputeTemplate{
 					.status(500)
 					.entity(new ErrMsg("413",
 							"Invalid copy request")).build();
-		boolean valid = checkValidDate(disp.getDate());
+		boolean valid = checkValidDate(disp.getDate(),proc);
 		if(valid)
 			return Response
 					.status(500)
@@ -162,7 +163,7 @@ public class CopyRequestController extends DisputeTemplate{
 	}
 	@Path("download/{fileName}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response download(@PathParam("fileName")String fileName, @Context ServletContext context){
+	public Response download(@PathParam("fileName")String fileName, @Context ServletContext context) throws ApplicationException {
 		String path = context.getInitParameter("uploadFolder");
 		String target = path+"/"+fileName;
 		File file = new File(target);

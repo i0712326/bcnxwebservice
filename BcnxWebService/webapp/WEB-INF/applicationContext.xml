@@ -23,6 +23,7 @@
 	<import resource="dispute_context.xml"/>
 	<import resource="reasoncode_context.xml"/>
 	<import resource="settleBcnx_context.xml"/>
+	<import resource="proccode_context.xml"/>
 	<import resource="quartz/batch_job_scheduler.xml"/>
-	<!-- <import resource="quartz/batch_scheduler.xml"/> -->
+	<import resource="exception_context.xml"/>
 </beans>

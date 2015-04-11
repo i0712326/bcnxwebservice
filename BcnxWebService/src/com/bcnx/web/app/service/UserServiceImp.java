@@ -2,6 +2,8 @@ package com.bcnx.web.app.service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -37,6 +39,14 @@ public class UserServiceImp implements UserService {
 		} catch (SQLException e) {
 			logger.debug("Exception occured while try to updat user",e);
 		}
+	}
+	private static final String REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+	private Pattern pattern = Pattern.compile(REGEX);
+	private Matcher matcher;
+	@Override
+	public boolean checkComplex(String passwd) {
+		matcher = pattern.matcher(passwd);
+		return matcher.find();
 	}
 	@Override
 	public User getUser(User user) {

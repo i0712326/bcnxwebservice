@@ -6,6 +6,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.jboss.resteasy.spi.ApplicationException;
+
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.AdjustmentService;
 import com.bcnx.web.app.service.entity.BcnxSettle;
@@ -26,8 +28,8 @@ public class AdjustmentController extends DisputeTemplate{
 			@FormParam("rea") String rea, @FormParam("remark") String remark,
 			@FormParam("part") String part, @FormParam("amount") double amount,
 			@FormParam("fee") double fee, @FormParam("iss") String iss,
-			@FormParam("acq") String acq, @FormParam("usrId") String userId) {
-		
+			@FormParam("acq") String acq, @FormParam("usrId") String userId)
+			throws ApplicationException {
 		DisputeTxn disputeTxn = new DisputeTxn();
 		disputeTxn.setProcc(proc);
 		disputeTxn.setRemark(remark);
@@ -58,7 +60,7 @@ public class AdjustmentController extends DisputeTemplate{
 					.entity(new ErrMsg("410",
 							"User is not allowed to perform function")).build();
 		
-		boolean valid = checkValidDate(bcnxSettle.getDate());
+		boolean valid = checkValidDate(bcnxSettle.getDate(),proc);
 		if(!valid)
 			return Response.status(500)
 					.entity(new ErrMsg("414", "Exceed valid date request")).build();

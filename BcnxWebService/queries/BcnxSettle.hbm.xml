@@ -3,13 +3,32 @@
  "-//Hibernate/Hibernate Mapping DTD//EN"
  "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd"> 
 <hibernate-mapping>
+	<query name="getBcnxFinIss">
+		from BcnxSettle b where b.date = :date and b.iss = :id and b.res = '00' and b.acq != '002587' and b.rrn
+			not in (select bb.rrn from BcnxSettle bb where bb.date =:date and bb.iss = :id and bb.mti = '0420' )
+			order by b.time
+	</query>
+	<query name="getBcnxFinAcq">
+		from BcnxSettle b where b.date = :date and b.acq = :id and b.res = '00' and b.iss != '002587' and b.rrn
+				not in (select bb.rrn from BcnxSettle bb where bb.date =:date and bb.acq = :id and bb.mti = '0420' )
+				order by b.time
+	</query>
+	<query name="getBcnxRev">
+		from BcnxSettle b where b.date = :date and ( b.acq =:id or b.iss =:id )and b.res = '00' and b.mti = '0420' and 
+			(b.iss!='002587' or b.acq!='002587') order by b.time
+	</query>
+	<query name="getBcnxErr">
+		from BcnxSettle b where b.date = :date and ( b.acq =:id or b.iss =:id )and b.res !='00' and b.mti = '0200' 
+			and (b.iss!='002587' or b.acq!='002587') and b.rrn not in
+			 ( select bb.rrn from BcnxSettle bb where bb.date =:date and bb.acq = :id and bb.mti = '0420' ) order by b.time
+	</query>
 	<query name="getBcnxSettle">
 		from BcnxSettle b where b.rrn = :rrn and b.mti = :mti and b.stan = :stan and b.slot = :slot
 	</query>
 	<query name="getBcnxSettles">
-		from BcnxSettle bs where bs.card like :card or bs.rrn like :rrn or bs.stan like :stan or bs.date between :start and :end
+		from BcnxSettle bs where bs.card like :card and bs.rrn like :rrn and bs.stan like :stan and bs.date between :start and :end
 	</query>
 	<query name="countBcnxSettles">
-		select count(bs) from BcnxSettle bs where bs.card like :card or bs.rrn like :rrn or bs.stan like :stan or bs.date between :start and :end
+		select count(bs) from BcnxSettle bs where bs.card like :card and bs.rrn like :rrn and bs.stan like :stan and bs.date between :start and :end
 	</query>
 </hibernate-mapping>
