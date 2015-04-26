@@ -2,6 +2,8 @@ package com.bcnx.web.app.service.admin;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -10,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
@@ -29,7 +32,8 @@ public class UserController {
 	@Path("/save")
 	public Response save(@FormParam("userId") String userId,
 			@FormParam("name") String name, @FormParam("email") String email,
-			@FormParam("memId") String memId, @FormParam("roleId") String roleId) {
+			@FormParam("memId") String memId, @FormParam("roleId") String roleId)
+			throws Exception {
 		UserService userService = (UserService) BcnxApplicationContext
 				.getBean("userService");
 		MemberService memberService = (MemberService) BcnxApplicationContext
@@ -50,7 +54,7 @@ public class UserController {
 		role.setRoleId(roleId);
 		role = roleService.getRole(role);
 		String passwd = PasswdGenerator.generate();
-		sendMailService.sendMail(user.getEmail(),passwd);
+		sendMailService.sendMail(user.getEmail(), passwd);
 		user.setPasswd(Encryptography.encrypt(passwd));
 		user.setMember(member);
 		user.setRole(role);
@@ -60,8 +64,10 @@ public class UserController {
 	@GET
 	@Path("/get")
 	@Produces("application/json")
-	public Response getUser(@QueryParam("userId") String userId){
-		UserService service = (UserService) BcnxApplicationContext.getBean("userService");
+	public Response getUser(@QueryParam("userId") String userId)
+			throws Exception {
+		UserService service = (UserService) BcnxApplicationContext
+				.getBean("userService");
 		User user = new User();
 		user.setUserId(userId);
 		user = service.getUser(user);
@@ -71,7 +77,7 @@ public class UserController {
 	@Path("/get/{first}/{max}")
 	@Produces("application/json")
 	public Response getUsers(@PathParam("first") int first,
-			@PathParam("max") int max) {
+			@PathParam("max") int max) throws Exception {
 		UserService service = (UserService) BcnxApplicationContext
 				.getBean("userService");
 		List<User> users = service.getUsers(first,max);
@@ -81,12 +87,14 @@ public class UserController {
 	@Path("/get/{userId}/{first}/{max}")
 	@Produces("application/json")
 	public Response getUsers(@PathParam("userId") String userId,
-			@PathParam("first") String first, @PathParam("max") String max) {
+			@PathParam("first") String first, @PathParam("max") String max)
+			throws Exception {
 		UserService service = (UserService) BcnxApplicationContext
 				.getBean("userService");
 		User user = new User();
 		user.setUserId(userId);
-		List<User> users = service.getUsers(user, Integer.parseInt(first), Integer.parseInt(max));
+		List<User> users = service.getUsers(user, Integer.parseInt(first),
+				Integer.parseInt(max));
 		return Response.status(200).entity(users).build();
 	}
 	@PUT
@@ -95,16 +103,19 @@ public class UserController {
 	public Response updatePasswd(@FormParam("userId") String userId,
 			@FormParam("passwd") String passwd,
 			@FormParam("nPasswd") String nPasswd,
-			@FormParam("cPasswd") String cPasswd) {
-		UserService userService = (UserService) BcnxApplicationContext.getBean("userService");
+			@FormParam("cPasswd") String cPasswd) throws Exception {
+		UserService userService = (UserService) BcnxApplicationContext
+				.getBean("userService");
 		User user = new User();
 		user.setUserId(userId);
 		user = userService.getUser(user);
-		int count = user.getCount()+1;
+		int count = user.getCount() + 1;
 		user.setCount(count);
 		boolean check = Encryptography.checkPasswd(passwd, user.getPasswd());
-		if(!check){
-			return Response.status(401).entity(new ErrMsg("407","invalid current password")).build();
+		if (!check) {
+			return Response.status(401)
+					.entity(new ErrMsg("407", "invalid current password"))
+					.build();
 		}
 		check = userService.checkComplex(nPasswd);
 		if (!check)
@@ -130,8 +141,10 @@ public class UserController {
 	@POST
 	@Path("/login")
 	@Produces("application/json")
-	public Response logon(@FormParam("userId") String userId, @FormParam("passwd") String passwd){
-		UserService service =  (UserService) BcnxApplicationContext.getBean("userService");
+	public Response logon(@FormParam("userId") String userId,
+			@FormParam("passwd") String passwd, @Context HttpServletRequest request) throws Exception {
+		UserService service = (UserService) BcnxApplicationContext
+				.getBean("userService");
 		User user = new User();
 		user.setUserId(userId);
 		user = service.getUser(user);
@@ -139,42 +152,52 @@ public class UserController {
 		String status = user.getStatus();
 		int state = user.getState();
 		int count = user.getCount();
-		
-		if(!check){
-			return Response.status(401).entity(new ErrMsg("400","invalid userId/password")).build();
+
+		if (!check) {
+			return Response.status(401)
+					.entity(new ErrMsg("400", "invalid userId/password"))
+					.build();
 		}
-		if(!status.equals("A"))
-		{
-			return Response.status(401).entity(new ErrMsg("401","inactive user")).build();
+		if (!status.equals("A")) {
+			return Response.status(401)
+					.entity(new ErrMsg("401", "inactive user")).build();
 		}
-		if(state!=0){
-			return Response.status(401).entity(new ErrMsg("402","current user is loggin in")).build();
+		if (state != 0) {
+			return Response.status(401)
+					.entity(new ErrMsg("402", "current user is loggin in"))
+					.build();
 		}
-		if(count ==0 ||(count%31 == 0)){
-			return Response.status(200).entity(new ErrMsg("403","required user change password")).build();
+		if (count == 0 || (count % 31 == 0)) {
+			return Response.status(200)
+					.entity(new ErrMsg("403", "required user change password"))
+					.build();
 		}
-		count = count+1;
+		count = count + 1;
 		user.setCount(count);
 		user.setState(1);
 		service.update(user);
-		return Response.ok(new ErrMsg("200","logging in successful")).build();
+		HttpSession session =  request.getSession();
+		session.setAttribute("user", user);
+		return Response.ok(new ErrMsg("200", "logging in successful")).build();
 	}
 	@PUT
 	@Path("/active")
 	@Produces("application/json")
-	public Response getUpdateStatus(@FormParam("userId")String userId,@FormParam("status")String status){
-		UserService service =  (UserService) BcnxApplicationContext.getBean("userService");
+	public Response getUpdateStatus(@FormParam("userId") String userId,
+			@FormParam("status") String status) throws Exception {
+		UserService service = (UserService) BcnxApplicationContext
+				.getBean("userService");
 		User user = new User();
 		user.setUserId(userId);
 		user = service.getUser(user);
 		user.setStatus(status);
 		service.update(user);
-		return Response.ok(new ErrMsg("200","active user successful")).build();
+		return Response.ok(new ErrMsg("200", "active user successful")).build();
 	}
 	@PUT
 	@Path("/logout")
 	@Produces("application/json")
-	public Response logout(@FormParam("userId")String userId){
+	public Response logout(@FormParam("userId")String userId) throws Exception{
 		UserService service =  (UserService) BcnxApplicationContext.getBean("userService");
 		User user = new User();
 		user.setUserId(userId);

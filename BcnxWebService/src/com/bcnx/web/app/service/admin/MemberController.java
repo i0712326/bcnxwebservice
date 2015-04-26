@@ -22,7 +22,7 @@ public class MemberController {
 	@Path("/save")
 	@Produces("application/json")
 	@Consumes("application/json")
-	public Response save(Member member){
+	public Response save(Member member) throws Exception{
 		MemberService service = (MemberService) BcnxApplicationContext.getBean("memberService");
 		service.save(member);
 		return Response.status(200).entity(member).build();
@@ -30,9 +30,11 @@ public class MemberController {
 	@RolesAllowed("ADM")
 	@GET
 	@Path("/get/{first}/{max}")
-	public Response getMembes(@PathParam("first") String first, @PathParam("max") String max){
-		MemberService service = (MemberService) BcnxApplicationContext.getBean("memberService");
-		List<Member> members = service.getMembers(Integer.parseInt(first), Integer.parseInt(max));
+	public Response getMembes(@PathParam("first") int first,
+			@PathParam("max") int max) throws Exception {
+		MemberService service = (MemberService) BcnxApplicationContext
+				.getBean("memberService");
+		List<Member> members = service.getMembers(first, max);
 		return Response.status(200).entity(members).build();
 	}
 }

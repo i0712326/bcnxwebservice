@@ -8,8 +8,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.spi.ApplicationException;
-
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.BcnxSettleService;
 import com.bcnx.web.app.service.entity.BcnxSettle;
@@ -25,7 +23,7 @@ public class BcnxSettleController {
 			@QueryParam("rrn") String rrn, @QueryParam("stan") String stan,
 			@QueryParam("from") String from, @QueryParam("to") String to,
 			@QueryParam("page") int page, @QueryParam("rows") int rows)
-			throws ApplicationException {
+			throws Exception {
 		BcnxSettle bs = new BcnxSettle();
 		bs.setCard(card);
 		bs.setRrn(rrn);

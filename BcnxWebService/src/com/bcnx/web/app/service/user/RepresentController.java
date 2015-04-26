@@ -17,7 +17,6 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.jboss.resteasy.spi.ApplicationException;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.RepresentService;
@@ -34,7 +33,7 @@ public class RepresentController extends DisputeTemplate{
 	@Path("/save")
 	@Produces("application/json")
 	@Consumes("multipart/form-data")
-	public Response save(MultipartFormDataInput input, @Context ServletContext context) throws ApplicationException {
+	public Response save(MultipartFormDataInput input, @Context ServletContext context) throws Exception {
 		String path = context.getInitParameter("uploadFolder");
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
 		String fileName = getFileData(uploadForm.get("file"),path);
@@ -103,7 +102,7 @@ public class RepresentController extends DisputeTemplate{
 	}
 	@Path("download/{fileName}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response download(@PathParam("fileName")String fileName, @Context ServletContext context) throws ApplicationException {
+	public Response download(@PathParam("fileName")String fileName, @Context ServletContext context) throws Exception {
 		String path = context.getInitParameter("uploadFolder");
 		String target = path+"/"+fileName;
 		File file = new File(target);

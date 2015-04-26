@@ -12,8 +12,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
-import org.jboss.resteasy.spi.ApplicationException;
-
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.SettleBcnxService;
 import com.bcnx.web.app.service.UserService;
@@ -27,7 +25,7 @@ public class SettleBcnxController {
 	@Path("/get")
 	@Produces("application/json")
 	public Response getSettleBcnx(@QueryParam("date") String date,
-			@QueryParam("id") String id) throws ApplicationException {
+			@QueryParam("id") String id) throws Exception {
 		SettleBcnxService settleBean = (SettleBcnxService) BcnxApplicationContext.getBean("settleBcnxService");
 		UserService userBean = (UserService) BcnxApplicationContext.getBean("userService");
 		User user = new User();
@@ -43,7 +41,7 @@ public class SettleBcnxController {
 	@Produces("text/plain")
 	public Response download(@QueryParam("usrId") String usrId,
 			@QueryParam("date") String date, @QueryParam("file") String file,
-			@Context ServletContext servletContext) throws ApplicationException {
+			@Context ServletContext servletContext) throws Exception {
 		String path = servletContext.getInitParameter("reportPath");
 		UserService service = (UserService) BcnxApplicationContext.getBean("userService");
 		User user = new User();

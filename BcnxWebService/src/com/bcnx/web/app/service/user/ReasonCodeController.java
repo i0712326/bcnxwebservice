@@ -8,8 +8,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.spi.ApplicationException;
-
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.ReasonCodeService;
 import com.bcnx.web.app.service.entity.ReasonCode;
@@ -19,7 +17,7 @@ public class ReasonCodeController {
 	@GET
 	@Path("/get/{proc}")
 	@Produces("application/json")
-	public Response getReasonCode(@PathParam("proc") String proc) throws ApplicationException {
+	public Response getReasonCode(@PathParam("proc") String proc) throws Exception {
 		List<ReasonCode> list = reasonCodeService.getReasonCodes(proc);
 		return Response.ok(list).build();
 	}

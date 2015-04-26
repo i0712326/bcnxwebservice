@@ -9,6 +9,6 @@
 	
 	<bean id="bulletinService"
 		class="com.bcnx.web.app.service.BulletinServiceImp">
-		<property name="bulletinDao" ref="bulletinDao"></property>
+		<property name="bulletinDao" ref="bulletinDao"/>
 	</bean>
 </beans>

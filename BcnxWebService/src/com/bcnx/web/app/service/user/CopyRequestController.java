@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
-import org.jboss.resteasy.spi.ApplicationException;
 
 import com.bcnx.web.app.context.BcnxApplicationContext;
 import com.bcnx.web.app.service.CopyRequestService;
@@ -28,9 +27,12 @@ import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.ErrMsg;
 import com.bcnx.web.app.service.entity.ReasonCode;
 import com.bcnx.web.app.service.entity.User;
+
 @Path("/copyrequest")
-public class CopyRequestController extends DisputeTemplate{
-	private static CopyRequestService copyRequestService = (CopyRequestService) BcnxApplicationContext.getBean("copyRequestService");
+public class CopyRequestController extends DisputeTemplate {
+	private static CopyRequestService copyRequestService = (CopyRequestService) BcnxApplicationContext
+			.getBean("copyRequestService");
+
 	@POST
 	@Path("/save")
 	@Produces("application/json")
@@ -39,7 +41,8 @@ public class CopyRequestController extends DisputeTemplate{
 			@FormParam("stan") String stan, @FormParam("proc") String proc,
 			@FormParam("rea") String rea, @FormParam("remark") String remark,
 			@FormParam("part") String part, @FormParam("amount") double amount,
-			@FormParam("fee") double fee, @FormParam("usrId") String userId) throws ApplicationException {
+			@FormParam("fee") double fee, @FormParam("usrId") String userId)
+			throws Exception {
 		DisputeTxn disputeTxn = new DisputeTxn();
 		disputeTxn.setProcc(proc);
 		disputeTxn.setRemark(remark);
@@ -59,7 +62,7 @@ public class CopyRequestController extends DisputeTemplate{
 		settle.setStan(stan);
 		settle.setMti(mti);
 		settle = bcnxSettleService.getBcnxSettle(settle);
-		if(settle==null)
+		if (settle == null)
 			return Response.status(500)
 					.entity(new ErrMsg("412", "invalid transactions")).build();
 		disputeTxn.setBcnxSettle(settle);
@@ -69,10 +72,11 @@ public class CopyRequestController extends DisputeTemplate{
 					.status(500)
 					.entity(new ErrMsg("410",
 							"User is not allowed to perform function")).build();
-		boolean valid = checkValidDate(settle.getDate(),proc);
-		if(!valid)
+		boolean valid = checkValidDate(settle.getDate(), proc);
+		if (!valid)
 			return Response.status(500)
-					.entity(new ErrMsg("414", "Exceed valid date request")).build();
+					.entity(new ErrMsg("414", "Exceed valid date request"))
+					.build();
 		DisputeTxn txn = disputeTxnService.getDisputeTxn(disputeTxn);
 		if (txn != null)
 			return Response.status(500)
@@ -83,14 +87,16 @@ public class CopyRequestController extends DisputeTemplate{
 				.entity(new ErrMsg("200", "Copy request has sent successfully"))
 				.build();
 	}
+
 	@PUT
 	@Path("/response")
 	@Produces("application/json")
 	@Consumes("multipart/form-data")
-	public Response resCpRq(MultipartFormDataInput input, @Context ServletContext context) throws ApplicationException {
+	public Response resCpRq(MultipartFormDataInput input,
+			@Context ServletContext context) throws Exception {
 		String path = context.getInitParameter("uploadFolder");
 		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
-		String fileName = getFileData(uploadForm.get("file"),path);
+		String fileName = getFileData(uploadForm.get("file"), path);
 		String rrn = getDataForm(uploadForm.get("rrn"));
 		String slot = getDataForm(uploadForm.get("slot"));
 		String stan = getDataForm(uploadForm.get("stan"));
@@ -98,18 +104,18 @@ public class CopyRequestController extends DisputeTemplate{
 		String proc = getDataForm(uploadForm.get("procc"));
 		String rea = getDataForm(uploadForm.get("rea"));
 		String userId = getDataForm(uploadForm.get("usrId"));
-		
+
 		DisputeTxn disputeTxn = new DisputeTxn();
 		disputeTxn.setDate(getDate());
 		disputeTxn.setTime(getTime());
 		disputeTxn.setProcc(proc);
-				
+
 		User user = new User();
 		user.setUserId(userId);
 		user = userService.getUser(user);
 		disputeTxn.setUser(user);
 		// check file name
-		boolean chkName = checkName(fileName, user,rrn, stan);
+		boolean chkName = checkName(fileName, user, rrn, stan);
 		if (!chkName)
 			return Response.status(500)
 					.entity(new ErrMsg("409", "Invalid Attachment Name"))
@@ -121,13 +127,13 @@ public class CopyRequestController extends DisputeTemplate{
 		settle.setSlot(slot);
 		settle.setStan(stan);
 		settle.setMti(mti);
-		
+
 		settle = bcnxSettleService.getBcnxSettle(settle);
-		if(settle==null)
+		if (settle == null)
 			return Response.status(500)
 					.entity(new ErrMsg("412", "Invalid transactions")).build();
 		disputeTxn.setBcnxSettle(settle);
-		
+
 		DisputeTxn txn = disputeTxnService.getDisputeTxn(disputeTxn);
 		if (txn != null)
 			return Response.status(500)
@@ -142,33 +148,33 @@ public class CopyRequestController extends DisputeTemplate{
 		disp.setProcc("500001");
 		disp.setBcnxSettle(settle);
 		disp = disputeTxnService.getDisputeTxn(disp);
-		if(disp==null)
-			return Response
-					.status(500)
-					.entity(new ErrMsg("413",
-							"Invalid copy request")).build();
-		boolean valid = checkValidDate(disp.getDate(),proc);
-		if(valid)
-			return Response
-					.status(500)
-					.entity(new ErrMsg("414",
-							"Exceed valid date request")).build();
+		if (disp == null)
+			return Response.status(500)
+					.entity(new ErrMsg("413", "Invalid copy request")).build();
+		boolean valid = checkValidDate(disp.getDate(), proc);
+		if (valid)
+			return Response.status(500)
+					.entity(new ErrMsg("414", "Exceed valid date request"))
+					.build();
 		disp.setStatus("Y");
 		copyRequestService.update(disp);
 		disputeTxn.setAmount(disp.getAmount());
 		disputeTxn.setFee(disp.getFee());
 		disputeTxn.setFileName(fileName);
 		copyRequestService.save(disputeTxn);
-		return Response.ok(new ErrMsg("200","update successful")).build();
+		return Response.ok(new ErrMsg("200", "update successful")).build();
 	}
+
 	@Path("download/{fileName}")
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response download(@PathParam("fileName")String fileName, @Context ServletContext context) throws ApplicationException {
+	public Response download(@PathParam("fileName") String fileName,
+			@Context ServletContext context) throws Exception {
 		String path = context.getInitParameter("uploadFolder");
-		String target = path+"/"+fileName;
+		String target = path + "/" + fileName;
 		File file = new File(target);
-	    ResponseBuilder response = Response.ok((Object) file);
-	    response.header("Content-Disposition","attachment; filename="+fileName);
-	    return response.build();
+		ResponseBuilder response = Response.ok((Object) file);
+		response.header("Content-Disposition", "attachment; filename="
+				+ fileName);
+		return response.build();
 	}
 }

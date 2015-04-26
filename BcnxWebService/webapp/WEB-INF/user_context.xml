@@ -9,6 +9,6 @@
 	</bean>
 	<bean id="userService"
 		class="com.bcnx.web.app.service.UserServiceImp">
-		<property name="userDao" ref="userDao"></property>
+		<property name="userDao" ref="userDao"/>
 	</bean>
 </beans>

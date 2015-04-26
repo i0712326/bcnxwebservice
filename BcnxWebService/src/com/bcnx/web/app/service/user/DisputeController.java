@@ -8,8 +8,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import org.jboss.resteasy.spi.ApplicationException;
-
 import com.bcnx.web.app.service.entity.BcnxSettle;
 import com.bcnx.web.app.service.entity.DisputeTxn;
 import com.bcnx.web.app.service.entity.Wrapper;
@@ -21,7 +19,7 @@ public class DisputeController extends DisputeTemplate {
 	@Produces("application/json")
 	public Response getRelated(@QueryParam("rrn") String rrn,
 			@QueryParam("slot") String slot, @QueryParam("stan") String stan,
-			@QueryParam("page") int page, @QueryParam("rows") int rows) throws ApplicationException {
+			@QueryParam("page") int page, @QueryParam("rows") int rows) throws Exception {
 		BcnxSettle settle = new BcnxSettle();
 		settle.setRrn(rrn);
 		settle.setSlot(slot);
@@ -43,7 +41,7 @@ public class DisputeController extends DisputeTemplate {
 	@Path("/get/txn")
 	@Produces("application/json")
 	public Response getDisputeTxn(@QueryParam("rrn") String rrn, @QueryParam("proc") String proc,
-			@QueryParam("slot") String slot, @QueryParam("stan") String stan) throws ApplicationException {
+			@QueryParam("slot") String slot, @QueryParam("stan") String stan) throws Exception {
 		BcnxSettle settle = new BcnxSettle();
 		settle.setRrn(rrn);
 		settle.setSlot(slot);

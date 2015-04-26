@@ -12,6 +12,7 @@ import com.bcnx.web.app.service.entity.User;
 
 public class UserServiceImp implements UserService {
 	private static final Logger logger = Logger.getLogger(UserServiceImp.class);
+	private static final String REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
 	private UserDao userDao;
 	public void setUserDao(UserDao userDao){
 		this.userDao = userDao;
@@ -40,11 +41,10 @@ public class UserServiceImp implements UserService {
 			logger.debug("Exception occured while try to updat user",e);
 		}
 	}
-	private static final String REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
 	private Pattern pattern = Pattern.compile(REGEX);
 	private Matcher matcher;
 	@Override
-	public boolean checkComplex(String passwd) {
+	public boolean checkComplex(final String passwd) {
 		matcher = pattern.matcher(passwd);
 		return matcher.find();
 	}

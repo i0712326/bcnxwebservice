@@ -7,14 +7,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 public class UtilityService {
+	public static final Logger logger = Logger.getLogger(UtilityService.class);
 	public static Date str2Date(String str){
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		try {
 			java.util.Date date = formatter.parse(str);
 			return new Date(date.getTime());
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.debug("Exception occured while try to convert string to date",e);
 			return null;
 		}
 	}
@@ -24,7 +27,7 @@ public class UtilityService {
 			java.util.Date date = formatter.parse(str);
 			return new Date(date.getTime());
 		} catch (ParseException e) {
-			e.printStackTrace();
+			logger.debug("Exception occured while try to convert string to date",e);
 			return null;
 		}
 	}

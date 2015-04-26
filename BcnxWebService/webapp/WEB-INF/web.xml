@@ -9,6 +9,10 @@
   		<param-name>uploadFolder</param-name>
   		<param-value>D:\Share\tik\Work</param-value>
   	</context-param>
+  	<context-param>
+        <param-name>resteasy.providers</param-name>
+        <param-value>com.bcnx.web.app.exception.ApplicationExceptionHandler</param-value>
+	</context-param>
  	<context-param>
 		<param-name>resteasy.resources</param-name>
 		<param-value>
@@ -28,7 +32,9 @@
 			com.bcnx.web.app.service.user.SettleBcnxController
 		</param-value>
 	</context-param>
-	
+	<listener>
+		<listener-class>com.bcnx.web.app.exception.SessionTimeOutHandler</listener-class>
+	</listener>
   	<listener>
 		<listener-class>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap</listener-class>
 	</listener>
