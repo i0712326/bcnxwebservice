@@ -6,9 +6,11 @@ import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.ws.rs.FormParam;
@@ -19,15 +21,19 @@ import org.jboss.resteasy.annotations.providers.multipart.PartType;
 public class Bulletin implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_seq1")
+	@SequenceGenerator(name = "id_seq1", 
+	                   sequenceName = "SEQ1",
+	                   allocationSize = 1)
+	@Column(name="TXNID")
 	private int id;
 	@Column(name="TITLE")
 	private String title;
 	@Column(name="DES")
 	private String desc;
-	@Column(name="DATE")
+	@Column(name="TXNDATE")
 	private Timestamp date;
-	@Column(name="FILE")
+	@Column(name="FILENAME")
 	private String file;
 	@Transient
 	private byte[] bytes;

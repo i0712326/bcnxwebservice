@@ -22,11 +22,11 @@ public class User implements Serializable {
 	private String userId;
 	@Column(name="PASSWD",unique=true,nullable=false,length=512)
 	private String passwd;
-	@Column(name="NAME",nullable=false,length=45)
+	@Column(name="USRNAME",nullable=false,length=45)
 	private String name;
 	@Column(name="EMAIL",nullable=false,length=45)
 	private String email;
-	@Column(name="COUNT",nullable=false,length=45)
+	@Column(name="TXNCOUNT",nullable=false,length=45)
 	private int count = 0;
 	@Column(name="STATUS",nullable=false,length=1)
 	private String status = "U";

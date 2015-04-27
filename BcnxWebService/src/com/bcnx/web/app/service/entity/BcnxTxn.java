@@ -22,9 +22,9 @@ public class BcnxTxn implements Serializable {
 	@Id
 	@Column(name="RRN")
 	private String rrn;
-	@Column(name="DATE")
+	@Column(name="TXNDATE")
 	private String date;
-	@Column(name="TIME")
+	@Column(name="TXNTIME")
 	private String time;
 	@Column(name="CARD")
 	private String card;
@@ -42,7 +42,7 @@ public class BcnxTxn implements Serializable {
 	private String res;
 	@Column(name="TERMID", length=8)
 	private String termId;
-	@Column(name="LOCATION", length=42)
+	@Column(name="LOCATE", length=42)
 	private String location;
 	@Column(name="CURR", length=3)
 	private String curr="418";

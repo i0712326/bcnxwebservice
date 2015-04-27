@@ -37,10 +37,10 @@ public class BcnxSettleAuditorImp extends BatchAuditJob implements BcnxSettleAud
 	public List<BcnxSettle> toList(File file, Date date) throws IOException {
 		BufferedReader bufferReader = new BufferedReader(new FileReader(file));
 		ignorPattern = Pattern.compile(IGNOR);
-		slotPattern = Pattern.compile(SLOT);
-		numPattern = Pattern.compile(NUM);
-		balPattern = Pattern.compile(BAL);
-		timePattern = Pattern.compile(TIME);
+		slotPattern  = Pattern.compile(SLOT);
+		numPattern   = Pattern.compile(NUM);
+		balPattern   = Pattern.compile(BAL);
+		timePattern  = Pattern.compile(TIME);
 		String previous = null;
 		String line = null;
 		while((line = bufferReader.readLine())!=null){
@@ -146,9 +146,9 @@ public class BcnxSettleAuditorImp extends BatchAuditJob implements BcnxSettleAud
 		if(bcnxSettles.isEmpty())
 			return true;
 		BcnxSettle bcnx = bcnxSettleService.getBcnxSettle(bcnxSettle);
-		if(bcnx==null)
-			return true;
-		return false;
-			
+		boolean chk1 = (bcnx==null);
+		boolean chk2 = !(bcnxSettle.getAcq()==null || bcnxSettle.getAcq().isEmpty());
+		boolean chk3 = !(bcnxSettle.getIss()==null || bcnxSettle.getIss().isEmpty());
+		return chk1 && chk2 && chk3;
 	}
 }

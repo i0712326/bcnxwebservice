@@ -6,17 +6,24 @@ import java.sql.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 @Entity
 @Table(name="DISPUTETXN")
 public class DisputeTxn implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name="ID")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_seq2")
+	@SequenceGenerator(name = "id_seq2", 
+	                   sequenceName = "SEQ2",
+	                   allocationSize = 1)
+	@Column(name="TXNID")
 	private int id;
 	@Id
 	@Column(name="PROCC",nullable=false, length=6)
@@ -33,11 +40,11 @@ public class DisputeTxn implements Serializable{
 	private double fee;
 	@Column(name="FLAG")
 	private String flag;
-	@Column(name="COUNT")
+	@Column(name="TXNCOUNT")
 	private int count;
 	@Column(name="PRB")
 	private String status="N";
-	@Column(name="FILE")
+	@Column(name="FILENAME")
 	private String fileName;
 	@ManyToOne
 	@JoinColumn(name="REASONCODE_CODE")

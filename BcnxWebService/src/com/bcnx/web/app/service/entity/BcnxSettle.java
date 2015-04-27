@@ -29,9 +29,9 @@ public class BcnxSettle implements Serializable{
 	@Id
 	@Column(name="STAN")
 	private String stan;
-	@Column(name="DATE",nullable=false)
+	@Column(name="TXNDATE",nullable=false)
 	private Date date;
-	@Column(name="TIME",nullable=false,length=8)
+	@Column(name="TXNTIME",nullable=false,length=8)
 	private String time;
 	@Column(name="CARD", length=19)
 	private String card;

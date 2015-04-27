@@ -23,7 +23,7 @@ public class ProcCode implements Serializable {
 	private String code;
 	@Column(name="REMARK")
 	private String remark;
-	@Column(name="LIMIT")
+	@Column(name="TXNLIMIT")
 	private int limit;
 	@OneToMany(mappedBy = "cardProcId.procCode", cascade=CascadeType.ALL)
 	private List<CardProc> cardProcs;

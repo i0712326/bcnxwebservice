@@ -8,15 +8,9 @@
 	<import resource="bcnx_context.xml"/>
 	<import resource="bcnxSettle_context.xml"/>
 	<import resource="bin_context.xml"/>
-	<bean id="bcnxTxnAuditor" class="com.bcnx.web.app.service.auditor.BncxTxnAuditorImp">
-		<property name="bcnxTxnService" ref="bcnxTxnService"/>
-		<property name="binService" ref="binService"/>
-	</bean>
-	<bean id="bcnxSettleAuditor" class="com.bcnx.web.app.service.auditor.BcnxSettleAuditorImp">
-		<property name="bcnxSettleService" ref="bcnxSettleService"/>
-		<property name="binService" ref="binService"/>
-		<property name="bcnxTxnService" ref="bcnxTxnService"/>
-	</bean>
+	<bean id="batchAuditJob" class="com.bcnx.web.app.service.auditor.BatchAuditJob"/>
+	<bean id="bcnxTxnAuditor" class="com.bcnx.web.app.service.auditor.BncxTxnAuditorImp" parent="batchAuditJob"/>
+	<bean id="bcnxSettleAuditor" class="com.bcnx.web.app.service.auditor.BcnxSettleAuditorImp" parent="batchAuditJob"/>
 	<bean id="fileTransfer" class="com.bcnx.web.app.service.task.FileTransferImp">
 		<constructor-arg value="172.20.0.31"/>
 		<constructor-arg value="bcelpool"/>
