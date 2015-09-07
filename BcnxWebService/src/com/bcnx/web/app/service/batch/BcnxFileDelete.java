@@ -23,7 +23,7 @@ public class BcnxFileDelete implements Tasklet {
 				file.delete();
 			}
 		}
-		return RepeatStatus.FINISHED;
+		return RepeatStatus.CONTINUABLE;
 	}
 
 }

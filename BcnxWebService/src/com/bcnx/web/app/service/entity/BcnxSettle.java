@@ -48,7 +48,6 @@ public class BcnxSettle implements Serializable{
 	private String acq;
 	@Column(name="ISSID",length=6)
 	private String iss;
-	
 	@ManyToOne
 	@JoinColumn(name="CARDTYPE_TYPE")
 	private CardType cardType;

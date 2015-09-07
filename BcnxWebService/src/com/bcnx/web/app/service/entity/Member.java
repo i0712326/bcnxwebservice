@@ -21,7 +21,7 @@ public class Member implements Serializable {
 	private String iin;
 	@Column(name="MEMID", nullable=true, unique=true, length=6)
 	private String memId;
-	@Column(name="ENTRY", nullable=true, length=45)
+	@Column(name="MEMENTRY", nullable=true, length=45)
 	private String entry;
 	@Column(name="TEL", nullable=true, unique=true, length=12)
 	private String tel;

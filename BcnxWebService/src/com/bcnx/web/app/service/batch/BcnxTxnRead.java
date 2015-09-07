@@ -29,7 +29,7 @@ public class BcnxTxnRead implements Tasklet{
 				bcnxTxnAuditor.toList(file);
 			}
 		}
-		return RepeatStatus.FINISHED;
+		return RepeatStatus.CONTINUABLE;
 	}
 
 }

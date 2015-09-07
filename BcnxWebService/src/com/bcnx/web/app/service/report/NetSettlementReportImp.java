@@ -80,9 +80,18 @@ public class NetSettlementReportImp implements NetSettlementReport {
 		settleBcnx.setRecFile(destName);
 		settleBcnx.setSetlFile(destName);
 		settleBcnx.setMember(owner);
-		settleBcnxs.add(settleBcnx);
+		if(!isExist(settleBcnx))
+			settleBcnxs.add(settleBcnx);
 		settleBcnxService.saveAll(settleBcnxs);
 	}
+	
+	private boolean isExist(SettleBcnx settleBcnx) {
+		Date date = settleBcnx.getDate();
+		String id = settleBcnx.getMember().getIin();
+		SettleBcnx sb = settleBcnxService.getSettleBcnx(date, id);
+		return sb!=null;
+	}
+	
 	private double printSummaryReport(String destFile, Date backDate,List<Member> members) {
 		File file = new File(destFile);
 		String pattern = "#,##0.00";

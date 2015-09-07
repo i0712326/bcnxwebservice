@@ -37,7 +37,7 @@ public class BcnxSettleRead extends BatchTemplate implements Tasklet {
 				bcnxSettleService.saveAll(bcnxSettles);
 			}
 		}
-		return RepeatStatus.FINISHED;
+		return RepeatStatus.CONTINUABLE;
 	}
 
 }

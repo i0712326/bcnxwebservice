@@ -19,20 +19,20 @@ import javax.persistence.Table;
 public class DisputeTxn implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
+	@Column(name="TXNID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_seq2")
 	@SequenceGenerator(name = "id_seq2", 
 	                   sequenceName = "SEQ2",
 	                   allocationSize = 1)
-	@Column(name="TXNID")
 	private int id;
 	@Id
 	@Column(name="PROCC",nullable=false, length=6)
 	private String procc;
 	@Column(name="REMARK")
 	private String remark;
-	@Column(name="DATE")
+	@Column(name="TXNDATE")
 	private Date date;
-	@Column(name="TIME")
+	@Column(name="TXNTIME")
 	private String time;
 	@Column(name="AMOUNT")
 	private double amount;

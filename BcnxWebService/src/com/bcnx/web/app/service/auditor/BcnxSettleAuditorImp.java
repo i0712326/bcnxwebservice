@@ -73,7 +73,7 @@ public class BcnxSettleAuditorImp extends BatchAuditJob implements BcnxSettleAud
 				if(token[7]==null)
 					continue;
 				String amt	= token[7].trim();
-				if(token[8]==null)
+				if(token[8]==null||token[8].isEmpty()||token[8].length()<20)
 					continue;
 				String atmId= token[8].substring(12,20).trim();
 				if(token[9]==null)

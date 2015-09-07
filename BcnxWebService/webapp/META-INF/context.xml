@@ -17,5 +17,5 @@
 	<Resource name="jdbc/bcnx" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="30" maxWait="10000"
                username="bconnex" password="bconnex" driverClassName="oracle.jdbc.driver.OracleDriver"
-               url="jdbc:oracle:thin:@172.16.3.251:1521:bcnx"/>
+               url="jdbc:oracle:thin:@172.16.3.251:1521:bcnxa"/>
 </Context>

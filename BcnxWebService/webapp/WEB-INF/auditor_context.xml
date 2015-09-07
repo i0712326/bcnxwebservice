@@ -3,20 +3,27 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:c="http://www.springframework.org/schema/c"
 	xmlns:lang="http://www.springframework.org/schema/lang"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.1.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
+	<context:property-placeholder location="classpath:bcnx.properties"/>
 	<import resource="bcnx_context.xml"/>
 	<import resource="bcnxSettle_context.xml"/>
 	<import resource="bin_context.xml"/>
-	<bean id="batchAuditJob" class="com.bcnx.web.app.service.auditor.BatchAuditJob"/>
+	<bean id="batchAuditJob" class="com.bcnx.web.app.service.auditor.BatchAuditJob">
+		<property name="binService" ref="binService"/>
+		<property name="bcnxTxnService" ref="bcnxTxnService"/>
+		<property name="bcnxSettleService" ref="bcnxSettleService"/>
+	</bean>
 	<bean id="bcnxTxnAuditor" class="com.bcnx.web.app.service.auditor.BncxTxnAuditorImp" parent="batchAuditJob"/>
 	<bean id="bcnxSettleAuditor" class="com.bcnx.web.app.service.auditor.BcnxSettleAuditorImp" parent="batchAuditJob"/>
 	<bean id="fileTransfer" class="com.bcnx.web.app.service.task.FileTransferImp">
-		<constructor-arg value="172.20.0.31"/>
-		<constructor-arg value="bcelpool"/>
-		<constructor-arg value="pool12!@"/>
-		<constructor-arg value="/u02/bcelpool/NARADA/switch/spool"/>
-		<constructor-arg value="D:/output/src"/>
-		<constructor-arg value="22"/>
+		<constructor-arg value="${ftp.ip.address}"/>
+		<constructor-arg value="${ftp.user}"/>
+		<constructor-arg value="${ftp.password}"/>
+		<constructor-arg value="${ftp.remote.path}"/>
+		<constructor-arg value="${ftp.local.path}"/>
+		<constructor-arg value="${ftp.port}"/>
 	</bean>
 </beans>

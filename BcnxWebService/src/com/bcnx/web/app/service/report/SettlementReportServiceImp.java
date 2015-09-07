@@ -194,6 +194,9 @@ public class SettlementReportServiceImp implements SettlementReportService {
 		int icpNum = icp.size();
 		int ocpNum = ocp.size();
 		
+		int icrsNum = icr.size();
+		int ocrsNum = ocr.size();
+		
 		int icNum = ic.size();
 		double icAmt = -1*getDispTotal(ic);
 		double icFee = -1*getDispFee(ic);
@@ -253,6 +256,9 @@ public class SettlementReportServiceImp implements SettlementReportService {
 		
 		settleBcnx.setInCprNum(icpNum);
 		settleBcnx.setOuCprNum(ocpNum);
+		
+		settleBcnx.setInCrsNum(icrsNum);
+		settleBcnx.setOuCrsNum(ocrsNum);
 		
 		settleBcnx.setInChbNum(icNum);
 		settleBcnx.setInChbAmt(icAmt);

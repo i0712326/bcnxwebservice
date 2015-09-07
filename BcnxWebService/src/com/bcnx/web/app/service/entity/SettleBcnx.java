@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 public class SettleBcnx implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
-	@Column(name="DATE",unique=true)
+	@Column(name="TXNDATE",unique=true)
 	private Date date;
 	@Column(name="ISSTXN")
 	private int issNum = 0;

@@ -11,6 +11,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
 		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.1.xsd
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd">
+	<context:property-placeholder location="classpath:bcnx.properties"/>
 	<import resource="../auditor_context.xml"/>
 	<import resource="../bcnxSettle_context.xml"/>
 	<import resource="../bin_context.xml"/>
@@ -18,8 +19,9 @@
 	<import resource="../settleBcnx_context.xml"/>
 	<import resource="../datasource.xml"/>
 	<!-- batch job -->
-	<batch:job id="job1">
+	<batch:job id="job1" >
 		<!-- router audit process -->
+		<!-- 
 		<batch:step id="bcnxTxnFetchStep" next="bcnxTxnReadStep">
 			<batch:tasklet ref="bcnxTxnFileFetch"/>
 		</batch:step>
@@ -29,7 +31,9 @@
 		<batch:step id="bcnxTxnDeleteStep" next="bcnxSetteFetchStep">
 			<batch:tasklet ref="bcnxTxnFileDelete"/>
 		</batch:step>
+		-->
 		<!-- settle -->
+		<!-- 
 		<batch:step id="bcnxSetteFetchStep" next="bcnxSettleReadStep">
 			<batch:tasklet ref="bcnxSettleFileFetch"/>
 		</batch:step>
@@ -39,6 +43,7 @@
 		<batch:step id="bcnxSettleDeleteStep" next="netSettlementStep">
 			<batch:tasklet ref="bcnxSettleFileDelete"/>
 		</batch:step>
+		-->
 		<!-- report generator -->
 		<batch:step id="netSettlementStep">
 			<batch:tasklet ref="netSettlement"/>
@@ -63,21 +68,21 @@
 		class="com.bcnx.web.app.service.batch.BcnxFileFetch"
 		parent="batchTemplate" scope="prototype">
 		<property name="fileTransfer" ref="fileTransfer"/>
-		<property name="expression" value="router.audit.*"/>
-		<property name="localPath" value="D:/output/src/bcnxTxn"/>
+		<property name="expression" value="${audit.expression}"/>
+		<property name="localPath" value="${bcnx.txn.source.path}"/>
 	</bean>
 	
 	<bean id="bcnxSettleFileFetch"
 		class="com.bcnx.web.app.service.batch.BcnxFileFetch"
 		parent="batchTemplate" scope="prototype">
 		<property name="fileTransfer" ref="fileTransfer"/>
-		<property name="expression" value="verify.log.*"/>
-		<property name="localPath" value="D:/output/src/bcnxSettle"/>
+		<property name="expression" value="${verify.expression}"/>
+		<property name="localPath" value="${bcnx.settle.source.path}"/>
 	</bean>
 	
 	<bean id="bcnxTxnRead"
 		class="com.bcnx.web.app.service.batch.BcnxTxnRead">
-		<property name="resourcePath" value="D:/output/src/bcnxTxn"/>
+		<property name="resourcePath" value="${bcnx.txn.source.path}"/>
 		<property name="bcnxTxnAuditor" ref="bcnxTxnAuditor"/>
 	</bean>
 	<bean id="batchTemplate"
@@ -88,16 +93,16 @@
 	</bean>
 	<bean id="bcnxTxnFileDelete"
 		class="com.bcnx.web.app.service.batch.BcnxFileDelete" scope="prototype">
-		<property name="resourcePath" value="D:/output/src/bcnxTxn"/>
+		<property name="resourcePath" value="${bcnx.txn.source.path}"/>
 	</bean>
 	<bean id="bcnxSettleFileDelete"
 		class="com.bcnx.web.app.service.batch.BcnxFileDelete" scope="prototype">
-		<property name="resourcePath" value="D:/output/src/bcnxSettle"/>
+		<property name="resourcePath" value="${bcnx.settle.source.path}"/>
 	</bean>
 	<bean id="bcnxSettleRead"
 		class="com.bcnx.web.app.service.batch.BcnxSettleRead"
 		parent="batchTemplate">
-		<property name="resourcePath" value="D:/output/src/bcnxSettle"/>
+		<property name="resourcePath" value="${bcnx.settle.source.path}"/>
 		<property name="bcnxSettleAuditor" ref="bcnxSettleAuditor"/>
 	</bean>
 	

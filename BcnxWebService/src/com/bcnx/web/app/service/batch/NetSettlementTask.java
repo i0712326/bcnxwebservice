@@ -16,7 +16,7 @@ public class NetSettlementTask implements Tasklet {
 	public RepeatStatus execute(StepContribution contribution,
 			ChunkContext chunkContext) throws Exception {
 		netSettlementReport.printNetSettlementReport();
-		return RepeatStatus.FINISHED;
+		return RepeatStatus.CONTINUABLE;
 	}
 
 }

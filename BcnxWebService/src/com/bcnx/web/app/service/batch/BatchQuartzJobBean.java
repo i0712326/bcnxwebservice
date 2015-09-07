@@ -6,6 +6,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
@@ -27,7 +28,10 @@ public class BatchQuartzJobBean extends QuartzJobBean {
 	protected void executeInternal(JobExecutionContext context)
 			throws JobExecutionException {
 		try {
-			JobExecution execution = jobLauncher.run(job, new JobParameters());
+			JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
+			jobParametersBuilder.addLong("time", System.currentTimeMillis());
+			JobParameters jobParameters = jobParametersBuilder.toJobParameters();
+			JobExecution execution = jobLauncher.run(job, jobParameters);
 			logger.debug("Execution Exit Status : "+execution.getStatus());
 		} catch (JobExecutionAlreadyRunningException | JobRestartException
 				| JobInstanceAlreadyCompleteException

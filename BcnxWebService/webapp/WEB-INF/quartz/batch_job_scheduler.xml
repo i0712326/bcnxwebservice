@@ -28,7 +28,7 @@
 		</bean>
 	<bean id="bactchJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="batchJobDetail" />
-		<property name="cronExpression" value="0 30 2 * * ?" />
+		<property name="cronExpression" value="0 0/4 * * * ?" />
 	</bean>
 	<bean id="batchJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
 		<property name="jobClass" value="com.bcnx.web.app.service.batch.BatchQuartzJobBean" />

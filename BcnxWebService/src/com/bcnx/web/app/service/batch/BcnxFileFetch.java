@@ -31,6 +31,6 @@ public class BcnxFileFetch extends BatchTemplate implements Tasklet {
 		fileTransfer.setExpression(expression);
 		fileTransfer.setLocalPath(localPath);
 		fileTransfer.download(sdate);
-		return RepeatStatus.FINISHED;
+		return RepeatStatus.CONTINUABLE;
 	}
 }
